@@ -70,7 +70,7 @@ public final class ReadWriteTextFileWithEncoding {
                   
                   if (g.charAt(j) == ' ') {
                       String k = "";
-                      for (int m = j+1; m < g.length() && (g.charAt(m) != ' ') && (g.charAt(m) != System.lineSeparator().charAt(0)) ; m++) {
+                      for (int m = j+1; m < g.length() && (g.charAt(m) != ' ') && (g.charAt(m) != System.getProperty("line.separator").charAt(0)) ; m++) {
                           k = k+g.charAt(m);
                       }
                       score[i] = Integer.parseInt(k);
