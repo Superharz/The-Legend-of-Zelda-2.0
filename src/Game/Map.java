@@ -42,7 +42,9 @@ public class Map extends ImagePanel implements Moveable.Player.PlayerEvent{
         this.setLayout(null);
         player = new Moveable.Player.Player();
         this.add(player);
+        player.setBounds(50, 50, player.getWidth(), player.getHeight());
         this.repaint();
+       
         //enemie1 = new Moveable.Enemies.Enemie();
 
 //        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -80,7 +82,7 @@ public class Map extends ImagePanel implements Moveable.Player.PlayerEvent{
 public void setUP(int width,int heights,int playerX, int playerY) {
         this.width = width;
         this.height = heights;
-        
+        player.setSize(player.getWidth(), player.getWidth());
         //player.setText("Try");
         //player.setLocation(50,50);
         spots = new Spot[heights][width];
@@ -231,11 +233,12 @@ public void setUP(int width,int heights,int playerX, int playerY) {
     public void addEnemy(Enemie e,int x, int y) {
         enemies.add(e);
         this.add(e);
-        e.setLocation(x, y);
+        e.setBounds(x, y, e.getWidth(), e.getWidth());
+        //e.setLocation(x, y);
         
         e.setUP(spots);
-        System.out.println("Set up");
-        player.setLocation(50,50);
+        //System.out.println("Set up");
+        //player.setLocation(50,50);
         //e.randomMove();
         
     }

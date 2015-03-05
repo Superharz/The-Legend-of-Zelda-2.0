@@ -59,7 +59,10 @@ public abstract class Mover extends javax.swing.JLabel{
         //this.setVisible(false);
         //this.setIcon((Icon) img);
     }
-    
+    @Override
+    public int getWidth(){
+        return this.img[DOWN].getWidth();
+    }
     public void setMover(int speed, int live, int damage, Point hotSpot,  BufferedImage[] img, Spot[][] spots) {
         this.setIcon((new ImageIcon(img[DOWN])));
         this.speed   = speed;
