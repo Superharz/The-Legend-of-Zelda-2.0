@@ -45,7 +45,7 @@ public  class Enemie extends Mover{
     
     public void setUP(Spot[][] spots) {
         this.setMover(1000/24, 100, 100, new Point(0,0), img, spots);
-        this.setLocation(100,100);
+        //this.setLocation(100,100);
         //randomMove();
     }
     

@@ -46,10 +46,14 @@ public class Tested extends javax.swing.JFrame {
             map1.addSpot(s, 7, 8);
             map1.addSpot(s, 8, 6);
             map1.addSpot(s, 7, 6);
-            Enemie e = new Enemie();
+            Enemie e;
             
             map1.build();
-            map1.addEnemy(e, 300, 300);
+            for (int i = 0; i < 5; i++) {
+                e = new Enemie();
+                map1.addEnemy(e, 50+i*50, 50+i*50);
+            }
+            
             //Enemie e = new Enemie(1000/240, 100, 100, new Point(0,0),map1.getSpots());
             //map1.addEnemy(e, 100, 100);
 //            Player p = new Player();
