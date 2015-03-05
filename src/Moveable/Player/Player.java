@@ -54,6 +54,7 @@ public class Player extends Mover{
     
     public void setUP(Spot[][] spots) {
         this.setMover(1, 100, 100, new Point(0,0), before[0],spots);
+        //this.setLocation(100,100);
     }
     
     public void moveUp() {
