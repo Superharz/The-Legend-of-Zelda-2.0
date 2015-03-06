@@ -58,60 +58,61 @@ public class Player extends Mover{
     }
     
     public void setUP(Spot[][] spots) {
-        this.setMover(1, 100, 100, new Point(0,0), before[0],spots);
+        Rectangle r = new Rectangle(this.getX(), this.getY(),  getWidth(), getWidth());
+        this.setMover(10, 100, 100, new Point(0,0), before[0],spots,r);
         //this.setLocation(100,100);
     }
     
     public void moveUp() {
-        //Timer t = new Timer(speed,PlayerEvent)
-        move = true;
-        int j = 0, i = 0;
-        this.setIcon(new ImageIcon(img[UP]));
-        try {
-          while(move) {
-                for (PlayerEvent hl : listeners)
-                   hl.moveUP();            
-                Thread.sleep(speed);
-                j++;
-                if (j == 24) {
-                    j = 0;
-                    i = (i+1)%2;
-                    this.setIcon(new ImageIcon(before[i+1][UP]));
-                }
-            }
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        //Timer t = new Timer(speed,PlayerEvent)
+//        move = true;
+//        int j = 0, i = 0;
+//        this.setIcon(new ImageIcon(img[UP]));
+//        try {
+//          while(move) {
+//                for (PlayerEvent hl : listeners)
+//                   hl.moveUP();            
+//                Thread.sleep(speed);
+//                j++;
+//                if (j == 24) {
+//                    j = 0;
+//                    i = (i+1)%2;
+//                    this.setIcon(new ImageIcon(before[i+1][UP]));
+//                }
+//            }
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     } 
     
     public void moveDown() {
-        move = true;
-        int j = 0, i = 0;
-        this.setIcon(new ImageIcon(img[DOWN]));
-        try {
-          while(move) {
-                for (PlayerEvent hl : listeners)
-                   hl.moveDOWN();            
-                Thread.sleep(speed);
-            }
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        move = true;
+//        int j = 0, i = 0;
+//        this.setIcon(new ImageIcon(img[DOWN]));
+//        try {
+//          while(move) {
+//                for (PlayerEvent hl : listeners)
+//                   hl.moveDOWN();            
+//                Thread.sleep(speed);
+//            }
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
     
     public void moveRight() {
-        move = true;
-        int j = 0, i = 0;
-        this.setIcon(new ImageIcon(img[RIGHT]));
-        try {
-          while(move) {
-                for (PlayerEvent hl : listeners)
-                   hl.moveRIGHT();   
-                Thread.sleep(speed);
-            }
-        } catch (InterruptedException ex) {
-           Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        move = true;
+//        int j = 0, i = 0;
+//        this.setIcon(new ImageIcon(img[RIGHT]));
+//        try {
+//          while(move) {
+//                for (PlayerEvent hl : listeners)
+//                   hl.moveRIGHT();   
+//                Thread.sleep(speed);
+//            }
+//        } catch (InterruptedException ex) {
+//           Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
     
  
@@ -136,10 +137,11 @@ public class Player extends Mover{
                                 case 1: moveUP();   break;
                                 case 0: moveDOWN();  break;
                             }
-                        
+                        for (PlayerEvent hl : listeners)
+                            hl.moved();
                         //this.wait(speed);
-                        this.wait(0, speed);
-                        //Thread.sleep(speed);
+                        //this.wait(0, speed);
+                        Thread.sleep(speed);
                         j++;
                         System.out.println(j);
                         if (j == 24) {
@@ -162,20 +164,20 @@ public class Player extends Mover{
     
     
     public void moveLeft() {
-        move = true;
-        int j = 0, i = 0;
-        //System.out.println("MOVE");
-        this.setIcon(new ImageIcon(img[LEFT]));
-        try {
-          while(move) {
-              //System.out.println("MOVE");
-                for (PlayerEvent hl : listeners)
-                   hl.moveLEFT();            
-                Thread.sleep(speed);
-            }
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        move = true;
+//        int j = 0, i = 0;
+//        //System.out.println("MOVE");
+//        this.setIcon(new ImageIcon(img[LEFT]));
+//        try {
+//          while(move) {
+//              //System.out.println("MOVE");
+//                for (PlayerEvent hl : listeners)
+//                   hl.moveLEFT();            
+//                Thread.sleep(speed);
+//            }
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     public Point[] getLeft() {
