@@ -237,6 +237,7 @@ public void setUP(int width,int heights,int playerX, int playerY) {
         //e.setLocation(x, y);
         
         e.setUP(spots);
+        e.randomMove();
         //System.out.println("Set up");
         //player.setLocation(50,50);
         //e.randomMove();

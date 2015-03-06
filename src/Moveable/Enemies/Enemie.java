@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -50,21 +51,37 @@ public  class Enemie extends Mover{
     }
     
     public void randomMove() {
-        //Thread t = new Thread() {
-            //public void run() {
+        Thread t = new Thread() {
+            public void run() {
         try {
             move = true;
             boolean work = true;
-            int d = getRandom();
+            int direction = getRandom();
+                setIcon(new ImageIcon(img[direction]));
                     while(move) {
                         //for (EnemieEvent hl : listeners) {
                             //work = move(0);
                         //}
-                        setLocation(getX()-1, getY());
-                        System.out.println(getX());
-                        //this.wait(1000);
-                        Thread.sleep(1000);
+                        //setLocation(getX()-1, getY());
+                        //System.out.println(getX());
+                        switch (direction) {
+                                case 3: work = moveLEFT();break;//hl.moveLEFT(); break;
+                                case 2: work = moveRIGHT();break;
+                                case 1: work = moveUP();   break;
+                                case 0: work = moveDOWN();  break;
+                            }
                         
+                        //this.wait(1000);
+                        if (!work) {
+                            direction = getRandom();
+                            setIcon(new ImageIcon(img[direction]));
+                            work = true;
+                        }
+                        Thread.sleep(10);
+                        if (getRandom(100)==50) {
+                            direction = getRandom();
+                            setIcon(new ImageIcon(img[direction]));
+                        }
 //                        if (!work)
 //                            move = false;
 //                            d = getRandom();
@@ -79,8 +96,8 @@ public  class Enemie extends Mover{
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            //}};
-        //t.start();
+            }};
+        t.start();
     }
     
     
@@ -94,7 +111,16 @@ public  class Enemie extends Mover{
          int answer = (int)random;      
          return answer;   
     }
-    
+    private  int getRandom(int max ) { 
+        int min = 0;
+        //int max = 3;
+         double seed = Math.random();
+         double L = (double)min; 
+         double H = (double)max; 
+         double random = (H - L + 1) * seed + L; 
+         int answer = (int)random;      
+         return answer;   
+    }
     
     
     
