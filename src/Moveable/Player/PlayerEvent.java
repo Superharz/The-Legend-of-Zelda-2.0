@@ -10,10 +10,7 @@ package Moveable.Player;
  * @author Flo
  */
 public interface PlayerEvent {
-    public void moveUP();
-    public void moveDOWN();
-    public void moveRIGHT();
-    public void moveLEFT();
+    public void moved();
     public void attacke();
     //public void ();
 }

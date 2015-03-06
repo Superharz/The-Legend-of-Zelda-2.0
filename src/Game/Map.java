@@ -10,6 +10,7 @@ import Moveable.Player.Player;
 import Tools.ImagePanel;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 /**
@@ -233,6 +234,7 @@ public void setUP(int width,int heights,int playerX, int playerY) {
     public void addEnemy(Enemie e,int x, int y) {
         enemies.add(e);
         this.add(e);
+        e.addListener(this);
         e.setBounds(x, y, e.getWidth(), e.getWidth());
         //e.setLocation(x, y);
         
@@ -245,6 +247,21 @@ public void setUP(int width,int heights,int playerX, int playerY) {
     }
     public Spot[][] getSpots() {
         return spots;
+    }
+
+    @Override
+    public void moved() {
+        Rectangle enemieBox;
+        Rectangle playerBox = player.getHitBox();
+        for (int i = 0; i < enemies.size(); i++) {
+            enemieBox = enemies.get(i).getHitBox();
+            if (playerBox.intersects(enemieBox)) {
+                enemies.get(i).takeDamage(enemies.get(i).getStrength());
+                System.out.println("Got Damage");
+                break;
+            }
+                
+        }
     }
     
 }

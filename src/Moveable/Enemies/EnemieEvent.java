@@ -10,9 +10,6 @@ package Moveable.Enemies;
  * @author Flo
  */
 public interface EnemieEvent {
-    public void moveUP();
-    public void moveDOWN();
-    public void moveRIGHT();
-    public void moveLEFT();
+    public void moved();
     public void attacke();
 }

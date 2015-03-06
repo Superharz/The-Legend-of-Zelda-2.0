@@ -8,10 +8,13 @@ package Moveable.Enemies;
 import Game.Spot;
 import Moveable.Mover;
 import Moveable.Player.Player;
+import Moveable.Player.PlayerEvent;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -22,7 +25,7 @@ import javax.swing.ImageIcon;
  * @author Flo
  */
 public  class Enemie extends Mover{
-    
+    private final List<PlayerEvent> listeners = new ArrayList<PlayerEvent>();
     public Enemie() {
         //super(speed, live, damage, hotSpot, img);
         try { 
@@ -45,14 +48,28 @@ public  class Enemie extends Mover{
     }
     
     public void setUP(Spot[][] spots) {
-        this.setMover(1000/24, 100, 100, new Point(0,0), img, spots);
+        Rectangle r = new Rectangle(this.getX(), this.getY(),  getWidth(), getWidth());
+        this.setMover(1000/24, 100, 100, new Point(0,0), img, spots,r);
+        //Rectangle r = new Rectangle(10, 10, 10, 10);
+        
         //this.setLocation(100,100);
         //randomMove();
     }
     
+    @Override
+    public int getWidth(){
+        return this.img[0].getWidth();
+    }
+    
+    public void addListener(PlayerEvent toAdd) {
+        listeners.add(toAdd);
+    }
+    
     public void randomMove() {
         Thread t = new Thread() {
+            @Override
             public void run() {
+                synchronized(this) {
         try {
             move = true;
             boolean work = true;
@@ -70,7 +87,8 @@ public  class Enemie extends Mover{
                                 case 1: work = moveUP();   break;
                                 case 0: work = moveDOWN();  break;
                             }
-                        
+                        for (PlayerEvent hl : listeners)
+                            hl.moved();
                         //this.wait(1000);
                         if (!work) {
                             direction = getRandom();
@@ -95,6 +113,7 @@ public  class Enemie extends Mover{
                     //setIcon(new ImageIcon(before[0][direction]));
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 }
             }};
         t.start();

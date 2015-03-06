@@ -31,18 +31,18 @@ public abstract class Mover extends javax.swing.JLabel{
     int damage;
     Point hotSpot;
     Spot[][] spots;
-   // Rectangle hitBox;
+    Rectangle hitBox;
     public BufferedImage[] img;
     public final int DOWN = 0, UP = 1, RIGHT = 2, LEFT = 3;
     
     
-    public Mover(int speed, int live, int damage, Point hotSpot, BufferedImage[] img) {
+    public Mover(int speed, int live, int damage, Point hotSpot, BufferedImage[] img, Rectangle hitBox) {
         super( new ImageIcon(img[0]));
         this.speed   = speed;
         this.live    = live;
         this.damage  = damage;
         this.hotSpot = hotSpot;
-        //this.hitBox  = hitBox;
+        this.hitBox  = hitBox;
         this.img     = img;
         this.setVisible(false);
         //this.setIcon((Icon) img);
@@ -63,13 +63,13 @@ public abstract class Mover extends javax.swing.JLabel{
     public int getWidth(){
         return this.img[DOWN].getWidth();
     }
-    public void setMover(int speed, int live, int damage, Point hotSpot,  BufferedImage[] img, Spot[][] spots) {
+    public void setMover(int speed, int live, int damage, Point hotSpot,  BufferedImage[] img, Spot[][] spots, Rectangle hitBox) {
         this.setIcon((new ImageIcon(img[DOWN])));
         this.speed   = speed;
         this.live    = live;
         this.damage  = damage;
         this.hotSpot = hotSpot;
-        //this.hitBox  = hitBox;
+        this.hitBox  = hitBox;
         this.img     = img;
         this.spots = spots;
     }
@@ -82,6 +82,7 @@ public abstract class Mover extends javax.swing.JLabel{
     public boolean moveUP() {
         if (collision(1)) {
             this.setLocation(this.getX(), this.getY()-1);
+            hitBox.setLocation(this.getLocation());
             return true;
         }
         return false;
@@ -91,6 +92,7 @@ public abstract class Mover extends javax.swing.JLabel{
     public boolean moveDOWN() {
         if (collision(0)){
             this.setLocation(this.getX(), this.getY()+1);
+            hitBox.setLocation(this.getLocation());
             return true;
         }
         return false;
@@ -100,6 +102,7 @@ public abstract class Mover extends javax.swing.JLabel{
     public boolean moveRIGHT() {
         if (collision(2)){
             this.setLocation(this.getX()+1, this.getY());
+            hitBox.setLocation(this.getLocation());
             return true;
         }
         return false;
@@ -112,6 +115,7 @@ public abstract class Mover extends javax.swing.JLabel{
         if (collision(3)){
         //System.out.println("LEFT");
             setLocation(this.getX()-1, this.getY());
+            hitBox.setLocation(this.getLocation());
             return true;
         }
         return false;
@@ -125,7 +129,15 @@ public abstract class Mover extends javax.swing.JLabel{
         
     }
     
-    public void getDamage(int damage) {
+    public Rectangle getHitBox() {
+        return hitBox;
+    }
+    
+    public int getStrength() {
+        return this.damage;
+    }
+    
+    public void takeDamage(int damage) {
         this.damage -= damage;
         if (this.damage <= 0)
             die();
@@ -218,6 +230,10 @@ public abstract class Mover extends javax.swing.JLabel{
         }
         return true;
     }
+    
+//    public int collideWith() {
+//        
+//    }
     
     public boolean move(final int direction) {
         //Thread t = new Thread() {

@@ -110,19 +110,19 @@ public void setUP(int width,int heights,int playerX, int playerY) {
         
     }
     
-    @Override
+ 
     public void moveUP() {
 //        if (move(1))
 //        player.setLocation(player.getX(), player.getY()-1);
     }
 //
-    @Override
+
     public void moveDOWN() {
 //        if (move(0))
 //         player.setLocation(player.getX(), player.getY()+1);
     }
 //
-    @Override
+
     public void moveRIGHT() {
 //        if (move(2))
 //         player.setLocation(player.getX()+1, player.getY());
@@ -209,7 +209,7 @@ public void setUP(int width,int heights,int playerX, int playerY) {
 //        return true;
 //    }
 //    
-    @Override
+ 
     public void moveLEFT() {
 //        //System.out.println(player.getLocation().x);
 //        if (move(3))
@@ -234,6 +234,11 @@ public void setUP(int width,int heights,int playerX, int playerY) {
     }
     public Spot[][] getSpots() {
         return spots;
+    }
+
+    @Override
+    public void moved() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
