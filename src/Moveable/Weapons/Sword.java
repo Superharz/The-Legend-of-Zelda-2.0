@@ -3,16 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Moveable.Player;
-
-import java.awt.Rectangle;
+package Moveable.Weapons;
 
 /**
  *
  * @author Flo
  */
-public interface PlayerEvent {
-    public void moved();
-    public void attacke(Rectangle r);
-    //public void ();
+public class Sword extends Moveable.Mover{
+    
+    public Sword() {
+        
+    }
+    
+    
 }

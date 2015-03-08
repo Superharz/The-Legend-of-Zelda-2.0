@@ -25,6 +25,7 @@ import javax.swing.ImageIcon;
  */
 public class Player extends Mover{
     //Thread t;
+    private int lastDirection = 0;
     BufferedImage[][] before = new BufferedImage[3][4];
     private final List<PlayerEvent> listeners = new ArrayList<PlayerEvent>();
     public Player() {
@@ -61,6 +62,32 @@ public class Player extends Mover{
         Rectangle r = new Rectangle(this.getX(), this.getY(),  getWidth(), getWidth());
         this.setMover(10, 100, 100, new Point(0,0), before[0],spots,r);
         //this.setLocation(100,100);
+    }
+    
+    @Override
+    public void attack() {
+        Rectangle r = null;
+        if (lastDirection == 2) {
+            r = new Rectangle(this.getX()+this.getWidth(), this.getY(), this.getWidth(),this.getWidth());
+        
+                    
+        }
+        if (lastDirection == 3) {
+            r = new Rectangle(this.getX()-this.getWidth(), this.getY(), this.getWidth(),this.getWidth());
+        
+                    
+        }
+        if (lastDirection == 0) {
+            r = new Rectangle(this.getX(), this.getY()+this.getWidth(), this.getWidth(),this.getWidth());
+        
+                    
+        }if (lastDirection == 1) {
+            r = new Rectangle(this.getX(), this.getY()-this.getWidth(), this.getWidth(),this.getWidth());
+        
+                    
+        }
+        for (PlayerEvent hl : listeners)
+            hl.attacke( r);
     }
     
     public void moveUp() {
@@ -118,7 +145,7 @@ public class Player extends Mover{
  
     
     public boolean move(final int direction) {
-        
+        lastDirection = direction;
             
         
         Thread t = new Thread() {
@@ -139,6 +166,7 @@ public class Player extends Mover{
                             }
                         for (PlayerEvent hl : listeners)
                             hl.moved();
+                        attack();
                         //this.wait(speed);
                         //this.wait(0, speed);
                         Thread.sleep(speed);
