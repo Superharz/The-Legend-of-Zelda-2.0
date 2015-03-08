@@ -223,8 +223,13 @@ public void setUP(int width,int heights,int playerX, int playerY) {
 //        player.setLocation(player.getX()-1, player.getY());
     }
 
-        public void attacke() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Override
+    public void attacke(Rectangle r) {
+        playerAttack(r);
+        Graphics g = img.getGraphics();
+        g.drawRect(r.x, r.y, r.width, r.height);
+        this.setImage(img);
+        
     }
     
     public Player getplayer() {
@@ -253,14 +258,30 @@ public void setUP(int width,int heights,int playerX, int playerY) {
     public void moved() {
         Rectangle enemieBox;
         Rectangle playerBox = player.getHitBox();
-        for (int i = 0; i < enemies.size(); i++) {
-            enemieBox = enemies.get(i).getHitBox();
+        for (Enemie enemie : enemies) {
+            enemieBox = enemie.getHitBox();
             if (playerBox.intersects(enemieBox)) {
-                enemies.get(i).takeDamage(enemies.get(i).getStrength());
-                System.out.println("Got Damage");
-                break;
-            }
                 
+                
+                    //player.takeDamage(enemie.getStrength());
+                    //enemies.get(i).takeDamage(enemies.get(i).getStrength());
+                    System.out.println("Got Damage");
+                    break;
+                
+            }
+        }
+    }
+    public void playerAttack(Rectangle r) {
+        Rectangle enemieBox;
+        Rectangle playerBox = player.getHitBox();
+        for (Enemie enemie : enemies) {
+            enemieBox = enemie.getHitBox();
+            if (r.intersects(enemieBox)) {
+                
+                    enemie.takeDamage(player.getStrength());
+                
+                
+            }
         }
     }
     
