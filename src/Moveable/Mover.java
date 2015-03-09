@@ -24,7 +24,7 @@ import javax.swing.ImageIcon;
  * @author Flo
  */
 public abstract class Mover extends javax.swing.JLabel{
-    private final List<EnemieEvent> listeners = new ArrayList<EnemieEvent>();
+    public final List<PlayerEvent> listeners = new ArrayList<PlayerEvent>();
     public boolean move = false;
     public int speed;
     int live;
@@ -33,6 +33,7 @@ public abstract class Mover extends javax.swing.JLabel{
     Spot[][] spots;
     Rectangle hitBox;
     public BufferedImage[] img;
+    public int lastDirection = 0;
     public final int DOWN = 0, UP = 1, RIGHT = 2, LEFT = 3;
     
     
@@ -74,12 +75,13 @@ public abstract class Mover extends javax.swing.JLabel{
         this.spots = spots;
     }
     
-    public void addListener(EnemieEvent toAdd) {
+    public void addListener(PlayerEvent toAdd) {
         listeners.add(toAdd);
     }
     
 
     public boolean moveUP() {
+        lastDirection = UP;
         if (collision(1)) {
             this.setLocation(this.getX(), this.getY()-1);
             hitBox.setLocation(this.getLocation());
@@ -90,6 +92,7 @@ public abstract class Mover extends javax.swing.JLabel{
 
 
     public boolean moveDOWN() {
+        lastDirection = DOWN;
         if (collision(0)){
             this.setLocation(this.getX(), this.getY()+1);
             hitBox.setLocation(this.getLocation());
@@ -100,6 +103,7 @@ public abstract class Mover extends javax.swing.JLabel{
 
 
     public boolean moveRIGHT() {
+        lastDirection = RIGHT;
         if (collision(2)){
             this.setLocation(this.getX()+1, this.getY());
             hitBox.setLocation(this.getLocation());
@@ -111,6 +115,7 @@ public abstract class Mover extends javax.swing.JLabel{
         //this.update(this.getGraphics());
     }
     public boolean moveLEFT() {
+        lastDirection = LEFT;
         //System.out.println(this.getLocation().x);
         if (collision(3)){
         //System.out.println("LEFT");
@@ -145,6 +150,11 @@ public abstract class Mover extends javax.swing.JLabel{
     
     public void spwan() {
         this.setVisible(true);
+    }
+    
+    public void shoot(boolean friendly) {
+        for (PlayerEvent hl : listeners)
+            hl.spawnArrow(friendly ,this.getX()+this.getWidth()/2,  this.getY()+this.getWidth()/2, this.lastDirection, damage);
     }
     
     public void die() {

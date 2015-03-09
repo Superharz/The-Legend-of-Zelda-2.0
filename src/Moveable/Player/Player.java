@@ -25,9 +25,9 @@ import javax.swing.ImageIcon;
  */
 public class Player extends Mover{
     //Thread t;
-    private int lastDirection = 0;
+    //private int lastDirection = 0;
     BufferedImage[][] before = new BufferedImage[3][4];
-    private final List<PlayerEvent> listeners = new ArrayList<PlayerEvent>();
+    //private final List<PlayerEvent> listeners = new ArrayList<PlayerEvent>();
     public Player() {
         //t = new Thread(this,"test");
         //super(speed, live, damage, hotSpot, hitBox, img);
@@ -50,7 +50,8 @@ public class Player extends Mover{
     }
     
     public void addListener(PlayerEvent toAdd) {
-        listeners.add(toAdd);
+        //listeners.add(toAdd);
+        super.addListener(toAdd);
     }
     
     @Override
@@ -88,6 +89,9 @@ public class Player extends Mover{
         }
         for (PlayerEvent hl : listeners)
             hl.attacke( r);
+    }
+    public void shoot() {
+        super.shoot(true);
     }
     
     public void moveUp() {
@@ -145,7 +149,7 @@ public class Player extends Mover{
  
     
     public boolean move(final int direction) {
-        lastDirection = direction;
+        //lastDirection = direction;
             
         
         Thread t = new Thread() {

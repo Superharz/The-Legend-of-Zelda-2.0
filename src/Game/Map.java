@@ -7,12 +7,18 @@ package Game;
 
 import Moveable.Enemies.Enemie;
 import Moveable.Player.Player;
+import Moveable.Weapons.Arrow;
 import Tools.ImagePanel;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 /**
  *
  * @author Flo
@@ -22,6 +28,7 @@ public class Map extends ImagePanel implements Moveable.Player.PlayerEvent{
     int width, height;
     BufferedImage img;
     LinkedList<Enemie> enemies;
+    LinkedList<Arrow> arrows;
     /**
      * Creates new form Map
      */
@@ -283,6 +290,20 @@ public void setUP(int width,int heights,int playerX, int playerY) {
                 
             }
         }
+    }
+    @Override
+    public void spawnArrow(boolean friendly,int x,int y,int direction, int damage) {
+        BufferedImage[] arrow = null;
+        for (int i = 0; i < 4; i++) {
+            try {
+                arrow[i] = ImageIO.read (this.getClass().
+                            getResource("/Pictures/Arrow"+i+".png"));
+            } catch (IOException ex) {
+                Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        Arrow a = new Arrow(x, y, direction, damage,arrow);
+        arrows.add(a);
     }
     
 }

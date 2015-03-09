@@ -14,5 +14,6 @@ import java.awt.Rectangle;
 public interface PlayerEvent {
     public void moved();
     public void attacke(Rectangle r);
+    public void spawnArrow(boolean friendly,int x,int y,int direction, int damage);
     //public void ();
 }
