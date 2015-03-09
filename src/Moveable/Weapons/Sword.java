@@ -5,14 +5,18 @@
  */
 package Moveable.Weapons;
 
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+
 /**
  *
  * @author Flo
  */
 public class Sword extends Moveable.Mover{
     
-    public Sword() {
+    public Sword(int x, int y, int direction,int damage, BufferedImage[] sword) {
         
+        super(100, -1, damage, null, sword, new Rectangle(x, y, sword[0].getWidth(), sword[0].getHeight()));
     }
     
     
