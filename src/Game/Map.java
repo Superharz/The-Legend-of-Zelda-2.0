@@ -37,6 +37,7 @@ public class Map extends ImagePanel implements Moveable.Player.PlayerEvent{
         player.addListener(this);
         
         enemies = new LinkedList();
+        arrows = new LinkedList<Arrow>();
     }
 
     /**
@@ -278,32 +279,89 @@ public void setUP(int width,int heights,int playerX, int playerY) {
             }
         }
     }
-    public void playerAttack(Rectangle r) {
+    public boolean playerAttack(Rectangle r) {
         Rectangle enemieBox;
-        Rectangle playerBox = player.getHitBox();
-        for (Enemie enemie : enemies) {
-            enemieBox = enemie.getHitBox();
+        boolean killed = false;
+        //Rectangle playerBox = player.getHitBox();
+        for (int i = 0; i < enemies.size(); i++) {
+            enemieBox = enemies.get(i).getHitBox();
             if (r.intersects(enemieBox)) {
-                
-                    enemie.takeDamage(player.getStrength());
+                    killed = true;
+                    enemies.get(i).takeDamage(player.getStrength());
+                    if (!enemies.get(i).isAlive()) {
+                        this.remove(enemies.get(i));
+                        enemies.remove(enemies.get(i));
+                    }
                 
                 
             }
         }
+        return killed;
     }
+    
+    public void move() {
+        //lastDirection = direction;
+            
+        
+        Thread t = new Thread() {
+            public void run() {
+                synchronized(this) {
+                boolean move = true;
+                
+                
+                try {
+                    while(move) {
+                        Thread.sleep(10);
+                        for (int i = 0; i < arrows.size(); i++) {
+                            
+                            if (!arrows.get(i).move() || playerAttack(arrows.get(i).getHitBox())) {
+                                remove(arrows.get(i));
+                                arrows.remove(i);
+                                
+                                if (arrows.size() <= 0)
+                                    move = false;
+                                
+                                
+                            }
+                            
+                        }
+                    }
+
+                } catch (Exception ex) {
+                    Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                }   
+            }
+        };
+        t.start();
+    }
+    
+    public void playerShoot() {
+        spawnArrow(true, player.getX()+player.getWidth()/2,  player.getY()+player.getWidth()/2, player.lastDirection, player.getDamage());
+    }
+    
     @Override
     public void spawnArrow(boolean friendly,int x,int y,int direction, int damage) {
-        BufferedImage[] arrow = null;
-        for (int i = 0; i < 4; i++) {
-            try {
-                arrow[i] = ImageIO.read (this.getClass().
-                            getResource("/Pictures/Arrow"+i+".png"));
-            } catch (IOException ex) {
+        try {
+        BufferedImage arrow = null;
+        
+            
+                arrow = ImageIO.read (this.getClass().
+                            getResource("/Pictures/Arrow"+direction+".png"));
+            
+        
+        Arrow a = new Arrow(x, y, direction, damage,arrow,spots);
+        arrows.add(a);
+        this.add(a);
+        //e.addListener(this);
+        a.setBounds(x, y, arrow.getWidth(), arrow.getHeight());
+        this.repaint();
+        if (arrows.size() == 1)
+            move();
+        
+        } catch (IOException ex) {
                 Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        Arrow a = new Arrow(x, y, direction, damage,arrow);
-        arrows.add(a);
     }
     
 }

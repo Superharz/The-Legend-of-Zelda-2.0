@@ -35,6 +35,7 @@ public abstract class Mover extends javax.swing.JLabel{
     public BufferedImage[] img;
     public int lastDirection = 0;
     public final int DOWN = 0, UP = 1, RIGHT = 2, LEFT = 3;
+    public boolean immortal = false;
     
     
     public Mover(int speed, int live, int damage, Point hotSpot, BufferedImage[] img, Rectangle hitBox) {
@@ -47,6 +48,18 @@ public abstract class Mover extends javax.swing.JLabel{
         this.img     = img;
         this.setVisible(false);
         //this.setIcon((Icon) img);
+    }
+    
+    public Mover(int speed, int live, int damage, Point hotSpot, BufferedImage img, Rectangle hitBox,Spot[][] spots) {
+        super( new ImageIcon(img));
+        this.speed   = speed;
+        this.live    = live;
+        this.damage  = damage;
+        this.hotSpot = hotSpot;
+        this.hitBox  = hitBox;
+        this.img     = new BufferedImage[]{img,img,img,img};
+        //this.setVisible(false);
+        this.spots = spots;
     }
     public Mover() {
         super();
@@ -79,7 +92,12 @@ public abstract class Mover extends javax.swing.JLabel{
         listeners.add(toAdd);
     }
     
-
+    
+    
+    public void setImmortal() {
+        immortal = true;
+    }
+    
     public boolean moveUP() {
         lastDirection = UP;
         if (collision(1)) {
@@ -123,6 +141,7 @@ public abstract class Mover extends javax.swing.JLabel{
             hitBox.setLocation(this.getLocation());
             return true;
         }
+        System.out.println("Collision");
         return false;
     }
     
@@ -143,9 +162,11 @@ public abstract class Mover extends javax.swing.JLabel{
     }
     
     public void takeDamage(int damage) {
-        this.damage -= damage;
-        if (this.damage <= 0)
-            die();
+        if (!immortal) {
+            this.live -= damage;
+            if (this.live <= 0)
+               die();
+        }
     }
     
     public void spwan() {
@@ -158,7 +179,15 @@ public abstract class Mover extends javax.swing.JLabel{
     }
     
     public void die() {
-        this.setVisible(false);
+        //this.setVisible(false);
+    }
+    
+    public boolean isAlive() {
+        return (live > 0);
+    }
+    
+    public int getDamage() {
+        return damage;
     }
     
     public boolean collision(int direction) {
