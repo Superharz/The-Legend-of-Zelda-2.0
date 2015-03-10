@@ -92,7 +92,13 @@ public class Tested extends javax.swing.JFrame {
                 formKeyTyped(evt);
             }
         });
-
+        
+        map1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                map1MousePressed(evt);
+            }
+        });
+        
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -130,7 +136,11 @@ public class Tested extends javax.swing.JFrame {
     private void formKeyPressed(java.awt.event.KeyEvent evt) {                                
 
     }                               
-
+    
+    private void map1MousePressed(java.awt.event.MouseEvent evt) {                                  
+        map1.playerShoot(); 
+    }  
+    
     /**
      * @param args the command line arguments
      */
