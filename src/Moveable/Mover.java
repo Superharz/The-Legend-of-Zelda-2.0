@@ -92,7 +92,9 @@ public abstract class Mover extends javax.swing.JLabel{
         listeners.add(toAdd);
     }
     
-    
+    public void stopMoving() {
+        move = false;
+    }
     
     public void setImmortal() {
         immortal = true;
@@ -178,9 +180,12 @@ public abstract class Mover extends javax.swing.JLabel{
             hl.spawnArrow(friendly ,this.getX()+this.getWidth()/2,  this.getY()+this.getWidth()/2, this.lastDirection, damage);
     }
     
-    public void die() {
-        //this.setVisible(false);
-    }
+    public abstract void  die();
+//        stopMoving();
+//        for (PlayerEvent hl : listeners)
+//            hl.remove(this);
+//        
+    
     
     public boolean isAlive() {
         return (live > 0);

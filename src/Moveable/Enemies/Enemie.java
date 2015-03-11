@@ -25,7 +25,7 @@ import javax.swing.ImageIcon;
  * @author Flo
  */
 public  class Enemie extends Mover{
-    private final List<PlayerEvent> listeners = new ArrayList<PlayerEvent>();
+    //private final List<PlayerEvent> listeners = new ArrayList<PlayerEvent>();
     public Enemie() {
         //super(speed, live, damage, hotSpot, img);
         try { 
@@ -61,8 +61,16 @@ public  class Enemie extends Mover{
         return this.img[0].getWidth();
     }
     
-    public void addListener(PlayerEvent toAdd) {
-        listeners.add(toAdd);
+//    public void addListener(PlayerEvent toAdd) {
+//        listeners.add(toAdd);
+//    }
+    
+    @Override
+    public void  die() {
+        stopMoving();
+        for (PlayerEvent hl : listeners)
+            hl.removeMover(this);
+        
     }
     
     public void randomMove() {

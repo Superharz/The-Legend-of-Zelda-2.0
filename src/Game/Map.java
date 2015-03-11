@@ -6,6 +6,7 @@
 package Game;
 
 import Moveable.Enemies.Enemie;
+import Moveable.Mover;
 import Moveable.Player.Player;
 import Moveable.Weapons.Arrow;
 import Tools.ImagePanel;
@@ -288,10 +289,11 @@ public void setUP(int width,int heights,int playerX, int playerY) {
             if (r.intersects(enemieBox)) {
                     killed = true;
                     enemies.get(i).takeDamage(player.getStrength());
-                    if (!enemies.get(i).isAlive()) {
-                        this.remove(enemies.get(i));
-                        enemies.remove(enemies.get(i));
-                    }
+                    //if (!enemies.get(i).isAlive()) {
+                        //this.remove(enemies.get(i));
+                        //enemies.get(i).stopMoving();
+                        //enemies.remove(enemies.get(i));
+                    //}
                 
                 
             }
@@ -363,5 +365,17 @@ public void setUP(int width,int heights,int playerX, int playerY) {
                 Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
             }
     }
+
+    @Override
+    public void removeMover(Mover m) {
+        if (m instanceof Enemie) {
+            this.remove(m);
+            enemies.remove(m);
+        }
+        repaint();
+        System.gc();
+    }
+
+    
     
 }
