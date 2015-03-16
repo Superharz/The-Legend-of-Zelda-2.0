@@ -16,7 +16,7 @@ import java.util.LinkedList;
  *
  * @author Flo
  */
-public class Test extends ImagePanel implements Moveable.Player.PlayerEvent{
+public class Test extends ImagePanel implements Moveable.Events{
     Spot[][] spots;
     int width, height;
     BufferedImage img;

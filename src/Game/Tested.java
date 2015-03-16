@@ -5,6 +5,7 @@
  */
 package Game;
 
+import Events.Event;
 import Moveable.Enemies.Enemie;
 import Moveable.Player.Player;
 import java.awt.Graphics;
@@ -46,6 +47,8 @@ public class Tested extends javax.swing.JFrame {
             map1.addSpot(s, 7, 8);
             map1.addSpot(s, 8, 6);
             map1.addSpot(s, 7, 6);
+            Event evt = new Event(new Point(5,2));
+            map1.addEvent(0, 1, evt);
             Enemie e;
             
             map1.build();
@@ -170,6 +173,7 @@ public class Tested extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new Tested().setVisible(true);
             }

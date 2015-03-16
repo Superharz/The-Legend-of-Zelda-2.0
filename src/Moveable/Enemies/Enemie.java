@@ -8,7 +8,7 @@ package Moveable.Enemies;
 import Game.Spot;
 import Moveable.Mover;
 import Moveable.Player.Player;
-import Moveable.Player.PlayerEvent;
+import Moveable.Events;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -61,14 +61,14 @@ public  class Enemie extends Mover{
         return this.img[0].getWidth();
     }
     
-//    public void addListener(PlayerEvent toAdd) {
+//    public void addListener(Events toAdd) {
 //        listeners.add(toAdd);
 //    }
     
     @Override
     public void  die() {
         stopMoving();
-        for (PlayerEvent hl : listeners)
+        for (Events hl : listeners)
             hl.removeMover(this);
         
     }
@@ -95,7 +95,7 @@ public  class Enemie extends Mover{
                                 case 1: work = moveUP();   break;
                                 case 0: work = moveDOWN();  break;
                             }
-                        for (PlayerEvent hl : listeners)
+                        for (Events hl : listeners)
                             hl.moved();
                         //this.wait(1000);
                         if (!work) {

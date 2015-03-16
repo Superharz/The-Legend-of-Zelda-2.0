@@ -5,6 +5,7 @@
  */
 package Game;
 
+import Events.Event;
 import Moveable.Enemies.Enemie;
 import Moveable.Player.Player;
 import java.awt.Graphics;
@@ -46,6 +47,7 @@ public class GUI extends javax.swing.JFrame {
             map1.addSpot(s, 7, 8);
             map1.addSpot(s, 8, 6);
             map1.addSpot(s, 7, 6);
+
             map1.build();
             //Enemie e = new Enemie(1000/240, 100, 100, new Point(0,0),map1.getSpots());
             //map1.addEnemy(e, 100, 100);

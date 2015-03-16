@@ -5,6 +5,7 @@
  */
 package Game;
 
+import Events.Event;
 import Moveable.Enemies.Enemie;
 import Moveable.Mover;
 import Moveable.Player.Player;
@@ -24,12 +25,14 @@ import javax.imageio.ImageIO;
  *
  * @author Flo
  */
-public class Map extends ImagePanel implements Moveable.Player.PlayerEvent{
+public class Map extends ImagePanel implements Moveable.Events{
     Spot[][] spots;
+    Point playerPosition = new Point(0, 0);
     int width, height;
     BufferedImage img;
     LinkedList<Enemie> enemies;
     LinkedList<Arrow> arrows;
+    int spotWidth;
     /**
      * Creates new form Map
      */
@@ -96,6 +99,7 @@ public void setUP(int width,int heights,int playerX, int playerY) {
         //player.setText("Try");
         //player.setLocation(50,50);
         spots = new Spot[heights][width];
+        //updatePlayerPosition();
     }
     
     public void addSpot(Spot spot,int x, int y) {
@@ -103,9 +107,15 @@ public void setUP(int width,int heights,int playerX, int playerY) {
         this.setSize(width * spots[y][x].image().getWidth(),  height * spots[y][x].image().getHeight());
         player.setUP(spots);
         System.out.println("Seted up");
+        spotWidth = spot.image().getWidth();
         //enemie1.setUP(spots);
     }
-  
+    
+    private boolean updatePlayerPosition() {
+        Point oldPosition = playerPosition;
+        playerPosition = new Point(toSpots(player.getLocation().x),toSpots(player.getLocation().y));
+        return oldPosition.equals(playerPosition);
+    }
     
    public void build() {
         int x = spots[0][0].image().getWidth();
@@ -235,9 +245,9 @@ public void setUP(int width,int heights,int playerX, int playerY) {
     @Override
     public void attacke(Rectangle r) {
         playerAttack(r);
-        Graphics g = img.getGraphics();
-        g.drawRect(r.x, r.y, r.width, r.height);
-        this.setImage(img);
+        //Graphics g = img.getGraphics();
+        //g.drawRect(r.x, r.y, r.width, r.height);
+        //this.setImage(img);
         
     }
     
@@ -259,12 +269,20 @@ public void setUP(int width,int heights,int playerX, int playerY) {
         //e.randomMove();
         
     }
+    
+    public void addEvent(int x, int y, Event evt) {
+        evt.addListener(this);
+        spots[x][y].addEvent(evt);
+    }
+    
     public Spot[][] getSpots() {
         return spots;
     }
 
     @Override
     public void moved() {
+        if (!updatePlayerPosition())
+            spots[playerPosition.x][playerPosition.y].callEvents();
         Rectangle enemieBox;
         Rectangle playerBox = player.getHitBox();
         for (Enemie enemie : enemies) {
@@ -376,6 +394,32 @@ public void setUP(int width,int heights,int playerX, int playerY) {
         System.gc();
     }
 
+    @Override
+    public void heal(int amount) {
+        player.heal(amount);
+    }
+
+    @Override
+    public void teleport(Point destination) {
+        player.setLocation(toPixel(destination.x), toPixel(destination.y) );
+    }
+
+    @Override
+    public void teleport(Point destination, String mapName) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void text(String text) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    private int toPixel(int spot) {
+        return spot* spotWidth;
+    }
+    private int toSpots(int pixels) {
+        return pixels / spotWidth;
+    }
     
     
 }

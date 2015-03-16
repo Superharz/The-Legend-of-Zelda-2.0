@@ -8,7 +8,6 @@ package Moveable;
 import Game.Spot;
 import Moveable.Enemies.EnemieEvent;
 import Moveable.Player.Player;
-import Moveable.Player.PlayerEvent;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -24,7 +23,7 @@ import javax.swing.ImageIcon;
  * @author Flo
  */
 public abstract class Mover extends javax.swing.JLabel{
-    public final List<PlayerEvent> listeners = new ArrayList<PlayerEvent>();
+    public final List<Events> listeners = new ArrayList<Events>();
     public boolean move = false;
     public int speed;
     int live;
@@ -88,7 +87,7 @@ public abstract class Mover extends javax.swing.JLabel{
         this.spots = spots;
     }
     
-    public void addListener(PlayerEvent toAdd) {
+    public void addListener(Events toAdd) {
         listeners.add(toAdd);
     }
     
@@ -163,6 +162,10 @@ public abstract class Mover extends javax.swing.JLabel{
         return this.damage;
     }
     
+    public void heal(int amount) {
+        this.live += amount;  
+    }
+    
     public void takeDamage(int damage) {
         if (!immortal) {
             this.live -= damage;
@@ -176,13 +179,13 @@ public abstract class Mover extends javax.swing.JLabel{
     }
     
     public void shoot(boolean friendly) {
-        for (PlayerEvent hl : listeners)
+        for (Events hl : listeners)
             hl.spawnArrow(friendly ,this.getX()+this.getWidth()/2,  this.getY()+this.getWidth()/2, this.lastDirection, damage);
     }
     
     public abstract void  die();
 //        stopMoving();
-//        for (PlayerEvent hl : listeners)
+//        for (Events hl : listeners)
 //            hl.remove(this);
 //        
     

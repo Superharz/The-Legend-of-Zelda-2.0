@@ -5,6 +5,7 @@
  */
 package Moveable.Player;
 
+import Moveable.Events;
 import Game.Spot;
 import Moveable.Mover;
 import java.awt.Point;
@@ -49,7 +50,7 @@ public class Player extends Mover{
         
     }
     
-    public void addListener(PlayerEvent toAdd) {
+    public void addListener(Events toAdd) {
         //listeners.add(toAdd);
         super.addListener(toAdd);
     }
@@ -87,7 +88,7 @@ public class Player extends Mover{
         
                     
         }
-        for (PlayerEvent hl : listeners)
+        for (Events hl : listeners)
             hl.attacke( r);
     }
     public void shoot() {
@@ -95,13 +96,13 @@ public class Player extends Mover{
     }
     
     public void moveUp() {
-//        //Timer t = new Timer(speed,PlayerEvent)
+//        //Timer t = new Timer(speed,Events)
 //        move = true;
 //        int j = 0, i = 0;
 //        this.setIcon(new ImageIcon(img[UP]));
 //        try {
 //          while(move) {
-//                for (PlayerEvent hl : listeners)
+//                for (Events hl : listeners)
 //                   hl.moveUP();            
 //                Thread.sleep(speed);
 //                j++;
@@ -122,7 +123,7 @@ public class Player extends Mover{
 //        this.setIcon(new ImageIcon(img[DOWN]));
 //        try {
 //          while(move) {
-//                for (PlayerEvent hl : listeners)
+//                for (Events hl : listeners)
 //                   hl.moveDOWN();            
 //                Thread.sleep(speed);
 //            }
@@ -137,7 +138,7 @@ public class Player extends Mover{
 //        this.setIcon(new ImageIcon(img[RIGHT]));
 //        try {
 //          while(move) {
-//                for (PlayerEvent hl : listeners)
+//                for (Events hl : listeners)
 //                   hl.moveRIGHT();   
 //                Thread.sleep(speed);
 //            }
@@ -161,14 +162,14 @@ public class Player extends Mover{
                 setIcon(new ImageIcon(before[1][direction]));
                 try {
                     while(move) {
-                        //for (PlayerEvent hl : listeners) {
+                        //for (Events hl : listeners) {
                             switch (direction) {
                                 case 3: moveLEFT();break;//hl.moveLEFT(); break;
                                 case 2: moveRIGHT();break;
                                 case 1: moveUP();   break;
                                 case 0: moveDOWN();  break;
                             }
-                        for (PlayerEvent hl : listeners)
+                        for (Events hl : listeners)
                             hl.moved();
                         attack();
                         //this.wait(speed);
@@ -203,7 +204,7 @@ public class Player extends Mover{
 //        try {
 //          while(move) {
 //              //System.out.println("MOVE");
-//                for (PlayerEvent hl : listeners)
+//                for (Events hl : listeners)
 //                   hl.moveLEFT();            
 //                Thread.sleep(speed);
 //            }

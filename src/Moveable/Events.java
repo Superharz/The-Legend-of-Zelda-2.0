@@ -3,20 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Moveable.Player;
+package Moveable;
 
-import Moveable.Mover;
+import java.awt.Point;
 import java.awt.Rectangle;
 
 /**
  *
  * @author Flo
  */
-public interface PlayerEvent
+public interface Events
 {
     public void moved();
     public void attacke(Rectangle r);
     public void spawnArrow(boolean friendly,int x,int y,int direction, int damage);
     public void removeMover(Mover m);
-    //public void ();
+    public void heal(int amount);
+    public void teleport(Point destination);
+    public void teleport(Point destination, String mapName);
+    public void text(String text);
+    
 }
