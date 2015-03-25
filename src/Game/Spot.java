@@ -6,6 +6,7 @@
 package Game;
 
 import Events.Event;
+import Inventory.Items;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
     
@@ -15,6 +16,7 @@ import java.util.LinkedList;
  */
 public class Spot{
     LinkedList<Event> events;
+    LinkedList<Items> items;
     private BufferedImage img;
     private boolean walkable;
     
@@ -31,11 +33,34 @@ public class Spot{
         else {
             events.add(evt);
         }
+        System.out.println("Event added");
+    }
+    public void additem(Items item) {
+        if (items == null) {
+            items = new LinkedList<Items>();
+            items.add(item);
+        }
+        else {
+            items.add(item);
+        }
+        System.out.println("Item added");
     }
     public BufferedImage image() {
         return img;
     }
     
+    public boolean hasEvent() {
+        if (events == null) return false;
+        return !events.isEmpty();
+    }
+    
+    public boolean hasItem() {
+        if (items == null) return false;
+        return !items.isEmpty();
+    }
+    public int itemLength() {
+        return items.size();
+    }
     public boolean walk() {
         return walkable;
     }
@@ -45,5 +70,9 @@ public class Spot{
                 events.get(i).callEvent();
             }
         }
+    }
+    public Items pickUp(int index) {
+        if (index < 0 || index >= items.size()) return null;
+        return items.get(index);
     }
 }

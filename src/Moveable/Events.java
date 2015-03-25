@@ -5,6 +5,7 @@
  */
 package Moveable;
 
+import Moveable.Enemies.Enemie;
 import java.awt.Point;
 import java.awt.Rectangle;
 
@@ -15,8 +16,10 @@ import java.awt.Rectangle;
 public interface Events
 {
     public void moved();
+    public void playerMoved();
     public void attacke(Rectangle r);
     public void spawnArrow(boolean friendly,int x,int y,int direction, int damage);
+    public void spawnEnemie(Point p, Enemie e);
     public void removeMover(Mover m);
     public void heal(int amount);
     public void teleport(Point destination);

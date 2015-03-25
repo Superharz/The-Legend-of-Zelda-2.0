@@ -7,6 +7,7 @@ package Moveable.Player;
 
 import Moveable.Events;
 import Game.Spot;
+import Inventory.Items;
 import Moveable.Mover;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -18,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 //import javax.swing.Timer;
 
 /**
@@ -62,7 +64,7 @@ public class Player extends Mover{
     
     public void setUP(Spot[][] spots) {
         Rectangle r = new Rectangle(this.getX(), this.getY(),  getWidth(), getWidth());
-        this.setMover(10, 100, 100, new Point(0,0), before[0],spots,r);
+        this.setMover(10, 100000, 100, new Point(before[0][0].getWidth()/2,before[0][0].getHeight()/2), before[0],spots,r);
         //this.setLocation(100,100);
     }
     
@@ -169,14 +171,16 @@ public class Player extends Mover{
                                 case 1: moveUP();   break;
                                 case 0: moveDOWN();  break;
                             }
-                        for (Events hl : listeners)
+                        for (Events hl : listeners) {
                             hl.moved();
+                            hl.playerMoved();
+                        }
                         attack();
                         //this.wait(speed);
                         //this.wait(0, speed);
                         Thread.sleep(speed);
                         j++;
-                        System.out.println(j);
+                        //System.out.println(j);
                         if (j == 24) {
                             j = 0;
                             i = (i+1)%2;
@@ -219,7 +223,10 @@ public class Player extends Mover{
 
     @Override
     public void die() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        JOptionPane.showMessageDialog(null, "You died!");
+    }
+    public void addItem(Items item) {
+        
     }
     
 }

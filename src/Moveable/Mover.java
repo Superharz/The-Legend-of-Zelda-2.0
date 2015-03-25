@@ -120,7 +120,12 @@ public abstract class Mover extends javax.swing.JLabel{
         return false;
     }
 
-
+    public boolean movable(int x, int y) {
+        if (x < spots[0].length && y < spots.length && x >= 0 && y >= 0)
+            return spots[y][x].walk();
+        return true;
+    }
+    
     public boolean moveRIGHT() {
         lastDirection = RIGHT;
         if (collision(2)){
@@ -142,7 +147,7 @@ public abstract class Mover extends javax.swing.JLabel{
             hitBox.setLocation(this.getLocation());
             return true;
         }
-        System.out.println("Collision");
+        //System.out.println("Collision");
         return false;
     }
     
@@ -178,6 +183,10 @@ public abstract class Mover extends javax.swing.JLabel{
         this.setVisible(true);
     }
     
+    public int getHealth() {
+        return live;
+    }
+    
     public void shoot(boolean friendly) {
         for (Events hl : listeners)
             hl.spawnArrow(friendly ,this.getX()+this.getWidth()/2,  this.getY()+this.getWidth()/2, this.lastDirection, damage);
@@ -189,9 +198,27 @@ public abstract class Mover extends javax.swing.JLabel{
 //            hl.remove(this);
 //        
     
+    public Point getHotSpot() {
+        return new Point(this.getLocation().x+hotSpot.x, this.getLocation().y + hotSpot.y);
+    }
+    
+    public Point getPosition() {
+        Point p = this.getHotSpot();
+        
+        Point spot = new Point(toSpots(p.x),toSpots(p.y));
+        //return spot;
+        return spot;
+    }
     
     public boolean isAlive() {
         return (live > 0);
+    }
+    
+    private int toPixel(int spot) {
+        return spot* spots[0][0].image().getWidth();
+    }
+    private int toSpots(int pixels) {
+        return pixels / spots[0][0].image().getWidth();
     }
     
     public int getDamage() {

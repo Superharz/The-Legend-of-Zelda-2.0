@@ -27,17 +27,18 @@ public class Tested extends javax.swing.JFrame {
      */
     public Tested() {
         initComponents();
-        
+        test();
         try {
             BufferedImage before = ImageIO.read (this.getClass().
                     getResource("/Pictures/tile1.png"));
             BufferedImage before2 = ImageIO.read (this.getClass().
                     getResource("/Pictures/tile2.png"));
             Spot s = new Spot(before, false);
-            Spot a = new Spot(before2, true);
+            
             map1.setUP(10, 10,10,10);
             for (int i = 0; i < 10; i++) {
                 for (int j = 0; j < 10; j++) {
+                    Spot a = new Spot(before2, true);
                     map1.addSpot(a, i, j);
                 }
             }
@@ -47,13 +48,19 @@ public class Tested extends javax.swing.JFrame {
             map1.addSpot(s, 7, 8);
             map1.addSpot(s, 8, 6);
             map1.addSpot(s, 7, 6);
+            map1.addSpot(s, 9, 0);
             Event evt = new Event(new Point(5,2));
+            Enemie e2 = new Enemie(Enemie.WALLMOVE);
+            Event evt2 = new Event(new Point(2,5),e2);
+            Event evt3 = new Event(1000);
+            map1.addEvent(1, 0, evt2);
             map1.addEvent(0, 1, evt);
+            map1.addEvent(9, 9, evt3);
             Enemie e;
             
             map1.build();
             for (int i = 0; i < 5; i++) {
-                e = new Enemie();
+                e = new Enemie(Enemie.RANDOMMOVE);
                 map1.addEnemy(e, 50+i*50, 50+i*50);
             }
             
@@ -119,7 +126,7 @@ public class Tested extends javax.swing.JFrame {
     private void formKeyTyped(java.awt.event.KeyEvent evt) {                              
       
       if (!move) {
-          System.out.println("FORM");
+          //System.out.println("FORM");
         move  = true;
        switch (evt.getKeyChar()) {
             case 'a': map1.getplayer().move(3);break;
@@ -131,7 +138,7 @@ public class Tested extends javax.swing.JFrame {
     }                             
 
     private void formKeyReleased(java.awt.event.KeyEvent evt) {                                 
-        System.out.println("RIGHT");
+        //System.out.println("RIGHT");
         map1.getplayer().stop();
         move = false;
     }                                
@@ -176,8 +183,29 @@ public class Tested extends javax.swing.JFrame {
             @Override
             public void run() {
                 new Tested().setVisible(true);
+                
             }
         });
+    }
+    
+    public void test() {
+        Thread t = new Thread() {
+            @Override
+            public void run() {
+                synchronized(this) {
+                try {
+                    while (true) {
+                        int t = java.lang.Thread.activeCount();
+                        Thread.sleep(1000);
+                        System.out.println(t);
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                }   
+            }
+        };
+        t.start();
     }
 
     // Variables declaration - do not modify                     

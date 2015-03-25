@@ -5,6 +5,7 @@
  */
 package Events;
 
+import Moveable.Enemies.Enemie;
 import Moveable.Events;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -16,9 +17,10 @@ import java.util.List;
  */
 public class Event {
     public final List<Events> listeners = new ArrayList<Events>();
-    public final int TELEPORT = 0, TEXT = 1, HEAL = 2, ITEM = 3, SPAWNE = 4;
+    public final int TELEPORT = 0, TEXT = 1, HEAL = 2, ITEM = 3, SPAWN = 4;
     private final String EMPTY = "";
     private int eventType;
+    private Enemie e;
     Point destiny;
     String mapName;
     String text;
@@ -43,6 +45,12 @@ public class Event {
         eventType = HEAL;
     }
     
+    public Event(Point destiny, Enemie e) {
+        this.destiny = destiny;
+        this.e = e;
+        eventType = SPAWN;
+    }
+    
     public void addListener(Events toAdd) {
         listeners.add(toAdd);
     }
@@ -56,6 +64,7 @@ public class Event {
             case TELEPORT   : teleport(); break;
             case TEXT       : text(); break;
             case HEAL       : heal(); break;
+            case SPAWN      : spawn(); break;
                 
         }
     }
@@ -78,6 +87,11 @@ public class Event {
     private void heal() {
         for (Events hl : listeners)
                 hl.heal(healAmount);
+    }
+ 
+    private void spawn() {
+        for (Events hl : listeners)
+                hl.spawnEnemie(destiny, e);
     }
     
 }

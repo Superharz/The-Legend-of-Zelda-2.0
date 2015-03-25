@@ -6,6 +6,7 @@
 package Game;
 
 import Events.Event;
+import Inventory.Items;
 import Moveable.Enemies.Enemie;
 import Moveable.Mover;
 import Moveable.Player.Player;
@@ -27,12 +28,13 @@ import javax.imageio.ImageIO;
  */
 public class Map extends ImagePanel implements Moveable.Events{
     Spot[][] spots;
-    Point playerPosition = new Point(0, 0);
+    Point playerPosition = new Point(-1, -1);
     int width, height;
     BufferedImage img;
     LinkedList<Enemie> enemies;
     LinkedList<Arrow> arrows;
     int spotWidth;
+    private boolean protection = false;
     /**
      * Creates new form Map
      */
@@ -106,15 +108,16 @@ public void setUP(int width,int heights,int playerX, int playerY) {
         spots[y][x] = spot;
         this.setSize(width * spots[y][x].image().getWidth(),  height * spots[y][x].image().getHeight());
         player.setUP(spots);
-        System.out.println("Seted up");
+        //System.out.println("Seted up");
         spotWidth = spot.image().getWidth();
         //enemie1.setUP(spots);
     }
     
     private boolean updatePlayerPosition() {
         Point oldPosition = playerPosition;
-        playerPosition = new Point(toSpots(player.getLocation().x),toSpots(player.getLocation().y));
-        return oldPosition.equals(playerPosition);
+        playerPosition = new Point(toSpots(player.getHotSpot().x),toSpots(player.getHotSpot().y));
+        //System.out.println(playerPosition);
+        return !oldPosition.equals(playerPosition);
     }
     
    public void build() {
@@ -122,8 +125,8 @@ public void setUP(int width,int heights,int playerX, int playerY) {
         int y = spots[0][0].image().getHeight();
        img = new BufferedImage(x*width,y*height,BufferedImage.TYPE_INT_ARGB);
         Graphics g = img.getGraphics();
-        for (int i = 0; i < spots.length; i++) {
-            for (int j = 0; j < spots[i].length; j++) {
+        for (int i = 0; i < spots.length; i++) { //rows
+            for (int j = 0; j < spots[i].length; j++) { //colums
                 if (spots[i][j] != null)
                     g.drawImage(spots[i][j].image(), j*x, i*y, this);
             }
@@ -263,7 +266,23 @@ public void setUP(int width,int heights,int playerX, int playerY) {
         //e.setLocation(x, y);
         
         e.setUP(spots);
-        e.randomMove();
+        e.startMove();
+        //System.out.println("Set up");
+        //player.setLocation(50,50);
+        //e.randomMove();
+        
+    }
+    
+    public void addEnemy(Enemie e,Point p) {
+        e = e.clone();
+        enemies.add(e);
+        this.add(e);
+        e.addListener(this);
+        e.setBounds(toPixel(p.x), toPixel(p.y), e.getWidth(), e.getWidth());
+        //e.setLocation(x, y);
+        
+        e.setUP(spots);
+        e.startMove();
         //System.out.println("Set up");
         //player.setLocation(50,50);
         //e.randomMove();
@@ -272,32 +291,54 @@ public void setUP(int width,int heights,int playerX, int playerY) {
     
     public void addEvent(int x, int y, Event evt) {
         evt.addListener(this);
-        spots[x][y].addEvent(evt);
+        spots[y][x].addEvent(evt);
     }
-    
+    public void addItem(int x, int y, Items item) {
+        spots[y][x].additem(item);
+    }
     public Spot[][] getSpots() {
         return spots;
     }
 
     @Override
     public void moved() {
-        if (!updatePlayerPosition())
-            spots[playerPosition.x][playerPosition.y].callEvents();
+        if (!protection) {
         Rectangle enemieBox;
         Rectangle playerBox = player.getHitBox();
         for (Enemie enemie : enemies) {
             enemieBox = enemie.getHitBox();
             if (playerBox.intersects(enemieBox)) {
                 
-                
-                    //player.takeDamage(enemie.getStrength());
+                    System.out.println("Got Damage, Live left: " + player.getHealth());
+                    player.takeDamage(enemie.getStrength());
+                    protection = true;
+                    protect();
                     //enemies.get(i).takeDamage(enemies.get(i).getStrength());
-                    System.out.println("Got Damage");
+                    
                     break;
                 
             }
         }
+        }
     }
+    
+    private void protect() {
+        Thread t = new Thread() {
+            @Override
+            public void run() {
+                synchronized(this) {
+                try {
+                        Thread.sleep(5000);
+                        protection = false;
+                } catch (Exception ex) {
+                    Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                }   
+            }
+        };
+        t.start();
+    }
+    
     public boolean playerAttack(Rectangle r) {
         Rectangle enemieBox;
         boolean killed = false;
@@ -397,6 +438,8 @@ public void setUP(int width,int heights,int playerX, int playerY) {
     @Override
     public void heal(int amount) {
         player.heal(amount);
+        System.out.println("Got Healed, Live left: " + player.getHealth());
+        
     }
 
     @Override
@@ -419,6 +462,31 @@ public void setUP(int width,int heights,int playerX, int playerY) {
     }
     private int toSpots(int pixels) {
         return pixels / spotWidth;
+    }
+
+    @Override
+    public void playerMoved() {
+        boolean moved = updatePlayerPosition();
+        //System.out.println(moved);
+        if (moved) {
+            if (spots[playerPosition.y][playerPosition.x].hasItem()) {
+                for (int i = 0; i < spots[playerPosition.y][playerPosition.x].itemLength();  i++) {
+                    player.addItem(spots[playerPosition.y][playerPosition.x].pickUp(i));
+                }
+            }  
+            //System.out.println("Moved");
+            //System.out.println("Player:  " + playerPosition);
+            //boolean evt = spots[playerPosition.x][playerPosition.y].hasEvent();
+            //System.out.println("Event:  " + evt);
+            spots[playerPosition.y][playerPosition.x].callEvents();
+        
+            
+        }
+    }
+
+    @Override
+    public void spawnEnemie(Point p, Enemie e) {
+        addEnemy(e, p);
     }
     
     
