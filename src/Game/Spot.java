@@ -43,6 +43,7 @@ public class Spot{
         else {
             items.add(item);
         }
+        
         System.out.println("Item added");
     }
     public BufferedImage image() {
@@ -71,8 +72,15 @@ public class Spot{
             }
         }
     }
-    public Items pickUp(int index) {
-        if (index < 0 || index >= items.size()) return null;
-        return items.get(index);
+    public Items pickUp() {
+        
+        if (items.size() == 1) {
+            Items item = items.remove();
+            items = null;
+            System.gc();
+            return item;
+        }
+        else
+            return items.remove();
     }
 }

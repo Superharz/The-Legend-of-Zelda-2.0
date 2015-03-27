@@ -26,8 +26,8 @@ public abstract class Mover extends javax.swing.JLabel{
     public final List<Events> listeners = new ArrayList<Events>();
     public boolean move = false;
     public int speed;
-    int live;
-    int damage;
+    public int live;
+    public int damage;
     Point hotSpot;
     Spot[][] spots;
     Rectangle hitBox;

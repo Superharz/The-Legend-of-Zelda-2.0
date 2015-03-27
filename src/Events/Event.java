@@ -5,6 +5,7 @@
  */
 package Events;
 
+import Inventory.Items;
 import Moveable.Enemies.Enemie;
 import Moveable.Events;
 import java.awt.Point;
@@ -21,6 +22,7 @@ public class Event {
     private final String EMPTY = "";
     private int eventType;
     private Enemie e;
+    private Items item;
     Point destiny;
     String mapName;
     String text;
@@ -50,6 +52,11 @@ public class Event {
         this.e = e;
         eventType = SPAWN;
     }
+    public Event(Point destiny, Items item) {
+        this.destiny = destiny;
+        this.item = item;
+        eventType = ITEM;
+    }
     
     public void addListener(Events toAdd) {
         listeners.add(toAdd);
@@ -65,6 +72,7 @@ public class Event {
             case TEXT       : text(); break;
             case HEAL       : heal(); break;
             case SPAWN      : spawn(); break;
+            case ITEM       : item(); break;
                 
         }
     }
@@ -92,6 +100,11 @@ public class Event {
     private void spawn() {
         for (Events hl : listeners)
                 hl.spawnEnemie(destiny, e);
+    }
+
+    private void item() {
+        for (Events hl : listeners)
+                hl.spawnItem(destiny, item);
     }
     
 }

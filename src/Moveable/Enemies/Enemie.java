@@ -27,6 +27,8 @@ import javax.swing.ImageIcon;
 public  class Enemie extends Mover{
     public static final int RANDOMMOVE = 0, WALLMOVE = 1;
     private int moveMethod;
+    boolean pause = false;
+    private final Object obj = new Object();
     //private final List<PlayerEvent> listeners = new ArrayList<PlayerEvent>();
     public Enemie(int moveMethod) {
         //super(speed, live, damage, hotSpot, img);
@@ -74,7 +76,9 @@ public  class Enemie extends Mover{
             hl.removeMover(this);
         
     }
-    
+    public void play(boolean play) {
+        pause = !play;
+    }
     public void startMove() {
         switch (moveMethod) {
             case RANDOMMOVE: randomMove();break;
@@ -82,12 +86,34 @@ public  class Enemie extends Mover{
         }
     }
     
+    private void checkForPaused() {
+        synchronized (this) {
+            while (pause) {
+                try {
+                    this.wait();
+                } catch (Exception e) {}
+            }
+        }
+    }
+
+    public void pauseThread() throws InterruptedException {
+        pause = true;
+    }
+
+    public void resumeThread() {
+        synchronized(this) {
+            pause = false;
+            this.notify();
+        }
+    }
+    
     private void randomMove() {
         Thread t = new Thread() {
             @Override
             public void run() {
-                synchronized(this) {
+                //synchronized(this) {
         try {
+            
             move = true;
             boolean work = true;
             int direction = getRandom();
@@ -117,6 +143,7 @@ public  class Enemie extends Mover{
                             direction = getRandom();
                             setIcon(new ImageIcon(img[direction]));
                         }
+                        checkForPaused();
 //                        if (!work)
 //                            move = false;
 //                            d = getRandom();
@@ -131,7 +158,7 @@ public  class Enemie extends Mover{
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                }
+                //}
             }};
         t.start();
     }
@@ -140,7 +167,7 @@ public  class Enemie extends Mover{
         Thread t = new Thread() {
             @Override
             public void run() {
-                synchronized(this) {
+                //synchronized(this) {
         try {
             move = true;
             boolean work = true;
@@ -205,6 +232,7 @@ public  class Enemie extends Mover{
                         }
                         }
                         Thread.sleep(10);
+                        checkForPaused();
 //                        if (getRandom(100)==50) {
 //                            direction = getRandom();
 //                            setIcon(new ImageIcon(img[direction]));
@@ -223,7 +251,7 @@ public  class Enemie extends Mover{
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                }
+                //}
             }};
         t.start();
     }

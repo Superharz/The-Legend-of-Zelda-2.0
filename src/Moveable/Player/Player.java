@@ -5,6 +5,7 @@
  */
 package Moveable.Player;
 
+import Game.Inventory;
 import Moveable.Events;
 import Game.Spot;
 import Inventory.Items;
@@ -30,6 +31,7 @@ public class Player extends Mover{
     //Thread t;
     //private int lastDirection = 0;
     BufferedImage[][] before = new BufferedImage[3][4];
+    Inventory inventory;
     //private final List<PlayerEvent> listeners = new ArrayList<PlayerEvent>();
     public Player() {
         //t = new Thread(this,"test");
@@ -49,9 +51,10 @@ public class Player extends Mover{
                 Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
             }
         
-        
+        inventory = new Inventory();
     }
     
+    @Override
     public void addListener(Events toAdd) {
         //listeners.add(toAdd);
         super.addListener(toAdd);
@@ -60,6 +63,15 @@ public class Player extends Mover{
     @Override
     public int getWidth(){
         return this.before[0][0].getWidth();
+    }
+    
+    @Override
+    public void takeDamage(int damage) {
+        if (!immortal) {
+            this.live -= damage;
+            if (this.live <= 0)
+               die();
+        }
     }
     
     public void setUP(Spot[][] spots) {
@@ -226,7 +238,10 @@ public class Player extends Mover{
         JOptionPane.showMessageDialog(null, "You died!");
     }
     public void addItem(Items item) {
-        
+        inventory.addItem(item);
+    }
+    public Inventory getInventory() {
+        return inventory;
     }
     
 }

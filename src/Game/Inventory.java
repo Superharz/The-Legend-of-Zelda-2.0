@@ -7,6 +7,7 @@ package Game;
 import java.util.Hashtable;
 import javax.swing.JLabel;
 import Inventory.Equiment;
+import Inventory.Items;
 import java.awt.Color;
 import javax.swing.JPanel;
 /**
@@ -15,6 +16,7 @@ import javax.swing.JPanel;
  */
 public class Inventory extends javax.swing.JPanel {
     JPanel[] stuff = new JPanel[11];
+    private final int INVENTORY = 0;
     /**
      * Creates new form Inventory
      */
@@ -254,4 +256,16 @@ public class Inventory extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
+
+    public void addItem(Items item) {
+        ((Equiment)stuff[INVENTORY]).add(item);
+    }
+    public void setStats(int lvl, int live) {
+        Level.setText("Level:   "+ lvl );
+        Live.setText("Live:     "+ live);
+    }
+
+
+
+
 }

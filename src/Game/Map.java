@@ -22,11 +22,13 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+
 /**
  *
  * @author Flo
  */
 public class Map extends ImagePanel implements Moveable.Events{
+    boolean pause = false;
     Spot[][] spots;
     Point playerPosition = new Point(-1, -1);
     int width, height;
@@ -34,6 +36,8 @@ public class Map extends ImagePanel implements Moveable.Events{
     LinkedList<Enemie> enemies;
     LinkedList<Arrow> arrows;
     int spotWidth;
+    Thread t;
+    private final Object obj = new Object();
     private boolean protection = false;
     /**
      * Creates new form Map
@@ -160,6 +164,7 @@ public void setUP(int width,int heights,int playerX, int playerY) {
 //        //this.update(this.getGraphics());
     }
 //    
+    static {
 //    public boolean move(int direction) {
 //        int x = player.getWidth();
 //        int y = player.getHeight();
@@ -237,7 +242,7 @@ public void setUP(int width,int heights,int playerX, int playerY) {
 //        }
 //        return true;
 //    }
-//    
+    }
     public void moveLEFT() {
 //        //System.out.println(player.getLocation().x);
 //        if (move(3))
@@ -295,6 +300,10 @@ public void setUP(int width,int heights,int playerX, int playerY) {
     }
     public void addItem(int x, int y, Items item) {
         spots[y][x].additem(item);
+        this.add(item);
+        item.setBounds(toPixel(x), toPixel(y), item.getIcon().getIconWidth(), item.getIcon().getIconHeight());
+        System.out.println("Item added!");
+        
     }
     public Spot[][] getSpots() {
         return spots;
@@ -364,9 +373,10 @@ public void setUP(int width,int heights,int playerX, int playerY) {
         //lastDirection = direction;
             
         
-        Thread t = new Thread() {
+         t = new Thread("Arrow") {
+            @Override
             public void run() {
-                synchronized(this) {
+                //synchronized(this) {
                 boolean move = true;
                 
                 
@@ -376,15 +386,17 @@ public void setUP(int width,int heights,int playerX, int playerY) {
                         for (int i = 0; i < arrows.size(); i++) {
                             
                             if (!arrows.get(i).move() || playerAttack(arrows.get(i).getHitBox())) {
-                                remove(arrows.get(i));
-                                arrows.remove(i);
+                                removeMover(arrows.get(i));
+//                                remove(arrows.get(i));
+//                                arrows.remove(i);
                                 
                                 if (arrows.size() <= 0)
                                     move = false;
                                 
                                 
                             }
-                            
+                            checkForPaused();
+                                    
                         }
                     }
 
@@ -392,9 +404,49 @@ public void setUP(int width,int heights,int playerX, int playerY) {
                     Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 }   
-            }
+            //}
         };
         t.start();
+    }
+    
+    private void checkForPaused() {
+        synchronized (this) {
+            while (pause) {
+                try { 
+                    this.wait();
+                } catch (Exception e) {}
+            }
+        }
+    }
+
+    public void pauseThread() throws InterruptedException {
+        pause = true;
+    }
+
+    public void resumeThread() {
+        synchronized(this) {
+            pause = false;
+            this.notify();
+        }
+    }
+    
+    public synchronized void play(boolean play) {
+        try {
+        if (play) {
+            for (int i = 0; i < enemies.size(); i++) {
+                enemies.get(i).resumeThread();
+            }
+            resumeThread();
+        }
+        else {
+            for (int i = 0; i < enemies.size(); i++) {
+                enemies.get(i).pauseThread();
+            }
+            pauseThread();
+        }
+        } catch (Exception ex) {
+            Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void playerShoot() {
@@ -431,6 +483,10 @@ public void setUP(int width,int heights,int playerX, int playerY) {
             this.remove(m);
             enemies.remove(m);
         }
+        if (m instanceof Arrow) {
+            this.remove(m);
+            arrows.remove(m);
+        }
         repaint();
         System.gc();
     }
@@ -463,17 +519,34 @@ public void setUP(int width,int heights,int playerX, int playerY) {
     private int toSpots(int pixels) {
         return pixels / spotWidth;
     }
-
+    
+    public Inventory getInventory(){
+        return player.getInventory();
+    }
+    
+    
+    
     @Override
     public void playerMoved() {
         boolean moved = updatePlayerPosition();
         //System.out.println(moved);
         if (moved) {
-            if (spots[playerPosition.y][playerPosition.x].hasItem()) {
-                for (int i = 0; i < spots[playerPosition.y][playerPosition.x].itemLength();  i++) {
-                    player.addItem(spots[playerPosition.y][playerPosition.x].pickUp(i));
-                }
-            }  
+
+                while(spots[playerPosition.y][playerPosition.x].hasItem()){
+                
+                    Items item = spots[playerPosition.y][playerPosition.x].pickUp();
+                    player.addItem(item);
+                    this.remove(item);
+                    repaint();
+                    System.gc();
+                    
+                    
+                    
+                    
+                    
+
+                System.out.println("Item picked UP!");
+                }  
             //System.out.println("Moved");
             //System.out.println("Player:  " + playerPosition);
             //boolean evt = spots[playerPosition.x][playerPosition.y].hasEvent();
@@ -487,6 +560,12 @@ public void setUP(int width,int heights,int playerX, int playerY) {
     @Override
     public void spawnEnemie(Point p, Enemie e) {
         addEnemy(e, p);
+    }
+
+    @Override
+    public void spawnItem(Point p, Items item) {
+        this.addItem(p.x, p.y, item);
+        this.repaint();
     }
     
     
