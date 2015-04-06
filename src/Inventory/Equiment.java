@@ -192,6 +192,9 @@ public void add(Items item) {
 
 private void ItemMouseEntered(java.awt.event.MouseEvent evt) {
     Items l = (Items)evt.getComponent();
+    if (!l.equals(selection)) {
+        reset();
+    }
     showInfo(l);
 }
 

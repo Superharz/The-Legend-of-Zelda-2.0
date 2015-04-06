@@ -83,7 +83,9 @@ public class Player extends Mover{
     public void setUP(Spot[][] spots) {
         Rectangle r = new Rectangle(this.getX(), this.getY(),  getWidth(), getWidth());
         this.setMover(10, 100000, 100, new Point(before[0][0].getWidth()/2,before[0][0].getHeight()/2), before[0],spots,r);
-        inventory.setStats(1, 100000);
+        //inventory.setStats(1, 100000);
+        super.setPlayer(1, 100);
+        inventory.setStats(super.getLevel(), super.getHealth(), super.getDamage(), super.getArmor(),super.getSpeed());
         //this.setLocation(100,100);
     }
     

@@ -18,7 +18,7 @@ import javax.swing.JPanel;
  */
 public class Inventory extends javax.swing.JPanel {
     JPanel[] stuff = new JPanel[11];
-    private final int INVENTORY = 0;
+    private final int INVENTORY = 0, STATS = 1;
     /**
      * Creates new form Inventory
      */
@@ -266,6 +266,17 @@ public class Inventory extends javax.swing.JPanel {
     public void setStats(int lvl, int live) {
         Level.setText("Level:   "+ lvl );
         Live.setText("Live:     "+ live);
+        ((Stats)stuff[STATS]).setLive(live);
+        ((Stats)stuff[STATS]).setLevel(lvl);
+    }
+    public void setStats(int lvl, int live, int damage, int armor, int speed) {
+        Level.setText("Level:   "+ lvl );
+        Live.setText("Live:     "+ live);
+        ((Stats)stuff[STATS]).setLive(live);
+        ((Stats)stuff[STATS]).setLevel(lvl);
+        ((Stats)stuff[STATS]).setDamage(damage);
+        ((Stats)stuff[STATS]).setArmor(armor);
+        ((Stats)stuff[STATS]).setSpeed(speed);
     }
     public void setLive(int live){
         Live.setText("Live:     "+ live);

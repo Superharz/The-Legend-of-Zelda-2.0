@@ -28,6 +28,8 @@ public abstract class Mover extends javax.swing.JLabel{
     public int speed;
     public int live;
     public int damage;
+    public int armor;
+    public int lvl;
     Point hotSpot;
     Spot[][] spots;
     Rectangle hitBox;
@@ -224,7 +226,19 @@ public abstract class Mover extends javax.swing.JLabel{
     public int getDamage() {
         return damage;
     }
-    
+    public int getSpeed() {
+        return speed;
+    }
+    public int getArmor() {
+        return armor;
+    }
+    public int getLevel() {
+        return lvl;
+    }
+    public void setPlayer(int lvl,int armor) {
+        this.lvl = lvl;
+        this.armor = armor;
+    }
     public boolean collision(int direction) {
         int x = this.getWidth();
         int y = this.getHeight();

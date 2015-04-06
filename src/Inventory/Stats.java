@@ -114,17 +114,17 @@ public class Stats extends javax.swing.JPanel {
     public void setLive(int live) {
         Live.setText("Live: "+live);
     }
-    public void setlevel(int lvl) {
-        Live.setText("Level: "+lvl);
+    public void setLevel(int lvl) {
+        Level.setText("Level: "+lvl);
     }
     public void setDamage(int damage) {
-        Live.setText("Damage: "+damage);
+        Damage.setText("Damage: "+damage);
     }
     public void setArmor(int armor) {
-        Live.setText("Armor: "+armor);
+        Armor.setText("Armor: "+armor);
     }
     public void setSpeed(int speed) {
-        Live.setText("speed: "+speed);
+        Speed.setText("speed: "+speed);
     }
     
 
