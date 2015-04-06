@@ -4,18 +4,23 @@
  */
 package Inventory;
 
+import Moveable.Events;
 import java.awt.Color;
 import java.awt.PopupMenu;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
 
@@ -24,6 +29,7 @@ import javax.swing.PopupFactory;
  * @author f.harz
  */
 public class Equiment extends javax.swing.JPanel {
+    public final List<Events> listeners = new ArrayList<Events>();
     LinkedList<Items> items = new LinkedList<Items>();
     Items selection;
     ///Hashtable<JLabel, Items> table = new Hashtable<JLabel,Items >();
@@ -36,7 +42,7 @@ public class Equiment extends javax.swing.JPanel {
             BufferedImage before = ImageIO.read (this.getClass().
                         getResource("/Pictures/tile1.png"));
             ImageIcon icon = new ImageIcon(before);
-            Items i = new Items("Wall","Wall", icon);
+            Items i = new Items("Wall","Wall", icon,false);
             i.addStats(new JLabel("Damage:  100     ")) ;
             i.addStats(new JLabel("Damage:  50      ")) ;
             i.addStats(new JLabel("Damage:  20      ")) ;
@@ -206,6 +212,12 @@ private void ItemMousePressed(java.awt.event.MouseEvent evt) {
         reset();
         showInfo(l);
     }
+    if(evt.getButton()==3 && l.isUseable()) {
+        for (Events hl : listeners) {
+            hl.use(l);
+        }
+    }
+    
     //table.get(l).setVisible(true);
 }
 private void showInfo(Items l) {
@@ -225,7 +237,10 @@ private void update() {
         Info.validate();
         Info.repaint();
     }
-
+    public void addListener(Events toAdd) {
+        //listeners.add(toAdd);
+        listeners.add(toAdd);
+    }
     private void reset() {
         Image.setIcon(null);
         Name.setText("Name:");

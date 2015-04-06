@@ -22,6 +22,7 @@ import javax.swing.KeyStroke;
 public class Item extends javax.swing.JDialog {
     LinkedList<JLabel> stats = new LinkedList<JLabel>();
     private String type;
+    
     /**
      * A return status code - returned if Cancel button has been pressed
      */

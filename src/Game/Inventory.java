@@ -8,6 +8,8 @@ import java.util.Hashtable;
 import javax.swing.JLabel;
 import Inventory.Equiment;
 import Inventory.Items;
+import Inventory.Stats;
+import Moveable.Events;
 import java.awt.Color;
 import javax.swing.JPanel;
 /**
@@ -20,9 +22,10 @@ public class Inventory extends javax.swing.JPanel {
     /**
      * Creates new form Inventory
      */
-    public Inventory() {
+    public Inventory(int lvl, int live) {
         initComponents();
         stuff[0] = new Equiment();
+        stuff[1] = new Stats();
         Hashtable<Integer, JLabel> table = new Hashtable<Integer, JLabel>();
         table.put (0, new JLabel("Inventory"));
         table.put (1, new JLabel("Stats"));
@@ -65,7 +68,7 @@ public class Inventory extends javax.swing.JPanel {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 javax.swing.JFrame f = new javax.swing.JFrame();
-                Inventory i = new Inventory();
+                Inventory i = new Inventory(1,1);
                 f.add(i);
                 f.setVisible(true);
             }
@@ -264,7 +267,13 @@ public class Inventory extends javax.swing.JPanel {
         Level.setText("Level:   "+ lvl );
         Live.setText("Live:     "+ live);
     }
-
+    public void setLive(int live){
+        Live.setText("Live:     "+ live);
+    }
+    public void addListener(Events toAdd) {
+        //listeners.add(toAdd);
+        ((Equiment)stuff[INVENTORY]).addListener(toAdd);
+    }
 
 
 

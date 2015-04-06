@@ -21,13 +21,16 @@ import javax.swing.KeyStroke;
  */
 public class Items extends JLabel {
     LinkedList<JLabel> stats = new LinkedList<JLabel>();
+    int basic[] = new int[4];
+    public final static int LIVE = 0, DAMAGE = 1, ARMOR = 2, SPEED = 3; 
     private String type;
+    private boolean useable;
 
     /**
      * Creates new form Item
      */
-    public Items(String type,String name, Icon icon) {
-        setUp(type, name, icon);
+    public Items(String type,String name, Icon icon,boolean useable) {
+        setUp(type, name, icon,useable);
     }
 
     
@@ -50,10 +53,18 @@ public class Items extends JLabel {
         return stats.size();
     }
     
-    public void setUp(String type,String name, Icon icon) {
+    public void setUp(String type,String name, Icon icon,boolean useable) {
+        this.useable = useable;
         this.type = type;
         this.setName(name);
         this.setIcon(icon);
+        update();
+    }
+    public void addStats(JLabel stat,int type,int value){
+        if (type >= 0) {
+            basic[type] = value;
+        }
+        stats.add(stat);
         update();
     }
     public void addStats(JLabel stat){
@@ -63,6 +74,9 @@ public class Items extends JLabel {
     private void update() {
         this.validate();
         this.repaint();
+    }
+    public boolean isUseable(){
+        return useable;
     }
 
 }

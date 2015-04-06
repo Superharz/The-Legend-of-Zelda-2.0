@@ -27,6 +27,7 @@ import javax.swing.KeyStroke;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -74,7 +75,8 @@ public class Tested extends javax.swing.JFrame {
             map1.addEvent(0, 1, evt);
             map1.addEvent(9, 9, evt3);
             ImageIcon icon = new ImageIcon(sword);
-            Items item = new Items("Wall","Wolf",icon);
+            Items item = new Items("Wall","Wolf",icon,true);
+            item.addStats(new JLabel("Damage: 50"), Items.DAMAGE, 100);
             Event evt4 = new Event(new Point(5,2),item);
             map1.addEvent(0, 9, evt4);
             Enemie e;

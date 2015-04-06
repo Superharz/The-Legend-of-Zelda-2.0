@@ -16,6 +16,7 @@ import java.awt.Rectangle;
  */
 public interface Events
 {
+    public void use(Items item);
     public void moved();
     public void playerMoved();
     public void attacke(Rectangle r);

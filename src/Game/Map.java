@@ -310,24 +310,24 @@ public void setUP(int width,int heights,int playerX, int playerY) {
     }
 
     @Override
-    public void moved() {
+    public synchronized void moved() {
         if (!protection) {
-        Rectangle enemieBox;
-        Rectangle playerBox = player.getHitBox();
-        for (Enemie enemie : enemies) {
-            enemieBox = enemie.getHitBox();
-            if (playerBox.intersects(enemieBox)) {
-                
-                    System.out.println("Got Damage, Live left: " + player.getHealth());
-                    player.takeDamage(enemie.getStrength());
-                    protection = true;
-                    protect();
-                    //enemies.get(i).takeDamage(enemies.get(i).getStrength());
-                    
-                    break;
-                
+            Rectangle enemieBox;
+            Rectangle playerBox = player.getHitBox();
+            for (Enemie enemie : enemies) {
+                enemieBox = enemie.getHitBox();
+                if (playerBox.intersects(enemieBox)) {
+
+                        System.out.println("Got Damage, Live left: " + player.getHealth());
+                        player.takeDamage(enemie.getStrength());
+                        protection = true;
+                        protect();
+                        //enemies.get(i).takeDamage(enemies.get(i).getStrength());
+
+                        break;
+
+                }
             }
-        }
         }
     }
     
@@ -348,7 +348,7 @@ public void setUP(int width,int heights,int playerX, int playerY) {
         t.start();
     }
     
-    public boolean playerAttack(Rectangle r) {
+    public synchronized boolean playerAttack(Rectangle r) {
         Rectangle enemieBox;
         boolean killed = false;
         //Rectangle playerBox = player.getHitBox();
@@ -566,6 +566,11 @@ public void setUP(int width,int heights,int playerX, int playerY) {
     public void spawnItem(Point p, Items item) {
         this.addItem(p.x, p.y, item);
         this.repaint();
+    }
+
+    @Override
+    public void use(Items item) {
+        player.use(item);
     }
     
     

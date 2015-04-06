@@ -51,13 +51,18 @@ public class Player extends Mover{
                 Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
             }
         
-        inventory = new Inventory();
+        inventory = new Inventory(1,1);
     }
     
     @Override
     public void addListener(Events toAdd) {
         //listeners.add(toAdd);
         super.addListener(toAdd);
+        inventory.addListener(toAdd);
+    }
+    
+    public void use(Items item) {
+        
     }
     
     @Override
@@ -72,11 +77,13 @@ public class Player extends Mover{
             if (this.live <= 0)
                die();
         }
+        this.inventory.setLive(live);
     }
     
     public void setUP(Spot[][] spots) {
         Rectangle r = new Rectangle(this.getX(), this.getY(),  getWidth(), getWidth());
         this.setMover(10, 100000, 100, new Point(before[0][0].getWidth()/2,before[0][0].getHeight()/2), before[0],spots,r);
+        inventory.setStats(1, 100000);
         //this.setLocation(100,100);
     }
     
