@@ -61,10 +61,19 @@ public class Player extends Mover{
         inventory.addListener(toAdd);
     }
     
-    public void use(Items item) {
-        
+    @Override
+    public void heal(int amount) {
+        super.heal(amount);
+        updateInvent();
     }
     
+    public void use(Items item) {
+        super.useItem(item);
+        updateInvent();
+    }
+    public void updateInvent() {
+        inventory.setStats(super.getLevel(), super.getHealth(), super.getDamage(), super.getArmor(),super.getSpeed());
+    }
     @Override
     public int getWidth(){
         return this.before[0][0].getWidth();
@@ -77,7 +86,7 @@ public class Player extends Mover{
             if (this.live <= 0)
                die();
         }
-        this.inventory.setLive(live);
+        updateInvent();
     }
     
     public void setUP(Spot[][] spots) {
@@ -85,7 +94,7 @@ public class Player extends Mover{
         this.setMover(10, 100000, 100, new Point(before[0][0].getWidth()/2,before[0][0].getHeight()/2), before[0],spots,r);
         //inventory.setStats(1, 100000);
         super.setPlayer(1, 100);
-        inventory.setStats(super.getLevel(), super.getHealth(), super.getDamage(), super.getArmor(),super.getSpeed());
+        updateInvent();
         //this.setLocation(100,100);
     }
     

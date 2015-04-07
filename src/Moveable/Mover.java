@@ -6,12 +6,14 @@
 package Moveable;
 
 import Game.Spot;
+import Inventory.Items;
 import Moveable.Enemies.EnemieEvent;
 import Moveable.Player.Player;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +26,7 @@ import javax.swing.ImageIcon;
  */
 public abstract class Mover extends javax.swing.JLabel{
     public final List<Events> listeners = new ArrayList<Events>();
+    public LinkedList<Items> stuff;
     public boolean move = false;
     public int speed;
     public int live;
@@ -110,8 +113,41 @@ public abstract class Mover extends javax.swing.JLabel{
         }
         return false;
     }
-
-
+    
+   
+    
+    public void useItem(Items item) {
+        if (stuff == null)
+            stuff = new LinkedList<Items>();
+        if (!stuff.contains(item)) {
+            int[] stats = item.getBasicStats();
+            stuff.add(item);
+            damage += stats[Items.DAMAGE];
+            live += stats[Items.LIVE];
+            armor += stats[Items.ARMOR];
+            speed += stats[Items.SPEED];
+        
+        }
+        else{
+            removeItem(item);
+        }
+    }
+    public void removeItem(Items item) {
+        if (stuff.contains(item)) {
+            int[] stats = item.getBasicStats();
+            stuff.remove(item);
+            damage -= stats[Items.DAMAGE];
+            live   -= stats[Items.LIVE];
+            armor  -= stats[Items.DAMAGE];
+            speed  -= stats[Items.SPEED];
+        
+        }
+        if (stuff.isEmpty()) {
+            stuff = null;
+            System.gc();
+        }
+    }
+    
     public boolean moveDOWN() {
         lastDirection = DOWN;
         if (collision(0)){

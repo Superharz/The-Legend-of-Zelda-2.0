@@ -25,6 +25,7 @@ public class Items extends JLabel {
     public final static int LIVE = 0, DAMAGE = 1, ARMOR = 2, SPEED = 3; 
     private String type;
     private boolean useable;
+    private boolean isSelected = false;
 
     /**
      * Creates new form Item
@@ -67,6 +68,9 @@ public class Items extends JLabel {
         stats.add(stat);
         update();
     }
+    public int[] getBasicStats(){
+        return basic;
+    }
     public void addStats(JLabel stat){
         stats.add(stat);
         update();
@@ -77,6 +81,12 @@ public class Items extends JLabel {
     }
     public boolean isUseable(){
         return useable;
+    }
+    public boolean isSelected() {
+        return isSelected;
+    }
+    public void setSelection(boolean isSelected) {
+        this.isSelected = isSelected;
     }
 
 }

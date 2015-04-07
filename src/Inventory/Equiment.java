@@ -6,6 +6,7 @@ package Inventory;
 
 import Moveable.Events;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.PopupMenu;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -28,7 +29,7 @@ import javax.swing.PopupFactory;
  *
  * @author f.harz
  */
-public class Equiment extends javax.swing.JPanel {
+public class Equiment extends Tools.ImagePanel {
     public final List<Events> listeners = new ArrayList<Events>();
     LinkedList<Items> items = new LinkedList<Items>();
     Items selection;
@@ -81,17 +82,7 @@ public class Equiment extends javax.swing.JPanel {
                 EquimentMousePressed(evt);
             }
         });
-
-        javax.swing.GroupLayout EquimentLayout = new javax.swing.GroupLayout(Equiment);
-        Equiment.setLayout(EquimentLayout);
-        EquimentLayout.setHorizontalGroup(
-            EquimentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 380, Short.MAX_VALUE)
-        );
-        EquimentLayout.setVerticalGroup(
-            EquimentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 117, Short.MAX_VALUE)
-        );
+        Equiment.setLayout(new javax.swing.BoxLayout(Equiment, javax.swing.BoxLayout.LINE_AXIS));
 
         Name.setText("Name:");
 
@@ -183,7 +174,7 @@ public void add(Items item) {
     });
     
     //table.put(l, item);
-    item.setSize(item.getIcon().getIconWidth(),item.getIcon().getIconHeight() ) ;
+    item.setSize(item.getIcon().getIconWidth(),item.getIcon().getIconHeight()) ;
     Equiment.add(item);
     update();
     System.out.println("Worked");
@@ -216,8 +207,10 @@ private void ItemMousePressed(java.awt.event.MouseEvent evt) {
         showInfo(l);
     }
     if(evt.getButton()==3 && l.isUseable()) {
+        select(l);
         for (Events hl : listeners) {
             hl.use(l);
+            
         }
     }
     
@@ -248,6 +241,16 @@ private void update() {
         Image.setIcon(null);
         Name.setText("Name:");
         Info.removeAll();
+        update();
+    }
+    
+    private void select(Items item) {
+        BufferedImage img = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics g = img.getGraphics();
+        g.setColor(Color.red);
+        g.fillRect(item.getLocation().x-10, item.getLocation().y-10, item.getIcon().getIconWidth()+20, item.getIcon().getIconHeight()+20); 
+        g.drawLine(0, 0, this.getWidth(), this.getHeight());
+        this.setImage(img);
         update();
     }
 }
