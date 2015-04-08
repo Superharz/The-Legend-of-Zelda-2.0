@@ -27,6 +27,7 @@ public class Event {
     String mapName;
     String text;
     int healAmount;
+    private int eventCount;
     
     public Event(Point destiny) {
         this(destiny,"");
@@ -57,6 +58,8 @@ public class Event {
         this.item = item;
         eventType = ITEM;
     }
+    
+    public void add
     
     public void addListener(Events toAdd) {
         listeners.add(toAdd);

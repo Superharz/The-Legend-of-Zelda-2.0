@@ -28,7 +28,7 @@ public  class Enemie extends Mover{
     public static final int RANDOMMOVE = 0, WALLMOVE = 1;
     private int moveMethod;
     boolean pause = false;
-    private final Object obj = new Object();
+   
     //private final List<PlayerEvent> listeners = new ArrayList<PlayerEvent>();
     public Enemie(int moveMethod) {
         //super(speed, live, damage, hotSpot, img);

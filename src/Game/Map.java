@@ -316,7 +316,16 @@ public void setUP(int width,int heights,int playerX, int playerY) {
             Rectangle playerBox = player.getHitBox();
             for (Enemie enemie : enemies) {
                 enemieBox = enemie.getHitBox();
-                if (playerBox.intersects(enemieBox)) {
+                if (enemieBox == null) {
+                    System.out.println("Null-enemie");
+                         
+                }
+                else if (playerBox == null) {
+                    System.out.println("Null-playerBox");
+                         
+                }
+                
+                else if (playerBox.intersects(enemieBox)) {
 
                         System.out.println("Got Damage, Live left: " + player.getHealth());
                         player.takeDamage(enemie.getStrength());
@@ -324,7 +333,7 @@ public void setUP(int width,int heights,int playerX, int playerY) {
                         protect();
                         //enemies.get(i).takeDamage(enemies.get(i).getStrength());
 
-                        break;
+                        return;
 
                 }
             }

@@ -12,6 +12,7 @@ import Moveable.Player.Player;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -20,6 +21,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -117,7 +119,13 @@ public class Tested extends javax.swing.JFrame {
         
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(true);
-        
+         addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                formComponentResized(evt);
+            }
+
+            
+        });
         map1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 formKeyPressed(evt);
@@ -177,7 +185,10 @@ public class Tested extends javax.swing.JFrame {
         }
       }
     }                             
-
+    private void formComponentResized(ComponentEvent evt) {
+        if (i != null)
+            i.setBounds(0, 0, this.getWidth(), this.getHeight()); 
+    }
     private void formKeyReleased(java.awt.event.KeyEvent evt) {                                 
         //System.out.println("RIGHT");
         map1.getplayer().stop();
@@ -260,6 +271,7 @@ public class Tested extends javax.swing.JFrame {
            i.setVisible(false);
            HUT.add(i);
            i.setBounds(0, 0, this.getWidth(), this.getHeight());
+           i.setBorder(BorderFactory.createEtchedBorder());
            i.requestFocus();
         }
        

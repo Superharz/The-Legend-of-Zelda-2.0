@@ -94,6 +94,12 @@ public class Inventory extends javax.swing.JPanel {
         Menu = new javax.swing.JSlider();
         Info = new javax.swing.JPanel();
 
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                formComponentResized(evt);
+            }
+        });
+
         Level.setText("Level: 1");
 
         Live.setText("Live:");
@@ -247,6 +253,10 @@ public class Inventory extends javax.swing.JPanel {
         Info.repaint();
         Info.validate();
     }//GEN-LAST:event_MenuStateChanged
+
+    private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
+        this.setSize(this.getSize());
+    }//GEN-LAST:event_formComponentResized
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Info;

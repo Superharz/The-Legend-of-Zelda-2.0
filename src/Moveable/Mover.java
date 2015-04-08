@@ -138,7 +138,7 @@ public abstract class Mover extends javax.swing.JLabel{
             stuff.remove(item);
             damage -= stats[Items.DAMAGE];
             live   -= stats[Items.LIVE];
-            armor  -= stats[Items.DAMAGE];
+            armor  -= stats[Items.ARMOR];
             speed  -= stats[Items.SPEED];
         
         }

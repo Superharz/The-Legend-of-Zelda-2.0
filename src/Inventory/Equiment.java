@@ -71,8 +71,8 @@ public class Equiment extends Tools.ImagePanel {
         Name = new javax.swing.JLabel();
         Info = new javax.swing.JPanel();
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Equiment");
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel1.setText("                                  Equiment");
 
         Equiment.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -85,6 +85,8 @@ public class Equiment extends Tools.ImagePanel {
         Equiment.setLayout(new javax.swing.BoxLayout(Equiment, javax.swing.BoxLayout.LINE_AXIS));
 
         Name.setText("Name:");
+
+        Info.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         javax.swing.GroupLayout StatsLayout = new javax.swing.GroupLayout(Stats);
         Stats.setLayout(StatsLayout);
@@ -122,7 +124,7 @@ public class Equiment extends Tools.ImagePanel {
                     .addComponent(Stats, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(Equiment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,30 +157,32 @@ public class Equiment extends Tools.ImagePanel {
     // End of variables declaration//GEN-END:variables
 
 public void add(Items item) {
-    items.add(item);
-    //JLabel l = new JLabel(item.getIcon());
-    
-    //l.add(p) ;
-    item.addMouseListener(new java.awt.event.MouseAdapter() {
-        public void mousePressed(java.awt.event.MouseEvent evt) {
-            ItemMousePressed(evt);
-        }
-        public void mouseEntered(java.awt.event.MouseEvent evt) {
-            ItemMouseEntered(evt);
-            //p.show();
-        }
-        public void mouseExited(java.awt.event.MouseEvent evt) {
-            ItemMouseExited(evt);
-            //p.show();
-        }
-    });
-    
-    //table.put(l, item);
-    item.setSize(item.getIcon().getIconWidth(),item.getIcon().getIconHeight()) ;
-    Equiment.add(item);
-    update();
-    System.out.println("Worked");
-    item.setVisible(true);
+    if (!items.contains(item)) {
+        items.add(item);
+        //JLabel l = new JLabel(item.getIcon());
+
+        //l.add(p) ;
+        item.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                ItemMousePressed(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ItemMouseEntered(evt);
+                //p.show();
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ItemMouseExited(evt);
+                //p.show();
+            }
+        });
+
+        //table.put(l, item);
+        item.setSize(item.getIcon().getIconWidth(),item.getIcon().getIconHeight()) ;
+        Equiment.add(item);
+        update();
+        System.out.println("Worked");
+        item.setVisible(true);
+    }
 }
 
 private void ItemMouseEntered(java.awt.event.MouseEvent evt) {
@@ -208,6 +212,7 @@ private void ItemMousePressed(java.awt.event.MouseEvent evt) {
     }
     if(evt.getButton()==3 && l.isUseable()) {
         select(l);
+        System.out.println("selected");
         for (Events hl : listeners) {
             hl.use(l);
             
