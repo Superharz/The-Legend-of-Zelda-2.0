@@ -49,6 +49,10 @@ public class Tested extends javax.swing.JFrame {
         try {
             BufferedImage before = ImageIO.read (this.getClass().
                     getResource("/Pictures/tile1.png"));
+            BufferedImage layer2 = ImageIO.read (this.getClass().
+                    getResource("/Pictures/tile3.png"));
+            BufferedImage plant = ImageIO.read (this.getClass().
+                    getResource("/Pictures/plant.png"));
             BufferedImage before2 = ImageIO.read (this.getClass().
                     getResource("/Pictures/tile2.png"));
             BufferedImage sword = ImageIO.read (this.getClass().
@@ -78,8 +82,9 @@ public class Tested extends javax.swing.JFrame {
             map1.addEvent(9, 9, evt3);
             ImageIcon icon = new ImageIcon(sword);
             Items item = new Items("Wall","Wolf",icon,true);
-            item.addStats(new JLabel("Damage: 50"), Items.DAMAGE, 100);
+            item.addStats(new JLabel("Damage: 50"), Items.DAMAGE, 50);
             Event evt4 = new Event(new Point(5,2),item);
+            evt4.addEventCount(1);
             map1.addEvent(0, 9, evt4);
             Enemie e;
             

@@ -20,6 +20,7 @@ public class Event {
     public final List<Events> listeners = new ArrayList<Events>();
     public final int TELEPORT = 0, TEXT = 1, HEAL = 2, ITEM = 3, SPAWN = 4;
     private final String EMPTY = "";
+    private final int NOCOUNT = -1;
     private int eventType;
     private Enemie e;
     private Items item;
@@ -27,7 +28,8 @@ public class Event {
     String mapName;
     String text;
     int healAmount;
-    private int eventCount;
+    private int eventCount = NOCOUNT;
+    private int count;
     
     public Event(Point destiny) {
         this(destiny,"");
@@ -59,7 +61,10 @@ public class Event {
         eventType = ITEM;
     }
     
-    public void add
+    public void addEventCount(int eventCount) {
+        this.eventCount = eventCount;
+        count = 0;
+    }
     
     public void addListener(Events toAdd) {
         listeners.add(toAdd);
@@ -69,7 +74,7 @@ public class Event {
         return eventType;
     }
     
-    public void callEvent() {
+    public boolean callEvent() {
         switch (eventType) {
             case TELEPORT   : teleport(); break;
             case TEXT       : text(); break;
@@ -78,6 +83,12 @@ public class Event {
             case ITEM       : item(); break;
                 
         }
+        if (eventCount != NOCOUNT) {
+            count++;
+            if (count == eventCount)
+                return false;
+        }
+        return true;
     }
     
     private void teleport() {

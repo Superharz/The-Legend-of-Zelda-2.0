@@ -19,10 +19,19 @@ public class Spot{
     LinkedList<Items> items;
     private BufferedImage img;
     private boolean walkable;
+    private int height;
+    public static final int CONNECTION = -1;
+    
     
     public Spot(BufferedImage img, boolean walkable) {
       this.img = img;
+      this.height = 0;
       this.walkable = walkable;
+    }
+    public Spot(BufferedImage img, int height) {
+      this.img = img;
+      this.walkable = true;
+      this.height = height;
     }
     
     public void addEvent(Event evt) {
@@ -65,10 +74,24 @@ public class Spot{
     public boolean walk() {
         return walkable;
     }
+    public int height() {
+        return height;
+    }
     public void callEvents() {
         if (events != null) {
+            boolean alive;
+        
             for (int i = 0; i < events.size(); i++) {
-                events.get(i).callEvent();
+                alive = events.get(i).callEvent();
+                if (!alive) {
+                    events.remove(i);
+                    System.out.println("Event removed!");
+                }
+            }
+        
+            if (events.isEmpty()) {
+                events = null;
+                System.gc();
             }
         }
     }

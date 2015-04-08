@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -43,7 +44,7 @@ public class Equiment extends Tools.ImagePanel {
             BufferedImage before = ImageIO.read (this.getClass().
                         getResource("/Pictures/tile1.png"));
             ImageIcon icon = new ImageIcon(before);
-            Items i = new Items("Wall","Wall", icon,false);
+            Items i = new Items("Wall","Wall", icon,true);
             i.addStats(new JLabel("Damage:  100     ")) ;
             i.addStats(new JLabel("Damage:  50      ")) ;
             i.addStats(new JLabel("Damage:  20      ")) ;
@@ -178,6 +179,7 @@ public void add(Items item) {
 
         //table.put(l, item);
         item.setSize(item.getIcon().getIconWidth(),item.getIcon().getIconHeight()) ;
+        
         Equiment.add(item);
         update();
         System.out.println("Worked");
@@ -250,12 +252,20 @@ private void update() {
     }
     
     private void select(Items item) {
-        BufferedImage img = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics g = img.getGraphics();
-        g.setColor(Color.red);
-        g.fillRect(item.getLocation().x-10, item.getLocation().y-10, item.getIcon().getIconWidth()+20, item.getIcon().getIconHeight()+20); 
-        g.drawLine(0, 0, this.getWidth(), this.getHeight());
-        this.setImage(img);
-        update();
+        if(!item.isSelected()) {
+            item.setBorder(BorderFactory.createEtchedBorder(Color.lightGray, Color.yellow));
+            item.setSelection(true);
+        }
+        else{
+            item.setBorder(null);
+            item.setSelection(false);
+        }
+            //        BufferedImage img = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
+//        Graphics g = img.getGraphics();
+//        g.setColor(Color.red);
+//        g.fillRect(item.getLocation().x-10, item.getLocation().y-10, item.getIcon().getIconWidth()+20, item.getIcon().getIconHeight()+20); 
+//        g.drawLine(0, 0, this.getWidth(), this.getHeight());
+//        this.setImage(img);
+//        update();
     }
 }
