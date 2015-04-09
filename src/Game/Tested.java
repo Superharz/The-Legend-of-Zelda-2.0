@@ -86,7 +86,7 @@ public class Tested extends javax.swing.JFrame {
             map1.addSpot(l2, 7, 3);
             map1.addSpot(l2, 6, 3);
             map1.addSpot(l2, 5, 3);
-            Event evt = new Event(new Point(5,2));
+            Event evt = new Event(new Point(5,1));
             Enemie e2 = new Enemie(Enemie.WALLMOVE);
             Event evt2 = new Event(new Point(2,5),e2);
             Event evt3 = new Event(1000);

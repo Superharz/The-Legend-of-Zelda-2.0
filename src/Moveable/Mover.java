@@ -216,7 +216,7 @@ public abstract class Mover extends javax.swing.JLabel{
         return false;
     }
     
-    private void updateHeight() {
+    public void updateHeight() {
         Point p = this.getHotSpot();
         height = spots[toSpots(p.y)][toSpots(p.x)].getHeight();
         System.out.println("Height: "+height);

@@ -362,17 +362,20 @@ public void setUP(int width,int heights,int playerX, int playerY) {
         boolean killed = false;
         //Rectangle playerBox = player.getHitBox();
         for (int i = 0; i < enemies.size(); i++) {
-            enemieBox = enemies.get(i).getHitBox();
-            if (r.intersects(enemieBox)) {
-                    killed = true;
-                    enemies.get(i).takeDamage(player.getStrength());
-                    //if (!enemies.get(i).isAlive()) {
-                        //this.remove(enemies.get(i));
-                        //enemies.get(i).stopMoving();
-                        //enemies.remove(enemies.get(i));
-                    //}
-                
-                
+            if (enemies.get(i).getLayer() == player.getLayer()) {
+                enemieBox = enemies.get(i).getHitBox();
+
+                if (r.intersects(enemieBox)) {
+                        killed = true;
+                        enemies.get(i).takeDamage(player.getStrength());
+                        //if (!enemies.get(i).isAlive()) {
+                            //this.remove(enemies.get(i));
+                            //enemies.get(i).stopMoving();
+                            //enemies.remove(enemies.get(i));
+                        //}
+
+
+                }
             }
         }
         return killed;
@@ -510,6 +513,7 @@ public void setUP(int width,int heights,int playerX, int playerY) {
     @Override
     public void teleport(Point destination) {
         player.setLocation(toPixel(destination.x), toPixel(destination.y) );
+        player.updateHeight();
     }
 
     @Override
