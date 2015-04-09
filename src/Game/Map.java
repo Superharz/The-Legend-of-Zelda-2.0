@@ -472,7 +472,7 @@ public void setUP(int width,int heights,int playerX, int playerY) {
                             getResource("/Pictures/Arrow"+direction+".png"));
             
         
-        Arrow a = new Arrow(x, y, direction, damage,arrow,spots);
+        Arrow a = new Arrow(x, y, direction, damage, arrow,spots, player.getLayer());
         arrows.add(a);
         this.add(a);
         //e.addListener(this);

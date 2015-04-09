@@ -33,6 +33,7 @@ public abstract class Mover extends javax.swing.JLabel{
     public int damage;
     public int armor;
     public int lvl;
+    private int height = 0;
     Point hotSpot;
     Spot[][] spots;
     Rectangle hitBox;
@@ -55,7 +56,14 @@ public abstract class Mover extends javax.swing.JLabel{
     }
     
     public Mover(int speed, int live, int damage, Point hotSpot, BufferedImage img, Rectangle hitBox,Spot[][] spots) {
+        this(speed, live, damage, hotSpot, img, hitBox, spots, 0);
+    }
+    public int getLayer() {
+        return height;
+    }
+    public Mover(int speed, int live, int damage, Point hotSpot, BufferedImage img, Rectangle hitBox,Spot[][] spots,int height) {
         super( new ImageIcon(img));
+        this.height = height;
         this.speed   = speed;
         this.live    = live;
         this.damage  = damage;
@@ -109,6 +117,7 @@ public abstract class Mover extends javax.swing.JLabel{
         if (collision(1)) {
             this.setLocation(this.getX(), this.getY()-1);
             hitBox.setLocation(this.getLocation());
+            updateHeight();
             return true;
         }
         return false;
@@ -153,6 +162,7 @@ public abstract class Mover extends javax.swing.JLabel{
         if (collision(0)){
             this.setLocation(this.getX(), this.getY()+1);
             hitBox.setLocation(this.getLocation());
+            updateHeight();
             return true;
         }
         return false;
@@ -169,6 +179,7 @@ public abstract class Mover extends javax.swing.JLabel{
         if (collision(2)){
             this.setLocation(this.getX()+1, this.getY());
             hitBox.setLocation(this.getLocation());
+            updateHeight();
             return true;
         }
         return false;
@@ -183,10 +194,17 @@ public abstract class Mover extends javax.swing.JLabel{
         //System.out.println("LEFT");
             setLocation(this.getX()-1, this.getY());
             hitBox.setLocation(this.getLocation());
+            updateHeight();
             return true;
         }
         //System.out.println("Collision");
         return false;
+    }
+    
+    private void updateHeight() {
+        Point p = this.getHotSpot();
+        height = spots[toSpots(p.y)][toSpots(p.x)].getHeight();
+        System.out.println("Height: "+height);
     }
     
     public void stop() {
@@ -283,7 +301,7 @@ public abstract class Mover extends javax.swing.JLabel{
         int w2 = spots[0][0].image().getWidth();
         int h2 = spots[0][0].image().getHeight();
         int width = spots[0].length;
-        int height = spots.length;
+        int verticalHeight = spots.length;
 //        if (px-1 <= 0 || py - 1<= 0 || px + x +1 >=spots[0][0].image().getWidth()*width || py + y + 1 >= spots[0][0].image().getHeight()*height)
 //            return false;
         //Left
@@ -293,12 +311,7 @@ public abstract class Mover extends javax.swing.JLabel{
             Point[] points  = {new Point(px-1,py),new Point(px-1,py + y/2),new Point(px-1,py + y-1)};
             //System.out.println(px-1);
             //System.out.println(points[1].x/width + "    |   " + points[0].y/height);
-            for (Point point : points) {
-                
-                if (!spots[point.y / h2][point.x / w2].walk()) {
-                    return false;
-                }
-            }
+            return checkPoints(points, w2, h2);
             
             
         }
@@ -309,12 +322,7 @@ public abstract class Mover extends javax.swing.JLabel{
             Point[] points  = {new Point(px+1+x,py),new Point(px+1+x,py + y/2),new Point(px+1+x,py + y-1)};
             //System.out.println(px-1);
             //System.out.println(points[1].x/width + "    |   " + points[0].y/height);
-            for (Point point : points) {
-                
-                if (!spots[point.y / h2][point.x / w2].walk()) {
-                    return false;
-                }
-            }
+            return checkPoints(points, w2, h2);
             
             
         }
@@ -325,30 +333,20 @@ public abstract class Mover extends javax.swing.JLabel{
             Point[] points  = {new Point(px+1,py-1),new Point(px+x/2,py-1),new Point(px + x-1,py-1)};
             //System.out.println(px-1);
             //System.out.println(points[1].x/width + "    |   " + points[0].y/height);
-            for (Point point : points) {
-                
-                if (!spots[point.y / h2][point.x / w2].walk()) {
-                    return false;
-                }
-            }
+            return checkPoints(points, w2, h2);
             
             
         }
         //Down
         if (direction == 0) {
-            if (py + y + 1 < h2*height) {
+            if (py + y + 1 < h2*verticalHeight) {
                // return false;
             Point[] points  = {new Point(px+1,py + y+1),new Point(px+x/2,py + y+1),new Point(px + x-1,py + y+1)};
             //System.out.println(px-1);
             //System.out.println(points[1].x/width + "    |   " + points[0].y/height);
-            for (Point point : points) {
-                
-                if (!spots[point.y / h2][point.x / w2].walk()) {
-                    return false;
-                }
+            return checkPoints(points, w2, h2);
             }
-            }
-            else if (py + y + 1 > h2*height)
+            else if (py + y + 1 > h2*verticalHeight)
                 return false;
             
         }
@@ -358,6 +356,36 @@ public abstract class Mover extends javax.swing.JLabel{
 //    public int collideWith() {
 //        
 //    }
+    private boolean checkPoints(Point[] points,int w2,int h2) {
+        for (Point point : points) {
+            Spot s = spots[point.y / h2][point.x / w2];
+//            if (s.getHeight() == Spot.CONNECTION){
+//                System.out.println("Special");
+//                continue;
+//            }
+            if (!s.walk()) return false;
+//            if (height == Spot.CONNECTION) continue;
+//            if (s.getHeight() != height) {
+//                    System.out.println("Other Height: "+s.getHeight());
+//                    return false;
+//            }
+                
+        }
+        Spot s = spots[points[1].y / h2][points[1].x / w2];
+        if (s.getHeight() == Spot.CONNECTION){
+                System.out.println("Special");
+                return true;
+            }
+        if (height == Spot.CONNECTION) return true;
+        if (s.getHeight() != height) {
+                    System.out.println("Other Height: "+s.getHeight());
+                    return false;
+        }
+        
+        
+        
+        return true;
+    }
     
     public boolean move(final int direction) {
         //Thread t = new Thread() {

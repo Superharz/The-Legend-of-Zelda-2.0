@@ -74,7 +74,7 @@ public class Spot{
     public boolean walk() {
         return walkable;
     }
-    public int height() {
+    public int getHeight() {
         return height;
     }
     public void callEvents() {

@@ -12,7 +12,10 @@ import java.awt.image.BufferedImage;
 public class Arrow extends Moveable.Mover{
     int direction;
     public Arrow(int x, int y, int direction,int damage, BufferedImage arrow,Spot[][] spots) {
-        super(100, 100, damage, new Point(arrow.getWidth()/2, arrow.getHeight()/2), arrow, new Rectangle(x, y, arrow.getWidth(), arrow.getHeight()),spots);
+        this(x,y,direction,damage,arrow,spots,0);
+    }
+    public Arrow(int x, int y, int direction,int damage, BufferedImage arrow,Spot[][] spots, int height) {
+        super(100, 100, damage, new Point(arrow.getWidth()/2, arrow.getHeight()/2), arrow, new Rectangle(x, y, arrow.getWidth(), arrow.getHeight()),spots,height);
         this.setImmortal();
         this.direction = direction;
     }

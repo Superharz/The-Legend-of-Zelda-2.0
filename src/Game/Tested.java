@@ -58,7 +58,8 @@ public class Tested extends javax.swing.JFrame {
             BufferedImage sword = ImageIO.read (this.getClass().
                     getResource("/Pictures/sword4.png"));
             Spot s = new Spot(before, false);
-            
+            Spot stair = new Spot(plant,Spot.CONNECTION);
+            Spot l1 = new Spot(layer2,1);
             map1.setUP(10, 10,10,10);
             for (int i = 0; i < 10; i++) {
                 for (int j = 0; j < 10; j++) {
@@ -73,6 +74,11 @@ public class Tested extends javax.swing.JFrame {
             map1.addSpot(s, 8, 6);
             map1.addSpot(s, 7, 6);
             map1.addSpot(s, 9, 0);
+            map1.addSpot(l1, 8, 1);
+            map1.addSpot(l1, 7, 1);
+            map1.addSpot(l1, 6, 1);
+            map1.addSpot(l1, 5, 1);
+            map1.addSpot(stair, 4, 1);
             Event evt = new Event(new Point(5,2));
             Enemie e2 = new Enemie(Enemie.WALLMOVE);
             Event evt2 = new Event(new Point(2,5),e2);
