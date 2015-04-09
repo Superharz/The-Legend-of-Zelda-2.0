@@ -34,6 +34,7 @@ public abstract class Mover extends javax.swing.JLabel{
     public int armor;
     public int lvl;
     private int height = 0;
+    private boolean canChangeHeight = true;
     Point hotSpot;
     Spot[][] spots;
     Rectangle hitBox;
@@ -107,6 +108,9 @@ public abstract class Mover extends javax.swing.JLabel{
     public void stopMoving() {
         move = false;
     }
+    public void setChangeHeight(boolean canChangeHeight) {
+        this.canChangeHeight = canChangeHeight;
+    }
     
     public void setImmortal() {
         immortal = true;
@@ -169,8 +173,19 @@ public abstract class Mover extends javax.swing.JLabel{
     }
 
     public boolean movable(int x, int y) {
-        if (x < spots[0].length && y < spots.length && x >= 0 && y >= 0)
-            return spots[y][x].walk();
+        if (x < spots[0].length && y < spots.length && x >= 0 && y >= 0) {
+            if (!spots[y][x].walk()) return false;
+            int layer = spots[y][x].getHeight();
+            if (layer < 0){
+            if (height == -1*layer || height == -1*layer -1)
+                return true;
+            }
+            if (height < 0) {
+                if (layer == -1*height|| layer == -1*height-1)
+                    return true;
+            }
+            if (layer != height) return false;
+        }
         return true;
     }
     
@@ -341,10 +356,10 @@ public abstract class Mover extends javax.swing.JLabel{
         if (direction == 0) {
             if (py + y + 1 < h2*verticalHeight) {
                // return false;
-            Point[] points  = {new Point(px+1,py + y+1),new Point(px+x/2,py + y+1),new Point(px + x-1,py + y+1)};
-            //System.out.println(px-1);
-            //System.out.println(points[1].x/width + "    |   " + points[0].y/height);
-            return checkPoints(points, w2, h2);
+                Point[] points  = {new Point(px+1,py + y+1),new Point(px+x/2,py + y+1),new Point(px + x-1,py + y+1)};
+                //System.out.println(px-1);
+                //System.out.println(points[1].x/width + "    |   " + points[0].y/height);
+                return checkPoints(points, w2, h2);
             }
             else if (py + y + 1 > h2*verticalHeight)
                 return false;
@@ -359,31 +374,31 @@ public abstract class Mover extends javax.swing.JLabel{
     private boolean checkPoints(Point[] points,int w2,int h2) {
         for (Point point : points) {
             Spot s = spots[point.y / h2][point.x / w2];
-//            if (s.getHeight() == Spot.CONNECTION){
-//                System.out.println("Special");
-//                continue;
-//            }
-            if (!s.walk()) return false;
-//            if (height == Spot.CONNECTION) continue;
-//            if (s.getHeight() != height) {
-//                    System.out.println("Other Height: "+s.getHeight());
-//                    return false;
-//            }
-                
+            if (!s.walk()) return false;     
         }
         Spot s = spots[points[1].y / h2][points[1].x / w2];
-        if (s.getHeight() == Spot.CONNECTION){
-                System.out.println("Special");
-                return true;
+        System.out.println((points[1].y / h2)+"   |   "+(points[1].x / w2)+"    |   Height: " + s.getHeight()+"     |       My Height:  "+height);
+        int h = s.getHeight();
+        if (canChangeHeight) {
+            if (s.getHeight() < 0){
+                if (height == -h || height == (-h -1)) {
+                    System.out.println("Special");
+                    return true;
+                }
             }
-        if (height == Spot.CONNECTION) return true;
-        if (s.getHeight() != height) {
-                    System.out.println("Other Height: "+s.getHeight());
-                    return false;
+
+            if (height < 0) {
+                if (h == -height|| h == -height-1) {
+                    System.out.println("Player Special");
+                    return true;
+
+                }
+            }
         }
-        
-        
-        
+        if (s.getHeight() != height) {
+            System.out.println("Other Height: "+s.getHeight());
+            return false;
+        }
         return true;
     }
     

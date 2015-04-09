@@ -20,7 +20,6 @@ public class Spot{
     private BufferedImage img;
     private boolean walkable;
     private int height;
-    public static final int CONNECTION = -1;
     
     
     public Spot(BufferedImage img, boolean walkable) {
@@ -74,6 +73,11 @@ public class Spot{
     public boolean walk() {
         return walkable;
     }
+    /**
+     * 0 or bigger: Layer
+     * -1 or smaller: Connection to one lower or one higher 
+     * @return The Height of the Spot
+     */
     public int getHeight() {
         return height;
     }

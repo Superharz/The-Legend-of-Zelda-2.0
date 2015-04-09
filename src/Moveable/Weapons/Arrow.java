@@ -18,6 +18,7 @@ public class Arrow extends Moveable.Mover{
         super(100, 100, damage, new Point(arrow.getWidth()/2, arrow.getHeight()/2), arrow, new Rectangle(x, y, arrow.getWidth(), arrow.getHeight()),spots,height);
         this.setImmortal();
         this.direction = direction;
+        this.setChangeHeight(false);
     }
     
     public boolean move() {
