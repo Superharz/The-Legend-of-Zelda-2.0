@@ -12,12 +12,17 @@ import Inventory.Items;
 import Moveable.Enemies.Enemie;
 import Moveable.Player.Player;
 import Tools.ReadWriteTextFileWithEncoding;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -27,10 +32,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class Import {
     private final String COMMENT = "#", TEXTURE = "@", EVENT = "!", ENEMIE = "%", SPOT = "$", ITEM = "^", MAP = "?";
-    
-    
+    HashMap<Integer, BufferedImage> textures;
+    Map map;
     public Import() {
-        
+        textures = new HashMap<Integer, BufferedImage>();
     }
     private File getFile(String selection) {
         Player player;
@@ -53,7 +58,38 @@ public class Import {
         
     }
     private void buildTexture(String line) {
+        final String VALUE = "V", PATH = "P";
+        int value = -1;
+        String[] sub;
+        String f = null;
+        String[] info = line.split(" ");
+        for (int i = 0; i < info.length; i++) {
+            if (info[i].startsWith(VALUE)) {
+                sub = info[i].split(":");
+                value = Integer.parseInt(sub[1]);
+            }
+            if (info[i].startsWith(PATH)) {
+                sub = info[i].split(":");
+                f = sub[1];
+            }
+            //System.out.println(info[i]);
+        }
         
+        if (value != -1 && f != null) {
+            try{
+                System.out.println(f);
+                BufferedImage img = ImageIO.read (this.getClass().
+                    getResource(f));
+                textures.put(value, img);
+                JOptionPane.showMessageDialog(null, "Hi", "Ho", 1, new ImageIcon(img));
+            }
+            catch(Exception ex) {
+                System.out.println(ex.getMessage());
+            }
+            
+            
+        }
+        System.out.println(value);
         
         
         
@@ -97,6 +133,9 @@ public class Import {
     public void buildMap(String line) {
         
         
+        
+        map = new Map();
+        
     }
     
     private void getText(File f) {
@@ -105,23 +144,25 @@ public class Import {
         try {
             LinkedList<String> text = reader.read();
             String line;
+            //String info;
             for (int i = 0; i < text.size(); i++) {
                 line = text.get(i);
                 System.out.println(text.get(i));
                 if (line.startsWith(COMMENT))
                     continue;
+                
                 if (line.startsWith(MAP))
-                    buildMap(line);
+                    buildMap(line.substring(1));
                 if (line.startsWith(ENEMIE))
-                    buildEnemy(line);
+                    buildEnemy(line.substring(1));
                 if (line.startsWith(EVENT))
-                    buildEvent(line);
+                    buildEvent(line.substring(1));
                 if (line.startsWith(ITEM))
-                    buildItem(line);
+                    buildItem(line.substring(1));
                 if (line.startsWith(SPOT))
-                    buildSpot(line);
+                    buildSpot(line.substring(1));
                 if (line.startsWith(TEXTURE))
-                    buildSpot(line);
+                    buildTexture(line.substring(1));
                 
                 
                 

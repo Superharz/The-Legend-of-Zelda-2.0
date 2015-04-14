@@ -14,7 +14,7 @@ import java.util.LinkedList;
  *
  * @author Flo
  */
-public class Spot{
+public class Spot implements java.io.Serializable{
     LinkedList<Event> events;
     LinkedList<Items> items;
     private BufferedImage img;

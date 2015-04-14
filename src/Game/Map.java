@@ -27,7 +27,7 @@ import javax.imageio.ImageIO;
  *
  * @author Flo
  */
-public class Map extends ImagePanel implements Moveable.Events{
+public class Map extends ImagePanel implements Moveable.Events, java.io.Serializable{
     boolean pause = false;
     Spot[][] spots;
     Point playerPosition = new Point(-1, -1);
