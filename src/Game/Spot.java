@@ -19,7 +19,7 @@ public class Spot implements java.io.Serializable{
     LinkedList<Items> items;
     private BufferedImage img;
     private boolean walkable;
-    private int height;
+    private int height ;
     
     
     public Spot(BufferedImage img, boolean walkable) {

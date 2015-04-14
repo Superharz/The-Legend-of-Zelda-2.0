@@ -37,6 +37,7 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
     LinkedList<Arrow> arrows;
     int spotWidth;
     Thread t;
+    private int startX,startY;
     private final Object obj = new Object();
     private boolean protection = false;
     /**
@@ -62,7 +63,7 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
         this.setLayout(null);
         player = new Moveable.Player.Player();
         this.add(player);
-        player.setBounds(50, 50, player.getWidth(), player.getHeight());
+        //player.setBounds(100, 50, player.getWidth(), player.getHeight());
         this.repaint();
        
         //enemie1 = new Moveable.Enemies.Enemie();
@@ -102,7 +103,13 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
 public void setUP(int width,int heights,int playerX, int playerY) {
         this.width = width;
         this.height = heights;
+        startX = playerX;
+        startY = playerY;
+        //System.out.println("Pixel: "+toPixel(5));
         player.setSize(player.getWidth(), player.getWidth());
+        //player.setBounds(50, 100, player.getWidth(), player.getWidth());
+        //player.setBounds(toPixel(playerX), toPixel(playerY), player.getWidth(), player.getWidth());
+        //player.setLocation(toPixel(playerX), toPixel(playerY));
         //player.setText("Try");
         //player.setLocation(50,50);
         spots = new Spot[heights][width];
@@ -115,6 +122,7 @@ public void setUP(int width,int heights,int playerX, int playerY) {
         player.setUP(spots);
         //System.out.println("Seted up");
         spotWidth = spot.image().getWidth();
+        player.setBounds(toPixel(startX), toPixel(startY), player.getWidth(), player.getWidth());
         //enemie1.setUP(spots);
     }
     public void setAllSpots(Spot s) {

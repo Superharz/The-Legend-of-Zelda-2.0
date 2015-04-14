@@ -31,11 +31,13 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author f.harz
  */
 public class Import {
-    private final String COMMENT = "#", TEXTURE = "@", EVENT = "!", ENEMIE = "%", SPOT = "$", ITEM = "^", MAP = "?";
+    private final String COMMENT = "#", TEXTURE = "@", EVENT = "!", ENEMIE = "%", SPOT = "$", ITEM = "^", MAP = "?",SPOTI =  "*";
     HashMap<Integer, BufferedImage> textures;
+    HashMap<Integer, Spot> spots;
     Map map;
     public Import() {
         textures = new HashMap<Integer, BufferedImage>();
+        spots = new HashMap<Integer, Spot>();
     }
     private File getFile(String selection) {
         Player player;
@@ -103,11 +105,77 @@ public class Import {
        return null;
     }
     private void buildSpot(String line) {
+        final String VALUE = "V", WALKABLE = "W", HEIGHT = "H", POSITION = "P", NUMBER = "N";
+        int value = -1, layer = 0, number = -1, x = 0, y = 0;
+        boolean walkable = false;
+        String[] sub;
+        String[] info = line.split(" ");
+        for (int i = 0; i < info.length; i++) {
+            if (info[i].startsWith(VALUE)) {
+                sub = info[i].split(":");
+                value = Integer.parseInt(sub[1]);
+            }
+            if (info[i].startsWith(POSITION)) {
+                sub = info[i].split(":");
+                x = Integer.parseInt(sub[1]);
+                y = Integer.parseInt(sub[2]);
+            }
+            if (info[i].startsWith(HEIGHT)) {
+                sub = info[i].split(":");
+                layer = Integer.parseInt(sub[1]);
+            }
+            if (info[i].startsWith(NUMBER)) {
+                sub = info[i].split(":");
+                number = Integer.parseInt(sub[1]);
+            }
+            if (info[i].startsWith(WALKABLE)) {
+                sub = info[i].split(":");
+                walkable = (Integer.parseInt(sub[1]) != 0);
+            }
+            //System.out.println(info[i]);
+        }
         
+        if (number == -1 ){
+            Spot s = new Spot(textures.get(value), layer);
+            if (!walkable)
+                s = new Spot(textures.get(value), walkable);
+            map.addSpot(s, x, y);
+        }
+        else{
+            map.addSpot(spots.get(number).clone(), x, y);
+        }   
+    }
+    public void createSpot(String line) {
+         final String VALUE = "V", WALKABLE = "W", HEIGHT = "H", NUMBER = "N";
+        int value = -1, layer = 0, number = -1;
+        boolean walkable = false;
+        String[] sub;
+        String[] info = line.split(" ");
+        for (int i = 0; i < info.length; i++) {
+            if (info[i].startsWith(VALUE)) {
+                sub = info[i].split(":");
+                value = Integer.parseInt(sub[1]);
+            }
+            if (info[i].startsWith(HEIGHT)) {
+                sub = info[i].split(":");
+                layer = Integer.parseInt(sub[1]);
+            }
+            if (info[i].startsWith(NUMBER)) {
+                sub = info[i].split(":");
+                number = Integer.parseInt(sub[1]);
+            }
+            if (info[i].startsWith(WALKABLE)) {
+                sub = info[i].split(":");
+                walkable = (Integer.parseInt(sub[1]) != 0);
+            }
+            //System.out.println(info[i]);
+        }
         
-        
-        
-        
+
+        Spot s = new Spot(textures.get(value), layer);
+        if (!walkable)
+            s = new Spot(textures.get(value), walkable);
+        spots.put(number, s);         
     }
     private void buildEvent(String line) {
         
@@ -128,14 +196,13 @@ public class Import {
         
         
         
-        return null;
+        return map;
     }
     public void buildMap(String line) {
-        final String VALUE = "V", SIZE = "S", WALKABLE = "W", HEIGHT = "H", PLAYER = "P";
-        int value = -1, layer = 0, width = 0, height = 0,x = 0,y = 0;
+        final String VALUE = "V", SIZE = "S", WALKABLE = "W", HEIGHT = "H", PLAYER = "P", NUMBER = "N";
+        int value = -1, layer = 0, width = 0, height = 0,x = 0,y = 0, number = -1;
         boolean walkable = false;
         String[] sub;
-        String f = null;
         String[] info = line.split(" ");
         for (int i = 0; i < info.length; i++) {
             if (info[i].startsWith(VALUE)) {
@@ -151,6 +218,10 @@ public class Import {
                 sub = info[i].split(":");
                 layer = Integer.parseInt(sub[1]);
             }
+            if (info[i].startsWith(NUMBER)) {
+                sub = info[i].split(":");
+                number = Integer.parseInt(sub[1]);
+            }
             if (info[i].startsWith(WALKABLE)) {
                 sub = info[i].split(":");
                 walkable = (Integer.parseInt(sub[1]) != 0);
@@ -165,11 +236,16 @@ public class Import {
         
         map = new Map();
         map.setUP(width, height, x, y);
-        Spot s = new Spot(textures.get(value), layer);
-        if (!walkable)
-            s = new Spot(textures.get(value), walkable);
-        map.setAllSpots(s);
-        
+        if (number == -1 ){
+            Spot s = new Spot(textures.get(value), layer);
+            if (!walkable)
+                s = new Spot(textures.get(value), walkable);
+            map.setAllSpots(s);
+        }
+        else{
+            map.setAllSpots(spots.get(number));
+        }
+        //map.build();
     }
     
     private void getText(File f) {
@@ -197,7 +273,8 @@ public class Import {
                     buildSpot(line.substring(1));
                 if (line.startsWith(TEXTURE))
                     buildTexture(line.substring(1));
-                
+                if (line.startsWith(SPOTI))
+                    createSpot(line.substring(1));
                 
                 
                 
