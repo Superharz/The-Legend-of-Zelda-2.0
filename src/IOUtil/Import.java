@@ -131,10 +131,44 @@ public class Import {
         return null;
     }
     public void buildMap(String line) {
-        
-        
+        final String VALUE = "V", SIZE = "S", WALKABLE = "W", HEIGHT = "H", PLAYER = "P";
+        int value = -1, layer = 0, width = 0, height = 0,x = 0,y = 0;
+        boolean walkable = false;
+        String[] sub;
+        String f = null;
+        String[] info = line.split(" ");
+        for (int i = 0; i < info.length; i++) {
+            if (info[i].startsWith(VALUE)) {
+                sub = info[i].split(":");
+                value = Integer.parseInt(sub[1]);
+            }
+            if (info[i].startsWith(PLAYER)) {
+                sub = info[i].split(":");
+                x = Integer.parseInt(sub[1]);
+                y = Integer.parseInt(sub[2]);
+            }
+            if (info[i].startsWith(HEIGHT)) {
+                sub = info[i].split(":");
+                layer = Integer.parseInt(sub[1]);
+            }
+            if (info[i].startsWith(WALKABLE)) {
+                sub = info[i].split(":");
+                walkable = (Integer.parseInt(sub[1]) != 0);
+            }
+            if (info[i].startsWith(SIZE)) {
+                sub = info[i].split(":");
+                width = Integer.parseInt(sub[1]);
+                height = Integer.parseInt(sub[2]);
+            }
+            //System.out.println(info[i]);
+        }
         
         map = new Map();
+        map.setUP(width, height, x, y);
+        Spot s = new Spot(textures.get(value), layer);
+        if (!walkable)
+            s = new Spot(textures.get(value), walkable);
+        map.setAllSpots(s);
         
     }
     

@@ -110,4 +110,22 @@ public class Spot implements java.io.Serializable{
         else
             return items.remove();
     }
+    @Override
+    public Spot clone() {
+        Spot s = new Spot(img, height);
+        if (!walkable || height == 0) {
+            s = new Spot(img, walkable);
+        }
+        if (hasEvent()) {
+            for (int i = 0; i < events.size(); i++) {
+                s.addEvent(events.get(i));
+            }
+        }
+        if (hasItem()) {
+            for (int i = 0; i < items.size(); i++) {
+                s.additem(items.get(i));
+            }
+        }
+        return s;
+    }
 }

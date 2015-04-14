@@ -49,6 +49,7 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
         enemies = new LinkedList();
         arrows = new LinkedList<Arrow>();
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -116,7 +117,13 @@ public void setUP(int width,int heights,int playerX, int playerY) {
         spotWidth = spot.image().getWidth();
         //enemie1.setUP(spots);
     }
-    
+    public void setAllSpots(Spot s) {
+        for (int y = 0; y < spots.length; y++) {
+            for (int x = 0; x < spots[0].length; x++) {
+                addSpot(s.clone(), x, y);
+            }
+        }
+    }
     private boolean updatePlayerPosition() {
         Point oldPosition = playerPosition;
         playerPosition = new Point(toSpots(player.getHotSpot().x),toSpots(player.getHotSpot().y));
