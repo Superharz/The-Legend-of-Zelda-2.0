@@ -28,7 +28,7 @@ import javax.imageio.ImageIO;
  * @author Flo
  */
 public class Map extends ImagePanel implements Moveable.Events, java.io.Serializable{
-    boolean pause = false;
+    boolean pause = false, first = true;
     Spot[][] spots;
     Point playerPosition = new Point(-1, -1);
     int width, height;
@@ -118,11 +118,15 @@ public void setUP(int width,int heights,int playerX, int playerY) {
     
     public void addSpot(Spot spot,int x, int y) {
         spots[y][x] = spot;
-        this.setSize(width * spots[y][x].image().getWidth(),  height * spots[y][x].image().getHeight());
+        if (first) {
+            this.setSize(width * spots[y][x].image().getWidth(),  height * spots[y][x].image().getHeight());
+            spotWidth = spot.image().getWidth();
+            player.setBounds(toPixel(startX), toPixel(startY), player.getWidth(), player.getWidth());
+            first = false;
+        }
         player.setUP(spots);
         //System.out.println("Seted up");
-        spotWidth = spot.image().getWidth();
-        player.setBounds(toPixel(startX), toPixel(startY), player.getWidth(), player.getWidth());
+        
         //enemie1.setUP(spots);
     }
     public void setAllSpots(Spot s) {

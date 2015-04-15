@@ -31,13 +31,17 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author f.harz
  */
 public class Import {
-    private final String COMMENT = "#", TEXTURE = "@", EVENT = "!", ENEMIE = "%", SPOT = "$", ITEM = "^", MAP = "?",SPOTI =  "*";
+    private final String COMMENT = "#", TEXTURE = "@", EVENT = "!", EVENTI = "/", ENEMIE = "%",ENEMIEI = "~", SPOT = "$", ITEM = "^", MAP = "?",SPOTI =  "*";
     HashMap<Integer, BufferedImage> textures;
     HashMap<Integer, Spot> spots;
+    HashMap<Integer, Event> events;
+    HashMap<Integer, Enemie> enemies;
     Map map;
     public Import() {
         textures = new HashMap<Integer, BufferedImage>();
-        spots = new HashMap<Integer, Spot>();
+        spots    = new HashMap<Integer,          Spot>();
+        events   = new HashMap<Integer,         Event>();
+        enemies  = new HashMap<Integer,        Enemie>();
     }
     private File getFile(String selection) {
         Player player;
@@ -53,6 +57,13 @@ public class Import {
         
     }
     private void buildEnemy(String line) {
+        
+        
+        
+        
+        
+    }
+    private void createEnemy(String line) {
         
         
         
@@ -146,7 +157,7 @@ public class Import {
         }   
     }
     public void createSpot(String line) {
-         final String VALUE = "V", WALKABLE = "W", HEIGHT = "H", NUMBER = "N";
+        final String VALUE = "V", WALKABLE = "W", HEIGHT = "H", NUMBER = "N";
         int value = -1, layer = 0, number = -1;
         boolean walkable = false;
         String[] sub;
@@ -179,6 +190,48 @@ public class Import {
     }
     private void buildEvent(String line) {
         
+        
+        
+        
+        
+    }
+    private void createEvent(String line) {
+        final String VALUE = "V", TYPE = "T", POSITION = "P", NAME = "N", HEAL = "H", TEXT = "S", ENEMIE = "E", AMOUNT = "A";
+        int value = -1, type = 0, x = 0, y = 0, heal = 0, enemie = 0, amount = -1;
+        String text;
+        boolean walkable = false;
+        String[] sub;
+        String[] info = line.split(" ");
+        for (int i = 0; i < info.length; i++) {
+            if (info[i].startsWith(VALUE)) {
+                sub = info[i].split(":");
+                value = Integer.parseInt(sub[1]);
+            }
+            if (info[i].startsWith(POSITION)) {
+                sub = info[i].split(":");
+                x = Integer.parseInt(sub[1]);
+                y = Integer.parseInt(sub[2]);
+            }
+            if (info[i].startsWith(HEIGHT)) {
+                sub = info[i].split(":");
+                layer = Integer.parseInt(sub[1]);
+            }
+            if (info[i].startsWith(NUMBER)) {
+                sub = info[i].split(":");
+                number = Integer.parseInt(sub[1]);
+            }
+            if (info[i].startsWith(WALKABLE)) {
+                sub = info[i].split(":");
+                walkable = (Integer.parseInt(sub[1]) != 0);
+            }
+            //System.out.println(info[i]);
+        }
+        
+
+        Spot s = new Spot(textures.get(value), layer);
+        if (!walkable)
+            s = new Spot(textures.get(value), walkable);
+        spots.put(number, s);  
         
         
         
@@ -265,16 +318,21 @@ public class Import {
                     buildMap(line.substring(1));
                 if (line.startsWith(ENEMIE))
                     buildEnemy(line.substring(1));
+                if (line.startsWith(ENEMIEI))
+                    createEnemy(line.substring(1));
                 if (line.startsWith(EVENT))
                     buildEvent(line.substring(1));
+                if (line.startsWith(EVENTI))
+                    createEvent(line.substring(1));
                 if (line.startsWith(ITEM))
                     buildItem(line.substring(1));
                 if (line.startsWith(SPOT))
                     buildSpot(line.substring(1));
-                if (line.startsWith(TEXTURE))
-                    buildTexture(line.substring(1));
                 if (line.startsWith(SPOTI))
                     createSpot(line.substring(1));
+                if (line.startsWith(TEXTURE))
+                    buildTexture(line.substring(1));
+                
                 
                 
                 
