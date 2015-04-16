@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class Event {
     public final List<Events> listeners = new ArrayList<Events>();
-    public final int TELEPORT = 0, TEXT = 1, HEAL = 2, ITEM = 3, SPAWN = 4;
+    public static final int TELEPORT = 0, TEXT = 1, HEAL = 2, ITEM = 3, SPAWN = 4;
     private final String EMPTY = "";
     private final int NOCOUNT = -1;
     private int eventType;

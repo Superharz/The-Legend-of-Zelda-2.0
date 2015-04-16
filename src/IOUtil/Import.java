@@ -12,6 +12,7 @@ import Inventory.Items;
 import Moveable.Enemies.Enemie;
 import Moveable.Player.Player;
 import Tools.ReadWriteTextFileWithEncoding;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -36,12 +37,14 @@ public class Import {
     HashMap<Integer, Spot> spots;
     HashMap<Integer, Event> events;
     HashMap<Integer, Enemie> enemies;
+    HashMap<Integer, Items> items;
     Map map;
     public Import() {
         textures = new HashMap<Integer, BufferedImage>();
         spots    = new HashMap<Integer,          Spot>();
         events   = new HashMap<Integer,         Event>();
         enemies  = new HashMap<Integer,        Enemie>();
+        items    = new HashMap<Integer,         Items>();
     }
     private File getFile(String selection) {
         Player player;
@@ -189,20 +192,16 @@ public class Import {
         spots.put(number, s);         
     }
     private void buildEvent(String line) {
-        
-        
-        
-        
-        
-    }
-    private void createEvent(String line) {
-        final String VALUE = "V", TYPE = "T", POSITION = "P", NAME = "N", HEAL = "H", TEXT = "S", ENEMIE = "E", AMOUNT = "A";
-        int value = -1, type = 0, x = 0, y = 0, heal = 0, enemie = 0, amount = -1;
-        String text;
-        boolean walkable = false;
+        final String VALUE = "V", TYPE = "T", POSITION = "P", TELEPORT = "B", NAME = "N", HEAL = "H", TEXT = "S", ENEMIE = "E", AMOUNT = "A", ITEM = "I";
+        int value = -1, type = 0, x = -1, x2 = -1, y2 = -1, y = -1, heal = -1, enemie = -1, amount = -1, item = -1;
+        String text = "";
         String[] sub;
         String[] info = line.split(" ");
         for (int i = 0; i < info.length; i++) {
+            if (info[i].startsWith(TYPE)) {
+                sub = info[i].split(":");
+                type = Integer.parseInt(sub[1]);
+            }
             if (info[i].startsWith(VALUE)) {
                 sub = info[i].split(":");
                 value = Integer.parseInt(sub[1]);
@@ -212,26 +211,149 @@ public class Import {
                 x = Integer.parseInt(sub[1]);
                 y = Integer.parseInt(sub[2]);
             }
-            if (info[i].startsWith(HEIGHT)) {
+            if (info[i].startsWith(TELEPORT)) {
                 sub = info[i].split(":");
-                layer = Integer.parseInt(sub[1]);
+                x2 = Integer.parseInt(sub[1]);
+                y2 = Integer.parseInt(sub[2]);
             }
-            if (info[i].startsWith(NUMBER)) {
+            if (info[i].startsWith(NAME)) {
                 sub = info[i].split(":");
-                number = Integer.parseInt(sub[1]);
+                text = (sub[1]);
             }
-            if (info[i].startsWith(WALKABLE)) {
+            if (info[i].startsWith(HEAL)) {
                 sub = info[i].split(":");
-                walkable = (Integer.parseInt(sub[1]) != 0);
+                heal = Integer.parseInt(sub[1]);
+            }
+            if (info[i].startsWith(ITEM)) {
+                sub = info[i].split(":");
+                x2 = Integer.parseInt(sub[1]);
+                y2 = Integer.parseInt(sub[2]);
+                item = Integer.parseInt(sub[3]);
+            }
+            if (info[i].startsWith(TEXT)) {
+                sub = info[i].split(":");
+                text = sub[1];
+            }
+            if (info[i].startsWith(ENEMIE)) {
+                sub = info[i].split(":");
+                x2 = Integer.parseInt(sub[1]);
+                y2 = Integer.parseInt(sub[2]);
+                enemie = Integer.parseInt(sub[3]);
+            }
+            if (info[i].startsWith(AMOUNT)) {
+                sub = info[i].split(":");
+                amount = Integer.parseInt(sub[1]);
             }
             //System.out.println(info[i]);
         }
+        if (value == -1) {
+        Event evt = new Event( new Point(x2,y2));
+        switch (type) {
+            case Event.TELEPORT:
+                if(!text.equals(""))
+                    evt = new Event(new Point(x2,y2), text);
+                break;
+            case Event.ITEM:
+                evt = new Event(new Point(x2,y2), items.get(item));
+                break;
+            case Event.SPAWN:       
+                evt = new Event(new Point(x2,y2), enemies.get(enemie));
+                break;
+            case Event.HEAL:        
+                evt = new Event(heal);
+                break;
+            case Event.TEXT:        
+                evt = new Event(text);
+                break;
+        }
+        if (amount != -1)
+            evt.addEventCount(amount);
         
-
-        Spot s = new Spot(textures.get(value), layer);
-        if (!walkable)
-            s = new Spot(textures.get(value), walkable);
-        spots.put(number, s);  
+        }
+        else{
+            Event evt = events.get(value);
+        }
+        //events.put(value, evt);
+        
+        
+        
+        
+    }
+    private void createEvent(String line) {
+        final String VALUE = "V", TYPE = "T", POSITION = "P", NAME = "N", HEAL = "H", TEXT = "S", ENEMIE = "E", AMOUNT = "A", ITEM = "I";
+        int value = -1, type = 0, x = -1, y = -1, heal = -1, enemie = -1, amount = -1, item = -1;
+        String text = "";
+        String[] sub;
+        String[] info = line.split(" ");
+        for (int i = 0; i < info.length; i++) {
+            if (info[i].startsWith(TYPE)) {
+                sub = info[i].split(":");
+                type = Integer.parseInt(sub[1]);
+            }
+            if (info[i].startsWith(VALUE)) {
+                sub = info[i].split(":");
+                value = Integer.parseInt(sub[1]);
+            }
+            if (info[i].startsWith(POSITION)) {
+                sub = info[i].split(":");
+                x = Integer.parseInt(sub[1]);
+                y = Integer.parseInt(sub[2]);
+            }
+            if (info[i].startsWith(NAME)) {
+                sub = info[i].split(":");
+                text = (sub[1]);
+            }
+            if (info[i].startsWith(HEAL)) {
+                sub = info[i].split(":");
+                heal = Integer.parseInt(sub[1]);
+            }
+            if (info[i].startsWith(ITEM)) {
+                sub = info[i].split(":");
+                x = Integer.parseInt(sub[1]);
+                y = Integer.parseInt(sub[2]);
+                item = Integer.parseInt(sub[3]);
+            }
+            if (info[i].startsWith(TEXT)) {
+                sub = info[i].split(":");
+                text = sub[1];
+            }
+            if (info[i].startsWith(ENEMIE)) {
+                sub = info[i].split(":");
+                x = Integer.parseInt(sub[1]);
+                y = Integer.parseInt(sub[2]);
+                enemie = Integer.parseInt(sub[3]);
+            }
+            if (info[i].startsWith(AMOUNT)) {
+                sub = info[i].split(":");
+                amount = Integer.parseInt(sub[1]);
+            }
+            //System.out.println(info[i]);
+        }
+        Event evt = new Event( new Point(x,y));
+        switch (type) {
+            case Event.TELEPORT:
+                if(!text.equals(""))
+                    evt = new Event(new Point(x,y), text);
+                break;
+            case Event.ITEM:
+                evt = new Event(new Point(x,y), items.get(item));
+                break;
+            case Event.SPAWN:       
+                evt = new Event(new Point(x,y), enemies.get(enemie));
+                break;
+            case Event.HEAL:        
+                evt = new Event(heal);
+                break;
+            case Event.TEXT:        
+                evt = new Event(text);
+                break;
+        }
+        if (amount != -1)
+            evt.addEventCount(amount);
+        events.put(value, evt);
+        
+        
+ 
         
         
         
