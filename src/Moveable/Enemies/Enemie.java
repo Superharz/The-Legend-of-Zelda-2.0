@@ -50,6 +50,15 @@ public  class Enemie extends Mover{
             }
         //}
     }
+    public Enemie(int moveMethod, BufferedImage[] img) {
+        //super(speed, live, damage, hotSpot, img);
+        
+             this.img = img;
+            this.moveMethod = moveMethod;
+            //this.randomMove();
+       
+        //}
+    }
     
     public void setUP(Spot[][] spots) {
         Rectangle r = new Rectangle(this.getX(), this.getY(),  getWidth(), getWidth());

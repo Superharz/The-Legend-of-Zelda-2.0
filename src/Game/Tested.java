@@ -205,6 +205,7 @@ public class Tested extends javax.swing.JFrame {
             case 'd': map1.getplayer().move(2);break;
             case 'w': map1.getplayer().move(1);break;
             case 's': map1.getplayer().move(0);break;
+            case 'z': break;
             case KeyEvent.VK_SPACE: map1.play(false);   ;break;
         }
       }

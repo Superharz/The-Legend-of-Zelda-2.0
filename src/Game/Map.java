@@ -281,8 +281,14 @@ public void setUP(int width,int heights,int playerX, int playerY) {
     public Player getplayer() {
         return player;
     }
-    
+    /**
+     * X and Y in Pixels
+     * @param e
+     * @param x
+     * @param y 
+     */
     public void addEnemy(Enemie e,int x, int y) {
+        //this.addEnemy(e, new Point(x,y));
         enemies.add(e);
         this.add(e);
         e.addListener(this);
@@ -296,7 +302,11 @@ public void setUP(int width,int heights,int playerX, int playerY) {
         //e.randomMove();
         
     }
-    
+    /**
+     * Point in spots
+     * @param e
+     * @param p 
+     */
     public void addEnemy(Enemie e,Point p) {
         e = e.clone();
         enemies.add(e);

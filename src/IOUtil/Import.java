@@ -32,7 +32,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author f.harz
  */
 public class Import {
-    private final String COMMENT = "#", TEXTURE = "@", EVENT = "!", EVENTI = "/", ENEMIE = "%",ENEMIEI = "~", SPOT = "$", ITEM = "^", MAP = "?",SPOTI =  "*";
+    private final String COMMENT = "#", TEXTURE = "@", EVENT = "!", EVENTI = "/", ENEMIE = "%",ENEMIEI = "~", SPOT = "$", ITEM = "^", ITEMI = "`", MAP = "?",SPOTI =  "*";
     HashMap<Integer, BufferedImage> textures;
     HashMap<Integer, Spot> spots;
     HashMap<Integer, Event> events;
@@ -60,6 +60,45 @@ public class Import {
         
     }
     private void buildEnemy(String line) {
+        final String VALUE = "V", POSITION = "P", MOVETYPE = "M", PATH = "S";
+        int value = -1, type = 0, x = 0, y = 0;
+        String path = "";
+        String[] sub;
+        String[] info = line.split(" ");
+        for (int i = 0; i < info.length; i++) {
+            if (info[i].startsWith(POSITION)) {
+                sub = info[i].split(":");
+                x = Integer.parseInt(sub[1]);
+                y = Integer.parseInt(sub[2]);
+            }
+            if (info[i].startsWith(MOVETYPE)) {
+                sub = info[i].split(":");
+                type = Integer.parseInt(sub[1]);
+            }
+            if (info[i].startsWith(VALUE)) {
+                sub = info[i].split(":");
+                value = Integer.parseInt(sub[1]);
+            }
+            if (info[i].startsWith(PATH)) {
+                sub = info[i].split(":");
+                path = (sub[1]);
+            }
+            //System.out.println(info[i]);
+        }
+        if (value != -1) {
+            Enemie e = new Enemie(type);
+
+            if (!path.equals(""))
+                e = new Enemie(type, null);
+            map.addEnemy(e, new Point(x,y));
+
+        }
+        
+        else{
+            Enemie e = enemies.get(value);
+            map.addEnemy(e, new Point(x,y));
+            
+        }
         
         
         
@@ -67,7 +106,34 @@ public class Import {
         
     }
     private void createEnemy(String line) {
+        final String VALUE = "V", MOVETYPE = "M", PATH = "P";
+        int value = -1, type = 0;
+        String path = "";
+        String[] sub;
+        String[] info = line.split(" ");
+        for (int i = 0; i < info.length; i++) {
+            if (info[i].startsWith(MOVETYPE)) {
+                sub = info[i].split(":");
+                type = Integer.parseInt(sub[1]);
+            }
+            if (info[i].startsWith(VALUE)) {
+                sub = info[i].split(":");
+                value = Integer.parseInt(sub[1]);
+            }
+            if (info[i].startsWith(PATH)) {
+                sub = info[i].split(":");
+                path = (sub[1]);
+            }
+            //System.out.println(info[i]);
+        }
+        Enemie e = new Enemie(type);
         
+        if (!path.equals(""))
+            e = new Enemie(type, null);
+        enemies.put(value, e);
+        
+        
+ 
         
         
         
@@ -247,31 +313,34 @@ public class Import {
             //System.out.println(info[i]);
         }
         if (value == -1) {
-        Event evt = new Event( new Point(x2,y2));
-        switch (type) {
-            case Event.TELEPORT:
-                if(!text.equals(""))
-                    evt = new Event(new Point(x2,y2), text);
-                break;
-            case Event.ITEM:
-                evt = new Event(new Point(x2,y2), items.get(item));
-                break;
-            case Event.SPAWN:       
-                evt = new Event(new Point(x2,y2), enemies.get(enemie));
-                break;
-            case Event.HEAL:        
-                evt = new Event(heal);
-                break;
-            case Event.TEXT:        
-                evt = new Event(text);
-                break;
-        }
-        if (amount != -1)
-            evt.addEventCount(amount);
+            Event evt = new Event( new Point(x2,y2));
+            switch (type) {
+                case Event.TELEPORT:
+                    if(!text.equals(""))
+                        evt = new Event(new Point(x2,y2), text);
+                    break;
+                case Event.ITEM:
+                    evt = new Event(new Point(x2,y2), items.get(item));
+                    break;
+                case Event.SPAWN:       
+                    evt = new Event(new Point(x2,y2), enemies.get(enemie));
+                    break;
+                case Event.HEAL:        
+                    evt = new Event(heal);
+                    break;
+                case Event.TEXT:        
+                    evt = new Event(text);
+                    break;
+            }
+            if (amount != -1)
+                evt.addEventCount(amount);
+
+            map.addEvent(x, y, evt);
         
         }
         else{
             Event evt = events.get(value);
+            map.addEvent(x, y, evt);
         }
         //events.put(value, evt);
         
@@ -366,6 +435,13 @@ public class Import {
         
        
     }
+    private void createItem(String line) {
+        
+        
+        
+        
+       
+    }
     public Map buildMap() {
         getText(getFile("Select a Map"));
         
@@ -448,6 +524,8 @@ public class Import {
                     createEvent(line.substring(1));
                 if (line.startsWith(ITEM))
                     buildItem(line.substring(1));
+                if (line.startsWith(ITEMI))
+                    createItem(line.substring(1));
                 if (line.startsWith(SPOT))
                     buildSpot(line.substring(1));
                 if (line.startsWith(SPOTI))
