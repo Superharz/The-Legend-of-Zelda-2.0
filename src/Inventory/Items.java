@@ -33,6 +33,12 @@ public class Items extends JLabel {
     public Items(String type,String name, Icon icon,boolean useable) {
         setUp(type, name, icon,useable);
     }
+    /**
+     * Do NOT use except for deSerilazation
+     */
+    public Items() {
+
+    }
 
     
                    

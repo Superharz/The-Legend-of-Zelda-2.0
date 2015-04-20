@@ -44,6 +44,15 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
      * Creates new form Map
      */
     public Map() {
+        this(new Player());
+//        initComponents();
+//        player.addListener(this);
+//        
+//        enemies = new LinkedList();
+//        arrows = new LinkedList<Arrow>();
+    }
+    public Map(Player player) {
+        this.player = player;
         initComponents();
         player.addListener(this);
         
@@ -61,7 +70,7 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
         this.setLayout(null);
-        player = new Moveable.Player.Player();
+        //player = new Moveable.Player.Player();
         this.add(player);
         //player.setBounds(100, 50, player.getWidth(), player.getHeight());
         this.repaint();

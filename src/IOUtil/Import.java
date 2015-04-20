@@ -31,8 +31,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  * @author f.harz
  */
-public class Import {
-    private final String COMMENT = "#", TEXTURE = "@", EVENT = "!", EVENTI = "/", ENEMIE = "%",ENEMIEI = "~", SPOT = "$", ITEM = "^", ITEMI = "`", MAP = "?",SPOTI =  "*";
+public class Import extends Serialize{
+    private final String COMMENT = "#", TEXTURE = "@", EVENT = "!", EVENTI = "/",
+            ENEMIE = "%",ENEMIEI = "~", SPOT = "$", ITEM = "^", ITEMI = "`", 
+            MAP = "?",SPOTI =  "*", NO_PLAYER = "|NO_PLAYER|", PLAYER = "|PLAYER|";
     HashMap<Integer, BufferedImage> textures;
     HashMap<Integer, Spot> spots;
     HashMap<Integer, Event> events;
@@ -47,8 +49,8 @@ public class Import {
         items    = new HashMap<Integer,         Items>();
     }
     private File getFile(String selection) {
-        Player player;
-        Map map;
+        //Player player;
+        //Map map;
         JFileChooser chooser = new JFileChooser();
         FileFilter filter = new FileNameExtensionFilter("Text-Files   .txt", "txt");
 
@@ -80,7 +82,7 @@ public class Import {
                 value = Integer.parseInt(sub[1]);
             }
             if (info[i].startsWith(PATH)) {
-                sub = info[i].split(":");
+                sub = info[i].split("=");
                 path = (sub[1]);
             }
             //System.out.println(info[i]);
@@ -121,7 +123,7 @@ public class Import {
                 value = Integer.parseInt(sub[1]);
             }
             if (info[i].startsWith(PATH)) {
-                sub = info[i].split(":");
+                sub = info[i].split("=");
                 path = (sub[1]);
             }
             //System.out.println(info[i]);
@@ -151,7 +153,7 @@ public class Import {
                 value = Integer.parseInt(sub[1]);
             }
             if (info[i].startsWith(PATH)) {
-                sub = info[i].split(":");
+                sub = info[i].split("=");
                 f = sub[1];
             }
             //System.out.println(info[i]);
@@ -177,12 +179,12 @@ public class Import {
         
        
     }
-    public Player buildPlayer(String line) {
+    public void buildPlayer(boolean defaultPlayer) {
         
         
         
         
-       return null;
+
     }
     private void buildSpot(String line) {
         final String VALUE = "V", WALKABLE = "W", HEIGHT = "H", POSITION = "P", NUMBER = "N";
@@ -259,7 +261,7 @@ public class Import {
     }
     private void buildEvent(String line) {
         final String VALUE = "V", TYPE = "T", POSITION = "P", TELEPORT = "B", NAME = "N", HEAL = "H", TEXT = "S", ENEMIE = "E", AMOUNT = "A", ITEM = "I";
-        int value = -1, type = 0, x = -1, x2 = -1, y2 = -1, y = -1, heal = -1, enemie = -1, amount = -1, item = -1;
+        int value = -1, type = 0, x = -1, x2 = -1, y2 = -1, y = -1, heal = -1, objectValue = -1, amount = -1;
         String text = "";
         String[] sub;
         String[] info = line.split(" ");
@@ -294,7 +296,7 @@ public class Import {
                 sub = info[i].split(":");
                 x2 = Integer.parseInt(sub[1]);
                 y2 = Integer.parseInt(sub[2]);
-                item = Integer.parseInt(sub[3]);
+                objectValue = Integer.parseInt(sub[3]);
             }
             if (info[i].startsWith(TEXT)) {
                 sub = info[i].split(":");
@@ -304,7 +306,7 @@ public class Import {
                 sub = info[i].split(":");
                 x2 = Integer.parseInt(sub[1]);
                 y2 = Integer.parseInt(sub[2]);
-                enemie = Integer.parseInt(sub[3]);
+                objectValue = Integer.parseInt(sub[3]);
             }
             if (info[i].startsWith(AMOUNT)) {
                 sub = info[i].split(":");
@@ -320,10 +322,10 @@ public class Import {
                         evt = new Event(new Point(x2,y2), text);
                     break;
                 case Event.ITEM:
-                    evt = new Event(new Point(x2,y2), items.get(item));
+                    evt = new Event(new Point(x2,y2), items.get(objectValue));
                     break;
                 case Event.SPAWN:       
-                    evt = new Event(new Point(x2,y2), enemies.get(enemie));
+                    evt = new Event(new Point(x2,y2), enemies.get(objectValue));
                     break;
                 case Event.HEAL:        
                     evt = new Event(heal);
@@ -350,7 +352,7 @@ public class Import {
     }
     private void createEvent(String line) {
         final String VALUE = "V", TYPE = "T", POSITION = "P", NAME = "N", HEAL = "H", TEXT = "S", ENEMIE = "E", AMOUNT = "A", ITEM = "I";
-        int value = -1, type = 0, x = -1, y = -1, heal = -1, enemie = -1, amount = -1, item = -1;
+        int value = -1, type = 0, x = -1, y = -1, heal = -1, objectValue = -1, amount = -1;
         String text = "";
         String[] sub;
         String[] info = line.split(" ");
@@ -380,7 +382,7 @@ public class Import {
                 sub = info[i].split(":");
                 x = Integer.parseInt(sub[1]);
                 y = Integer.parseInt(sub[2]);
-                item = Integer.parseInt(sub[3]);
+                objectValue = Integer.parseInt(sub[3]);
             }
             if (info[i].startsWith(TEXT)) {
                 sub = info[i].split(":");
@@ -390,7 +392,7 @@ public class Import {
                 sub = info[i].split(":");
                 x = Integer.parseInt(sub[1]);
                 y = Integer.parseInt(sub[2]);
-                enemie = Integer.parseInt(sub[3]);
+                objectValue = Integer.parseInt(sub[3]);
             }
             if (info[i].startsWith(AMOUNT)) {
                 sub = info[i].split(":");
@@ -405,10 +407,10 @@ public class Import {
                     evt = new Event(new Point(x,y), text);
                 break;
             case Event.ITEM:
-                evt = new Event(new Point(x,y), items.get(item));
+                evt = new Event(new Point(x,y), items.get(objectValue));
                 break;
             case Event.SPAWN:       
-                evt = new Event(new Point(x,y), enemies.get(enemie));
+                evt = new Event(new Point(x,y), enemies.get(objectValue));
                 break;
             case Event.HEAL:        
                 evt = new Event(heal);
@@ -429,13 +431,62 @@ public class Import {
         
     }
     private void buildItem(String line) {
-        
+        final String VALUE = "V", PATH = "S", POSITION = "P";
+        int value = -1, x = -1, y = -1;
+        String path = "";
+        String[] sub;
+        String[] info = line.split(" ");
+        for (int i = 0; i < info.length; i++) {
+            if (info[i].startsWith(POSITION)) {
+                sub = info[i].split(":");
+                x = Integer.parseInt(sub[1]);
+                y = Integer.parseInt(sub[2]);
+            }
+            if (info[i].startsWith(VALUE)) {
+                sub = info[i].split(":");
+                value = Integer.parseInt(sub[1]);
+            }
+            if (info[i].startsWith(PATH)) {
+                sub = info[i].split("=");
+                path = (sub[1]);
+            }
+            //System.out.println(info[i]);
+        }
+        Items item = new Items();
+        if (value == -1) {
+            item = this.deSerialize(item.getClass(), path);
+        }
+        else {
+            item = items.get(value);
+        }
+        map.addItem(x, y, item);
         
         
         
        
     }
     private void createItem(String line) {
+        final String VALUE = "V", PATH = "P";
+        int value = -1;
+        String path = "";
+        String[] sub;
+        String[] info = line.split(" ");
+        for (int i = 0; i < info.length; i++) {
+            if (info[i].startsWith(VALUE)) {
+                sub = info[i].split(":");
+                value = Integer.parseInt(sub[1]);
+            }
+            if (info[i].startsWith(PATH)) {
+                sub = info[i].split("=");
+                path = (sub[1]);
+            }
+            //System.out.println(info[i]);
+        }
+        Items item = new Items();
+        item = this.deSerialize(item.getClass(), path);
+        
+        items.put(value, item);
+        
         
         
         
@@ -511,7 +562,10 @@ public class Import {
                 System.out.println(text.get(i));
                 if (line.startsWith(COMMENT))
                     continue;
-                
+                if (line.equals(NO_PLAYER))
+                    buildPlayer(true);
+                if (line.equals(PLAYER))
+                    buildPlayer(false);
                 if (line.startsWith(MAP))
                     buildMap(line.substring(1));
                 if (line.startsWith(ENEMIE))
@@ -568,6 +622,7 @@ public class Import {
     public boolean equals(Import object) {
         return false;
     }
+    @Override
     public void destroy() {
 
     }
