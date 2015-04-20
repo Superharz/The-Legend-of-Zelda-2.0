@@ -33,14 +33,14 @@ public  class Enemie extends Mover{
     public Enemie(int moveMethod) {
         //super(speed, live, damage, hotSpot, img);
         try { 
-             img = new BufferedImage[4];
+             img = new ImageIcon[4];
         //for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 4; j++) {
                 
             
             
-                img[j] = ImageIO.read (this.getClass().
-                        getResource("/Pictures/player1"+j+"0.png"));
+                img[j] = new ImageIcon(ImageIO.read (this.getClass().
+                        getResource("/Pictures/player1"+j+"0.png")));
             }
             this.moveMethod = moveMethod;
             //this.randomMove();
@@ -50,7 +50,7 @@ public  class Enemie extends Mover{
             }
         //}
     }
-    public Enemie(int moveMethod, BufferedImage[] img) {
+    public Enemie(int moveMethod, ImageIcon[] img) {
         //super(speed, live, damage, hotSpot, img);
         
              this.img = img;
@@ -62,7 +62,7 @@ public  class Enemie extends Mover{
     
     public void setUP(Spot[][] spots) {
         Rectangle r = new Rectangle(this.getX(), this.getY(),  getWidth(), getWidth());
-        this.setMover(1000/24, 100, 100, new Point(img[0].getWidth()/2,img[0].getHeight()/2), img, spots,r);
+        this.setMover(1000/24, 100, 100, new Point(img[0].getIconWidth()/2,img[0].getIconHeight()/2), img, spots,r);
         //Rectangle r = new Rectangle(10, 10, 10, 10);
         
         //this.setLocation(100,100);
@@ -71,7 +71,7 @@ public  class Enemie extends Mover{
     
     @Override
     public int getWidth(){
-        return this.img[0].getWidth();
+        return this.img[0].getIconWidth();
     }
     
 //    public void addListener(Events toAdd) {
@@ -126,7 +126,7 @@ public  class Enemie extends Mover{
             move = true;
             boolean work = true;
             int direction = getRandom();
-                setIcon(new ImageIcon(img[direction]));
+                setIcon((img[direction]));
                     while(move) {
                         //for (EnemieEvent hl : listeners) {
                             //work = move(0);
@@ -144,13 +144,13 @@ public  class Enemie extends Mover{
                         //this.wait(1000);
                         if (!work) {
                             direction = getRandom();
-                            setIcon(new ImageIcon(img[direction]));
+                            setIcon((img[direction]));
                             work = true;
                         }
                         Thread.sleep(10);
                         if (getRandom(100)==50) {
                             direction = getRandom();
-                            setIcon(new ImageIcon(img[direction]));
+                            setIcon((img[direction]));
                         }
                         checkForPaused();
 //                        if (!work)
@@ -181,7 +181,7 @@ public  class Enemie extends Mover{
             move = true;
             boolean work = true;
             int direction = getRandom();
-                setIcon(new ImageIcon(img[direction]));
+                setIcon((img[direction]));
                     while(move) {
                         //for (EnemieEvent hl : listeners) {
                             //work = move(0);
@@ -205,7 +205,7 @@ public  class Enemie extends Mover{
                                 case UP   : direction = LEFT ;   break;
                                 case DOWN : direction = RIGHT;  break;
                         }
-                            setIcon(new ImageIcon(img[direction]));
+                            setIcon((img[direction]));
                             work = true;
                         }
                         else {
@@ -214,14 +214,14 @@ public  class Enemie extends Mover{
                             if (!movable(p.x-1, p.y+1) && collision(DOWN)  ) {
                             
                                 direction = DOWN;
-                                setIcon(new ImageIcon(img[direction]));
+                                setIcon((img[direction]));
                             }
                         }
                         else if (direction == DOWN) {
                             Point p = getPosition();
                             if (!movable(p.x-1, p.y-1) && collision(LEFT)) {
                                 direction = LEFT;
-                                setIcon(new ImageIcon(img[direction]));
+                                setIcon((img[direction]));
                             }
                         }
                         else if (direction == LEFT) {
@@ -229,14 +229,14 @@ public  class Enemie extends Mover{
                             if (!movable(p.x+1, p.y-1) && collision(UP)) {
                                 //System.out.println(p);
                                 direction = UP;
-                                setIcon(new ImageIcon(img[direction]));
+                                setIcon((img[direction]));
                             }
                         }
                         else if (direction == UP) {
                             Point p = getPosition();
                             if (!movable(p.x+1, p.y+1) && collision(RIGHT)) {
                                 direction = RIGHT;
-                                setIcon(new ImageIcon(img[direction]));
+                                setIcon((img[direction]));
                             }
                         }
                         }

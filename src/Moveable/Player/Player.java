@@ -30,7 +30,7 @@ import javax.swing.JOptionPane;
 public class Player extends Mover{
     //Thread t;
     //private int lastDirection = 0;
-    BufferedImage[][] before = new BufferedImage[3][4];
+    ImageIcon[][] before = new ImageIcon[3][4];
     Inventory inventory;
     //private final List<PlayerEvent> listeners = new ArrayList<PlayerEvent>();
     public Player() {
@@ -42,8 +42,8 @@ public class Player extends Mover{
             for (int j = 0; j < 4; j++) {
                 
             
-                before[i][j] = ImageIO.read (this.getClass(). 
-                        getResource("/Pictures/player1"+j+""+i+".png"));
+                before[i][j] = new ImageIcon(ImageIO.read (this.getClass(). 
+                        getResource("/Pictures/player1"+j+""+i+".png")));
             }
         }
         
@@ -76,7 +76,7 @@ public class Player extends Mover{
     }
     @Override
     public int getWidth(){
-        return this.before[0][0].getWidth();
+        return this.before[0][0].getIconWidth();
     }
     
     @Override
@@ -91,7 +91,7 @@ public class Player extends Mover{
     
     public void setUP(Spot[][] spots) {
         Rectangle r = new Rectangle(this.getX(), this.getY(),  getWidth(), getWidth());
-        this.setMover(10, 100000, 100, new Point(before[0][0].getWidth()/2,before[0][0].getHeight()/2), before[0],spots,r);
+        this.setMover(10, 100000, 100, new Point(before[0][0].getIconWidth()/2,before[0][0].getIconHeight()/2), before[0],spots,r);
         //inventory.setStats(1, 100000);
         super.setPlayer(1, 100);
         updateInvent();
@@ -191,7 +191,7 @@ public class Player extends Mover{
                 move = true;
                 int j = 0, i = 0;
                
-                setIcon(new ImageIcon(before[1][direction]));
+                setIcon((before[1][direction]));
                 try {
                     while(move) {
                         //for (Events hl : listeners) {
@@ -214,10 +214,10 @@ public class Player extends Mover{
                         if (j == 24) {
                             j = 0;
                             i = (i+1)%2;
-                            setIcon(new ImageIcon(before[i+1][direction]));
+                            setIcon((before[i+1][direction]));
                         }
                     }
-                    setIcon(new ImageIcon(before[0][direction]));
+                    setIcon((before[0][direction]));
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
                 }

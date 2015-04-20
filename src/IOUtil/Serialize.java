@@ -29,7 +29,7 @@ import javax.swing.JLabel;
  *
  * @author f.harz
  */
-public class Serialize<T>{
+public class Serialize{
     
     public static void serialize(Object obj, String file) {
         try
@@ -47,14 +47,19 @@ public class Serialize<T>{
       }
     }
 
-    public T deSerialize(T data, String file) {
+    public <T> T deSerialize(Class<T> data, String file) {
         try
-      {
+      { 
+          T clazz;
+        //T clazz = data.newInstance();
          FileInputStream fileIn = new FileInputStream(file);
          ObjectInputStream in = new ObjectInputStream(fileIn);
-         data = (T) in.readObject();
+         clazz = data.cast(in.readObject());
+         //data = (data.cast(in.readObject())) ;
          in.close();
          fileIn.close();
+         return clazz;
+         //return data.newInstance();
       }catch(IOException i)
       {
          i.printStackTrace();
@@ -65,17 +70,26 @@ public class Serialize<T>{
          c.printStackTrace();
          return null;
       }
-        return data;
+//        catch (InstantiationException ex) {
+//            Logger.getLogger(Serialize.class.getName()).log(Level.SEVERE, null, ex);
+//            return null;
+//        } catch (IllegalAccessException ex) {
+//            Logger.getLogger(Serialize.class.getName()).log(Level.SEVERE, null, ex);
+//            return null;
+//        }
+        
     }
     
-    public T xmlDecode(T data, String file) {
+    public <T> T xmlDecode(Class<T> data, String file) {
         try {
+            T clazz;
             XMLDecoder d = new XMLDecoder(
                                new BufferedInputStream(
                                    new FileInputStream(file)));
-            data = (T)d.readObject();
+            clazz = data.cast(d.readObject());
+            //data = (T)d.readObject();
             d.close();
-             return data;
+             return clazz;
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Serialize.class.getName()).log(Level.SEVERE, null, ex);
             return null;
@@ -107,7 +121,13 @@ public class Serialize<T>{
                 i.addStats(new JLabel("Damage:  10      ")) ;
             //JLabel f = new JLabel("HI");
             serialize(i, "C:\\Users\\f.harz\\Desktop\\test.foo");
-            xmlEncode(i, "C:\\Users\\f.harz\\Desktop\\testr.xml");
+            Serialize s = new Serialize();
+            i = s.deSerialize(i.getClass(), "C:\\Users\\f.harz\\Desktop\\test.foo");
+            for (int j = 0; j < i.getLength(); j++) {
+                System.out.println(i.getStat(j).getText());
+            }
+            
+            //xmlEncode(i, "C:\\Users\\f.harz\\Desktop\\testr.xml");
 //            Serialize<JLabel> s = new Serialize<JLabel>();
 //            f=s.deSerialize(f, "C:\\Users\\f.harz\\Desktop\\test.foo");
 //            System.out.println(f.getText());

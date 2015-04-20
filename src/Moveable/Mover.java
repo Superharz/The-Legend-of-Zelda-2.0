@@ -38,14 +38,14 @@ public abstract class Mover extends javax.swing.JLabel{
     Point hotSpot;
     Spot[][] spots;
     Rectangle hitBox;
-    public BufferedImage[] img;
+    public ImageIcon[] img;
     public int lastDirection = 0;
     public final int DOWN = 0, UP = 1, RIGHT = 2, LEFT = 3;
     public boolean immortal = false;
     
     
-    public Mover(int speed, int live, int damage, Point hotSpot, BufferedImage[] img, Rectangle hitBox) {
-        super( new ImageIcon(img[0]));
+    public Mover(int speed, int live, int damage, Point hotSpot, ImageIcon[] img, Rectangle hitBox) {
+        super( (img[0]));
         this.speed   = speed;
         this.live    = live;
         this.damage  = damage;
@@ -57,23 +57,38 @@ public abstract class Mover extends javax.swing.JLabel{
     }
     
     public Mover(int speed, int live, int damage, Point hotSpot, BufferedImage img, Rectangle hitBox,Spot[][] spots) {
-        this(speed, live, damage, hotSpot, img, hitBox, spots, 0);
+        this(speed, live, damage, hotSpot, new ImageIcon(img), hitBox, spots, 0);
+    }
+    public Mover(int speed, int live, int damage, Point hotSpot, BufferedImage img, Rectangle hitBox,Spot[][] spots, int height) {
+        this(speed, live, damage, hotSpot, new ImageIcon(img), hitBox, spots, height);
     }
     public int getLayer() {
         return height;
     }
-    public Mover(int speed, int live, int damage, Point hotSpot, BufferedImage img, Rectangle hitBox,Spot[][] spots,int height) {
-        super( new ImageIcon(img));
+    public Mover(int speed, int live, int damage, Point hotSpot, ImageIcon img, Rectangle hitBox,Spot[][] spots,int height) {
+        super( (img));
         this.height = height;
         this.speed   = speed;
         this.live    = live;
         this.damage  = damage;
         this.hotSpot = hotSpot;
         this.hitBox  = hitBox;
-        this.img     = new BufferedImage[]{img,img,img,img};
+        this.img = new ImageIcon[]{img, img, img, img};
         //this.setVisible(false);
         this.spots = spots;
     }
+//    public Mover(int speed, int live, int damage, Point hotSpot, ImageIcon img, Rectangle hitBox,Spot[][] spots,int height) {
+//        super( (img));
+//        this.height = height;
+//        this.speed   = speed;
+//        this.live    = live;
+//        this.damage  = damage;
+//        this.hotSpot = hotSpot;
+//        this.hitBox  = hitBox;
+//        this.img = new ImageIcon[]{img, img, img, img};
+//        //this.setVisible(false);
+//        this.spots = spots;
+//    }
     public Mover() {
         super();
 //        super((Icon) img[0]);
@@ -88,10 +103,10 @@ public abstract class Mover extends javax.swing.JLabel{
     }
     @Override
     public int getWidth(){
-        return this.img[DOWN].getWidth();
+        return this.img[DOWN].getIconWidth();
     }
-    public void setMover(int speed, int live, int damage, Point hotSpot,  BufferedImage[] img, Spot[][] spots, Rectangle hitBox) {
-        this.setIcon((new ImageIcon(img[DOWN])));
+    public void setMover(int speed, int live, int damage, Point hotSpot,  ImageIcon[] img, Spot[][] spots, Rectangle hitBox) {
+        this.setIcon(((img[DOWN])));
         this.speed   = speed;
         this.live    = live;
         this.damage  = damage;
@@ -408,7 +423,7 @@ public abstract class Mover extends javax.swing.JLabel{
                 //move = true;
                 //int j = 0, i = 0;
                boolean work = false;
-                setIcon(new ImageIcon(img[direction]));
+                setIcon((img[direction]));
                 //try {
                     //while(move) {
                         //for (EnemieEvent hl : listeners) {
