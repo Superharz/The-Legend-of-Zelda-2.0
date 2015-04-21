@@ -6,25 +6,17 @@ package Inventory;
 
 import Moveable.Events;
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.PopupMenu;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.Popup;
-import javax.swing.PopupFactory;
 
 /**
  *

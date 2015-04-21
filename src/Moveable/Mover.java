@@ -7,17 +7,12 @@ package Moveable;
 
 import Game.Spot;
 import Inventory.Items;
-import Moveable.Enemies.EnemieEvent;
-import Moveable.Player.Player;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 /**
@@ -25,7 +20,7 @@ import javax.swing.ImageIcon;
  * @author Flo
  */
 public abstract class Mover extends javax.swing.JLabel{
-    public final List<Events> listeners = new ArrayList<Events>();
+    public transient final List<Events> listeners = new ArrayList<Events>();
     public LinkedList<Items> stuff;
     public boolean move = false;
     public int speed;
@@ -36,7 +31,7 @@ public abstract class Mover extends javax.swing.JLabel{
     private int height = 0;
     private boolean canChangeHeight = true;
     Point hotSpot;
-    Spot[][] spots;
+    transient Spot[][] spots;
     Rectangle hitBox;
     public ImageIcon[] img;
     public int lastDirection = 0;

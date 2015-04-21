@@ -9,6 +9,7 @@ import Inventory.Items;
 import Moveable.Enemies.Enemie;
 import Moveable.Events;
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
  *
  * @author Flo
  */
-public class Event {
+public class Event implements Serializable{
     public final List<Events> listeners = new ArrayList<Events>();
     public static final int TELEPORT = 0, TEXT = 1, HEAL = 2, ITEM = 3, SPAWN = 4;
     private final String EMPTY = "";

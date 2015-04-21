@@ -34,26 +34,34 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class Import extends Serialize{
     private final String COMMENT = "#", TEXTURE = "@", EVENT = "!", EVENTI = "/",
             ENEMIE = "%",ENEMIEI = "~", SPOT = "$", ITEM = "^", ITEMI = "`", 
-            MAP = "?",SPOTI =  "*", NO_PLAYER = "|NO_PLAYER|", PLAYER = "|PLAYER|";
+            MAP = "?",SPOTI =  "*", PLAYER = "|PLAYER|";
     HashMap<Integer, BufferedImage> textures;
     HashMap<Integer, Spot> spots;
     HashMap<Integer, Event> events;
     HashMap<Integer, Enemie> enemies;
     HashMap<Integer, Items> items;
+    boolean defaultPlayer = true;
     Map map;
+    Player player;
     public Import() {
+        player = new Player();
         textures = new HashMap<Integer, BufferedImage>();
         spots    = new HashMap<Integer,          Spot>();
         events   = new HashMap<Integer,         Event>();
         enemies  = new HashMap<Integer,        Enemie>();
         items    = new HashMap<Integer,         Items>();
     }
-    private File getFile(String selection) {
+    private File getFile(String selection, boolean textFile) {
         //Player player;
         //Map map;
         JFileChooser chooser = new JFileChooser();
-        FileFilter filter = new FileNameExtensionFilter("Text-Files   .txt", "txt");
-
+        FileFilter filter;
+        if (textFile) {
+            filter = new FileNameExtensionFilter("Text-Files   .txt", "txt");
+        }
+        else {
+            filter = new FileNameExtensionFilter("Game-File   .sh", "sh");
+        }
         chooser.addChoosableFileFilter(filter);
         
         int choosed = chooser.showDialog(null, selection);
@@ -179,8 +187,11 @@ public class Import extends Serialize{
         
        
     }
-    public void buildPlayer(boolean defaultPlayer) {
-        
+    public void buildPlayer() {
+            File f = getFile("Choose a Player", false);
+            player = new Player();
+            player = this.deSerialize(player.getClass(), f.getAbsolutePath());
+            this.defaultPlayer = false;
         
         
         
@@ -494,7 +505,7 @@ public class Import extends Serialize{
        
     }
     public Map buildMap() {
-        getText(getFile("Select a Map"));
+        getText(getFile("Select a Map",true));
         
         
         
@@ -535,8 +546,10 @@ public class Import extends Serialize{
             }
             //System.out.println(info[i]);
         }
-        
-        map = new Map();
+        if (defaultPlayer)
+            map = new Map();
+        else
+            map = new Map(player);
         map.setUP(width, height, x, y);
         if (number == -1 ){
             Spot s = new Spot(textures.get(value), layer);
@@ -562,10 +575,8 @@ public class Import extends Serialize{
                 System.out.println(text.get(i));
                 if (line.startsWith(COMMENT))
                     continue;
-                if (line.equals(NO_PLAYER))
-                    buildPlayer(true);
                 if (line.equals(PLAYER))
-                    buildPlayer(false);
+                    buildPlayer();
                 if (line.startsWith(MAP))
                     buildMap(line.substring(1));
                 if (line.startsWith(ENEMIE))

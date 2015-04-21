@@ -12,10 +12,7 @@ import Inventory.Items;
 import Moveable.Mover;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -31,7 +28,7 @@ public class Player extends Mover{
     //Thread t;
     //private int lastDirection = 0;
     ImageIcon[][] before = new ImageIcon[3][4];
-    Inventory inventory;
+    transient Inventory inventory;
     //private final List<PlayerEvent> listeners = new ArrayList<PlayerEvent>();
     public Player() {
         //t = new Thread(this,"test");

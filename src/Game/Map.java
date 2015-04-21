@@ -32,30 +32,33 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
     Spot[][] spots;
     Point playerPosition = new Point(-1, -1);
     int width, height;
-    BufferedImage img;
+    transient BufferedImage img;
     LinkedList<Enemie> enemies;
     LinkedList<Arrow> arrows;
     int spotWidth;
     Thread t;
     private int startX,startY;
-    private final Object obj = new Object();
+    //private final Object obj = new Object();
     private boolean protection = false;
     /**
      * Creates new form Map
      */
     public Map() {
-        this(new Player());
-//        initComponents();
-//        player.addListener(this);
-//        
-//        enemies = new LinkedList();
-//        arrows = new LinkedList<Arrow>();
-    }
-    public Map(Player player) {
-        this.player = player;
+        //this(new Player());
+        this.player = new Player();
         initComponents();
         player.addListener(this);
         
+        enemies = new LinkedList();
+        arrows = new LinkedList<Arrow>();
+    }
+    public Map(Player player) {
+        this.player = player;
+        
+        initComponents();
+        player.addListener(this);
+        startX = toSpots(player.getLocation().x);
+        startY = toSpots(player.getLocation().y);
         enemies = new LinkedList();
         arrows = new LinkedList<Arrow>();
     }
@@ -112,8 +115,10 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
 public void setUP(int width,int heights,int playerX, int playerY) {
         this.width = width;
         this.height = heights;
-        startX = playerX;
-        startY = playerY;
+        if (playerX != -1 && playerY != -1) {
+            startX = playerX;
+            startY = playerY;
+        }
         //System.out.println("Pixel: "+toPixel(5));
         player.setSize(player.getWidth(), player.getWidth());
         //player.setBounds(50, 100, player.getWidth(), player.getWidth());

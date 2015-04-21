@@ -7,6 +7,7 @@ package Game;
 
 import Events.Event;
 import IOUtil.Import;
+import IOUtil.Serialize;
 import IOUtil.Serilazation;
 import Inventory.Items;
 import Moveable.Enemies.Enemie;
@@ -206,6 +207,7 @@ public class Tested extends javax.swing.JFrame {
             case 'w': map1.getplayer().move(1);break;
             case 's': map1.getplayer().move(0);break;
             case 'z': break;
+            case 'x': Serialize.serialize(map1.getplayer(), "C:\\Users\\f.harz\\Desktop\\player.sh");break;
             case KeyEvent.VK_SPACE: map1.play(false);   ;break;
         }
       }

@@ -12,10 +12,10 @@ import java.io.File;
  * @author Flo
  */
 public class ImagePanel extends JPanel {
-    private Image background;
-    private Image animation;
-    private BufferedImage img;
-    private BufferedImage awesome;
+    private transient Image background;
+    private transient Image animation;
+    private transient BufferedImage img;
+    private transient BufferedImage awesome;
     private int xdirection = 0, ydirection = 0;
     private int xBack = 0,yBack = 0;
     /**

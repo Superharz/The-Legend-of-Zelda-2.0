@@ -17,7 +17,7 @@ import java.util.LinkedList;
 public class Spot implements java.io.Serializable{
     LinkedList<Event> events;
     LinkedList<Items> items;
-    private BufferedImage img;
+    private transient BufferedImage img;
     private boolean walkable;
     private int height ;
     
