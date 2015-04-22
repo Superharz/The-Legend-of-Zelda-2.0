@@ -22,14 +22,25 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
+import com.thoughtworks.xstream.*;
+import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 /**
  *
  * @author f.harz
  */
 public class Serialize{
+    
+    public void xStream(Object obj, String name) {
+        XStream x = new XStream(new StaxDriver());
+        
+        
+        
+        
+        
+        
+    }
     
     public static void serialize(Object obj, String file) {
         try

@@ -5,36 +5,19 @@
  */
 package Game;
 
-import Events.Event;
 import IOUtil.Import;
 import IOUtil.Serialize;
-import IOUtil.Serilazation;
-import Inventory.Items;
-import Moveable.Enemies.Enemie;
 import Moveable.Player.Player;
-import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
-import javax.swing.InputMap;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 /**
  *
  * @author Flo
@@ -43,6 +26,7 @@ public class Tested extends javax.swing.JFrame {
     boolean move = false;
     Inventory i;
     boolean menu = false;
+  
     /**
      * Creates new form Tested
      */
