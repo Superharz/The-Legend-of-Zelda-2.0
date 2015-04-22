@@ -20,7 +20,7 @@ import javax.swing.ImageIcon;
  * @author Flo
  */
 public abstract class Mover extends javax.swing.JLabel{
-    public transient final List<Events> listeners = new ArrayList<Events>();
+    public  final List<Events> listeners = new ArrayList<Events>();
     public LinkedList<Items> stuff;
     public boolean move = false;
     public int speed;
@@ -31,7 +31,7 @@ public abstract class Mover extends javax.swing.JLabel{
     private int height = 0;
     private boolean canChangeHeight = true;
     Point hotSpot;
-    transient Spot[][] spots;
+    Spot[][] spots;
     Rectangle hitBox;
     public ImageIcon[] img;
     public int lastDirection = 0;
@@ -110,7 +110,9 @@ public abstract class Mover extends javax.swing.JLabel{
         this.img     = img;
         this.spots = spots;
     }
-    
+    public void setSpots(Spot[][] spots) {
+        this.spots = spots;
+    }
     public void addListener(Events toAdd) {
         listeners.add(toAdd);
     }

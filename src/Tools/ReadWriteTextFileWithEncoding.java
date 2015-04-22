@@ -51,6 +51,21 @@ public final class ReadWriteTextFileWithEncoding {
     }
     return list;
   }
+  public String readString() throws IOException {
+    StringBuilder text = new StringBuilder();
+    String NL = System.getProperty("line.separator");
+    Scanner scanner = new Scanner(new FileInputStream(fFileName), fEncoding);
+    try {
+      while (scanner.hasNextLine()){
+        text.append(scanner.nextLine()).append(NL);
+      }
+    }
+    finally{
+      scanner.close();
+    }
+    return text.toString();
+  }
+  
   
   private final String fFileName;
   private final String fEncoding = "UTF-8";

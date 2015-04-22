@@ -7,10 +7,12 @@ package Game;
 
 import IOUtil.Import;
 import IOUtil.Serialize;
+import Moveable.Enemies.Enemie;
 import Moveable.Player.Player;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
@@ -31,8 +33,20 @@ public class Tested extends javax.swing.JFrame {
      * Creates new form Tested
      */
     public Tested() {
-        Import m = new Import();
-        map1 = m.buildMap();
+        Map temp = Serialize.xStreamIn(Map.class, "C:\\Users\\f.harz\\Desktop\\player.sh");
+        map1 = new Map();
+        map1.setUP(temp.width, temp.width, temp.getplayer().getLocation().x, temp.getplayer().getLocation().y);
+        LinkedList<Enemie> e = temp.getEnemies();
+        for (int j = 0; j < temp.spots.length; j++) { //row
+            for (int k = 0; k < temp.spots[0].length; k++) {//colum
+                map1.addSpot(temp.getSpot(j, k), k, j);
+            }
+        }
+//        for (int j = 0; j < e.size(); j++) {
+//            map1.addEnemy(e.get(j), e.get(j).getLocation().x, e.get(j).getLocation().y);
+//        }
+        //Import m = new Import();
+        //map1 = m.buildMap();
         initComponents();
         //test();
         
@@ -105,6 +119,7 @@ public class Tested extends javax.swing.JFrame {
 //        } catch (IOException ex) {
 //            Logger.getLogger(Tested.class.getName()).log(Level.SEVERE, null, ex);
 //        }
+        
         map1.build();
         map1.requestFocus();
 //        this.validate();
@@ -191,7 +206,7 @@ public class Tested extends javax.swing.JFrame {
             case 'w': map1.getplayer().move(1);break;
             case 's': map1.getplayer().move(0);break;
             case 'z': break;
-            case 'x': Serialize.serialize(map1.getplayer(), "C:\\Users\\f.harz\\Desktop\\player.sh");break;
+            case 'x': Serialize.xStreamOut(map1, "C:\\Users\\f.harz\\Desktop\\player.sh");break;
             case KeyEvent.VK_SPACE: map1.play(false);   ;break;
         }
       }
@@ -245,6 +260,8 @@ public class Tested extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
+                //Tested t = Serialize.xStreamIn(Tested.class, "C:\\Users\\f.harz\\Desktop\\player.sh");
+                //t.setVisible(true);
                 new Tested().setVisible(true);
                 
             }

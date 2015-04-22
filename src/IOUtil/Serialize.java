@@ -6,6 +6,7 @@
 package IOUtil;
 
 import Inventory.Items;
+import Tools.ReadWriteTextFileWithEncoding;
 import java.awt.image.BufferedImage;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
@@ -25,6 +26,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import com.thoughtworks.xstream.*;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.Scanner;
+import javax.security.auth.callback.TextOutputCallback;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -32,14 +41,28 @@ import com.thoughtworks.xstream.io.xml.StaxDriver;
  */
 public class Serialize{
     
-    public void xStream(Object obj, String name) {
+    public static void xStreamOut(Object obj, String file) {
+        PrintWriter out = null;
         XStream x = new XStream(new StaxDriver());
-        
-        
-        
-        
-        
-        
+        try {
+            String xml = x.toXML(obj);
+            out = new PrintWriter(file);
+            out.write(xml);
+            out.close();
+            System.out.println("Serialized data is saved in " + file);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Serialize.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Serialize.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            out.close();
+        }
+    }
+    public static <T> T xStreamIn(Class<T> data, String file) {
+        T clazz;
+        XStream x = new XStream(new StaxDriver());
+        clazz  = data.cast(x.fromXML(new File(file)));
+        return clazz;
     }
     
     public static void serialize(Object obj, String file) {
@@ -58,7 +81,7 @@ public class Serialize{
       }
     }
 
-    public <T> T deSerialize(Class<T> data, String file) {
+    public static <T> T deSerialize(Class<T> data, String file) {
         try
       { 
           T clazz;
@@ -124,20 +147,27 @@ public class Serialize{
     {
         try {
             BufferedImage before = ImageIO.read (new File("C:\\Users\\f.harz\\Desktop\\The-Legend-of-Zelda-2.0\\src\\Pictures\\tile1.png"));
-                ImageIcon icon = new ImageIcon(before);
-                Items i = new Items("Wall","Wall", icon,true);
-                i.addStats(new JLabel("Damage:  100     ")) ;
-                i.addStats(new JLabel("Damage:  50      ")) ;
-                i.addStats(new JLabel("Damage:  20      ")) ;
-                i.addStats(new JLabel("Damage:  10      ")) ;
-            //JLabel f = new JLabel("HI");
-            serialize(i, "C:\\Users\\f.harz\\Desktop\\test.foo");
-            Serialize s = new Serialize();
-            i = s.deSerialize(i.getClass(), "C:\\Users\\f.harz\\Desktop\\test.foo");
-            for (int j = 0; j < i.getLength(); j++) {
-                System.out.println(i.getStat(j).getText());
-            }
-            
+            xStreamOut(before, "C:\\Users\\f.harz\\Desktop\\img.foo");
+            before = xStreamIn(before.getClass(), "C:\\Users\\f.harz\\Desktop\\img.foo");
+            JOptionPane.showMessageDialog(null, "HI", "Picture", 1, new ImageIcon(before));
+//                ImageIcon icon = new ImageIcon(before);
+//                Items i = new Items("Wall","Wall", icon,true);
+//                i.addStats(new JLabel("Damage:  100     ")) ;
+//                i.addStats(new JLabel("Damage:  50      ")) ;
+//                i.addStats(new JLabel("Damage:  20      ")) ;
+//                i.addStats(new JLabel("Damage:  10      ")) ;
+//            //JLabel f = new JLabel("HI");
+//            serialize(i, "C:\\Users\\f.harz\\Desktop\\test.foo");
+//            //xStreamOut(i, "Item", "C:\\Users\\f.harz\\Desktop\\test.she");
+//            //Serialize s = new Serialize();
+//            //i = xStreamIn(i.getClass(), "C:\\Users\\f.harz\\Desktop\\test.she");
+//            //test("C:\\Users\\f.harz\\Desktop\\test.she");
+//////            Serialize s = new Serialize();
+//           i = deSerialize(i.getClass(), "C:\\Users\\f.harz\\Desktop\\test.foo");
+//            for (int j = 0; j < i.getLength(); j++) {
+//                System.out.println(i.getStat(j).getText());
+//            }
+//            
             //xmlEncode(i, "C:\\Users\\f.harz\\Desktop\\testr.xml");
 //            Serialize<JLabel> s = new Serialize<JLabel>();
 //            f=s.deSerialize(f, "C:\\Users\\f.harz\\Desktop\\test.foo");

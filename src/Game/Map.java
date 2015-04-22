@@ -16,7 +16,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -36,7 +35,7 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
     LinkedList<Enemie> enemies;
     LinkedList<Arrow> arrows;
     int spotWidth;
-    Thread t;
+    transient Thread t;
     private int startX,startY;
     //private final Object obj = new Object();
     private boolean protection = false;
@@ -155,6 +154,12 @@ public void setUP(int width,int heights,int playerX, int playerY) {
         playerPosition = new Point(toSpots(player.getHotSpot().x),toSpots(player.getHotSpot().y));
         //System.out.println(playerPosition);
         return !oldPosition.equals(playerPosition);
+    }
+    public Spot getSpot(int x, int y) {
+        return spots[y][x];
+    }
+    public LinkedList<Enemie> getEnemies() {
+        return enemies;
     }
     
    public void build() {
