@@ -5,6 +5,7 @@
  */
 package Game;
 
+import Events.Event;
 import IOUtil.Import;
 import IOUtil.Serialize;
 import Moveable.Enemies.Enemie;
@@ -34,19 +35,29 @@ public class Tested extends javax.swing.JFrame {
      */
     public Tested() {
         Map temp = Serialize.xStreamIn(Map.class, "C:\\Users\\f.harz\\Desktop\\player.sh");
-        map1 = new Map();
-        map1.setUP(temp.width, temp.width, temp.getplayer().getLocation().x, temp.getplayer().getLocation().y);
-        LinkedList<Enemie> e = temp.getEnemies();
-        for (int j = 0; j < temp.spots.length; j++) { //row
-            for (int k = 0; k < temp.spots[0].length; k++) {//colum
-                map1.addSpot(temp.getSpot(j, k), k, j);
-            }
-        }
+        map1 = temp;
+        map1.getplayer().getInventory().addEvent();
+//        map1 = new Map();
+//        //map1.setUP(10, 10, 5, 5);
+//        map1.setUP(temp.width, temp.width, temp.getPlayerPosition().x, temp.getPlayerPosition().y);
+//        //LinkedList<Enemie> e = temp.getEnemies();
+//        for (int j = 0; j < temp.spots.length; j++) { //row
+//            for (int k = 0; k < temp.spots[0].length; k++) {//colum
+//                LinkedList<Event> evt = temp.getSpot(k, j).removeEvents();
+//                map1.addSpot(temp.getSpot(k,j), k, j);
+//                if (evt != null) {
+//                    for (int l = 0; l < evt.size(); l++) {
+//                        evt.get(l).resetListener();
+//                        map1.addEvent(k, j, evt.get(l));
+//                    }
+//                }
+//            }
+//        }
 //        for (int j = 0; j < e.size(); j++) {
 //            map1.addEnemy(e.get(j), e.get(j).getLocation().x, e.get(j).getLocation().y);
 //        }
-        //Import m = new Import();
-        //map1 = m.buildMap();
+//        Import m = new Import();
+//        map1 = m.buildMap();
         initComponents();
         //test();
         

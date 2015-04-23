@@ -178,7 +178,28 @@ public void add(Items item) {
         item.setVisible(true);
     }
 }
-
+public void updateEvents() {
+    Items item;
+    for (int i = 0; i < items.size(); i++) {
+        item = items.get(i);
+        item.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                ItemMousePressed(evt);
+            }
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ItemMouseEntered(evt);
+                //p.show();
+            }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ItemMouseExited(evt);
+                //p.show();
+            }
+        });
+    }
+}
 private void ItemMouseEntered(java.awt.event.MouseEvent evt) {
     Items l = (Items)evt.getComponent();
     if (!l.equals(selection)) {

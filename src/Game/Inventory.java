@@ -10,7 +10,6 @@ import Inventory.Equiment;
 import Inventory.Items;
 import Inventory.Stats;
 import Moveable.Events;
-import java.awt.Color;
 import javax.swing.JPanel;
 /**
  *
@@ -294,6 +293,15 @@ public class Inventory extends javax.swing.JPanel {
     public void addListener(Events toAdd) {
         //listeners.add(toAdd);
         ((Equiment)stuff[INVENTORY]).addListener(toAdd);
+    }
+    public void addEvent(){
+        Menu.addChangeListener(new javax.swing.event.ChangeListener() {
+            @Override
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                MenuStateChanged(evt);
+            }
+        });
+        ((Equiment)stuff[INVENTORY]).updateEvents();
     }
 
 

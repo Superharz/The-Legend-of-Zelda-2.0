@@ -4,16 +4,9 @@
  */
 package Inventory;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.util.LinkedList;
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
 import javax.swing.Icon;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.KeyStroke;
 
 /**
  *

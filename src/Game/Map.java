@@ -111,7 +111,7 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
     private Moveable.Player.Player player;
     // End of variables declaration                   
 
-public void setUP(int width,int heights,int playerX, int playerY) {
+    public void setUP(int width,int heights,int playerX, int playerY) {
         this.width = width;
         this.height = heights;
         if (playerX != -1 && playerY != -1) {
@@ -127,6 +127,9 @@ public void setUP(int width,int heights,int playerX, int playerY) {
         //player.setLocation(50,50);
         spots = new Spot[heights][width];
         //updatePlayerPosition();
+    }
+    public Point getPlayerPosition() {
+        return playerPosition;
     }
     
     public void addSpot(Spot spot,int x, int y) {

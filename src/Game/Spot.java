@@ -7,8 +7,11 @@ package Game;
 
 import Events.Event;
 import Inventory.Items;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
     
 /**
  *
@@ -17,18 +20,21 @@ import java.util.LinkedList;
 public class Spot implements java.io.Serializable{
     LinkedList<Event> events;
     LinkedList<Items> items;
-    private BufferedImage img;
+    //private BufferedImage img;
+    private ImageIcon img;
     private boolean walkable;
     private int height ;
     
     
     public Spot(BufferedImage img, boolean walkable) {
-      this.img = img;
+        this.img = new ImageIcon(img);
+      //this.img = img;
       this.height = 0;
       this.walkable = walkable;
     }
     public Spot(BufferedImage img, int height) {
-      this.img = img;
+        this.img = new ImageIcon(img);
+      //this.img = img;
       this.walkable = true;
       this.height = height;
     }
@@ -43,6 +49,14 @@ public class Spot implements java.io.Serializable{
         }
         System.out.println("Event added");
     }
+    public LinkedList<Event> removeEvents() {
+        if (events != null) {
+            LinkedList<Event> evt = (LinkedList<Event>)events.clone();
+            events = null;
+            return evt;
+        }
+        return null;
+    }
     public void additem(Items item) {
         if (items == null) {
             items = new LinkedList<Items>();
@@ -55,9 +69,21 @@ public class Spot implements java.io.Serializable{
         System.out.println("Item added");
     }
     public BufferedImage image() {
-        return img;
+        //JOptionPane.showMessageDialog(null, "HI", "Test", 1, img);
+       
+        return toBufferedImage(img);
     }
-    
+    private BufferedImage toBufferedImage(ImageIcon icon) {
+        BufferedImage bi = new BufferedImage(
+        icon.getIconWidth(),
+        icon.getIconHeight(),
+        BufferedImage.TYPE_INT_RGB);
+        Graphics g = bi.createGraphics();
+        // paint the Icon to the BufferedImage.
+        icon.paintIcon(null, g, 0,0);
+        g.dispose();
+        return bi;
+    }
     public boolean hasEvent() {
         if (events == null) return false;
         return !events.isEmpty();
@@ -112,9 +138,9 @@ public class Spot implements java.io.Serializable{
     }
     @Override
     public Spot clone() {
-        Spot s = new Spot(img, height);
+        Spot s = new Spot(toBufferedImage(img), height);
         if (!walkable || height == 0) {
-            s = new Spot(img, walkable);
+            s = new Spot(toBufferedImage(img), walkable);
         }
         if (hasEvent()) {
             for (int i = 0; i < events.size(); i++) {

@@ -70,7 +70,9 @@ public class Event implements Serializable{
     public void addListener(Events toAdd) {
         listeners.add(toAdd);
     }
-    
+    public void resetListener() {
+        listeners.clear();
+    }
     public int getEventType() {
         return eventType;
     }
