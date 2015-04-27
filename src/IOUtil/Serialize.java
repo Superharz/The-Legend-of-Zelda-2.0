@@ -50,9 +50,12 @@ public class Serialize{
         }
     }
     public static <T> T xStreamIn(Class<T> data, String file) {
+        return xStreamIn(data, new File(file));
+    }
+    public static <T> T xStreamIn(Class<T> data, File file) {
         T clazz;
         XStream x = new XStream(new StaxDriver());
-        clazz  = data.cast(x.fromXML(new File(file)));
+        clazz  = data.cast(x.fromXML(file));
         return clazz;
     }
     

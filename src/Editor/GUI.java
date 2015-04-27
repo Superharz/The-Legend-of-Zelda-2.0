@@ -7,15 +7,22 @@ package Editor;
 
 import Events.Event;
 import Game.Spot;
+import IOUtil.Serialize;
 import Inventory.Items;
 import Moveable.Enemies.Enemie;
+import Moveable.Events;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -26,6 +33,7 @@ public class GUI extends javax.swing.JFrame {
     Event evt;
     Enemie e;
     Items item;
+    HashMap<Object, Object>
     LinkedList<Spot> spots;
     LinkedList<Event> events;
     LinkedList<Enemie> enemies;
@@ -35,6 +43,10 @@ public class GUI extends javax.swing.JFrame {
      */
     public GUI() {
         initComponents();
+        spots = new LinkedList<Spot>();
+        events = new LinkedList<Event>();
+        enemies = new LinkedList<Enemie>();
+        items = new LinkedList<Items>();
         setUP();
     }
 
@@ -50,13 +62,13 @@ public class GUI extends javax.swing.JFrame {
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jInternalFrame1 = new javax.swing.JInternalFrame();
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
+        Spots = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
+        Events = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
+        Enemies = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
-        jPanel4 = new javax.swing.JPanel();
+        Items = new javax.swing.JPanel();
         jButton4 = new javax.swing.JButton();
         jInternalFrame2 = new javax.swing.JInternalFrame();
         map1 = new Game.Map();
@@ -85,22 +97,22 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout SpotsLayout = new javax.swing.GroupLayout(Spots);
+        Spots.setLayout(SpotsLayout);
+        SpotsLayout.setHorizontalGroup(
+            SpotsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SpotsLayout.createSequentialGroup()
                 .addGap(0, 116, Short.MAX_VALUE)
                 .addComponent(jButton1))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        SpotsLayout.setVerticalGroup(
+            SpotsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SpotsLayout.createSequentialGroup()
                 .addGap(0, 220, Short.MAX_VALUE)
                 .addComponent(jButton1))
         );
 
-        jTabbedPane1.addTab("Spots", jPanel1);
+        jTabbedPane1.addTab("Spots", Spots);
 
         jButton2.setText("New");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -109,60 +121,60 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout EventsLayout = new javax.swing.GroupLayout(Events);
+        Events.setLayout(EventsLayout);
+        EventsLayout.setHorizontalGroup(
+            EventsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EventsLayout.createSequentialGroup()
                 .addGap(0, 116, Short.MAX_VALUE)
                 .addComponent(jButton2))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+        EventsLayout.setVerticalGroup(
+            EventsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EventsLayout.createSequentialGroup()
                 .addGap(0, 220, Short.MAX_VALUE)
                 .addComponent(jButton2))
         );
 
-        jTabbedPane1.addTab("Events", jPanel2);
+        jTabbedPane1.addTab("Events", Events);
 
         jButton3.setText("New");
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout EnemiesLayout = new javax.swing.GroupLayout(Enemies);
+        Enemies.setLayout(EnemiesLayout);
+        EnemiesLayout.setHorizontalGroup(
+            EnemiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EnemiesLayout.createSequentialGroup()
                 .addGap(0, 116, Short.MAX_VALUE)
                 .addComponent(jButton3))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+        EnemiesLayout.setVerticalGroup(
+            EnemiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EnemiesLayout.createSequentialGroup()
                 .addGap(0, 220, Short.MAX_VALUE)
                 .addComponent(jButton3))
         );
 
-        jTabbedPane1.addTab("Enemies", jPanel3);
+        jTabbedPane1.addTab("Enemies", Enemies);
 
         jButton4.setText("New");
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+        javax.swing.GroupLayout ItemsLayout = new javax.swing.GroupLayout(Items);
+        Items.setLayout(ItemsLayout);
+        ItemsLayout.setHorizontalGroup(
+            ItemsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ItemsLayout.createSequentialGroup()
                 .addGap(0, 116, Short.MAX_VALUE)
                 .addComponent(jButton4))
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+        ItemsLayout.setVerticalGroup(
+            ItemsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ItemsLayout.createSequentialGroup()
                 .addGap(0, 220, Short.MAX_VALUE)
                 .addComponent(jButton4))
         );
 
-        jTabbedPane1.addTab("Items", jPanel4);
+        jTabbedPane1.addTab("Items", Items);
 
         javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
         jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
@@ -266,6 +278,30 @@ public class GUI extends javax.swing.JFrame {
                 
             }
             else {
+                Spot s= getObject(Spot.class, "Choose spot");
+                spots.add(s);
+                
+                spot.addMouseListener(new java.awt.event.MouseAdapter() {
+                    public void mousePressed(java.awt.event.MouseEvent evt) {
+                        ItemMousePressed(evt);
+                    }
+                    public void mouseEntered(java.awt.event.MouseEvent evt) {
+                        //ItemMouseEntered(evt);
+                        //p.show();
+                    }
+                    public void mouseExited(java.awt.event.MouseEvent evt) {
+                        //ItemMouseExited(evt);
+                        //p.show();
+                    }
+                });
+
+                //table.put(l, item);
+                item.setSize(item.getIcon().getIconWidth(),item.getIcon().getIconHeight()) ;
+
+                Spots.add(item);
+                update();
+                System.out.println("Worked");
+                item.setVisible(true);
                 
             }
             
@@ -309,6 +345,10 @@ public class GUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Enemies;
+    private javax.swing.JPanel Events;
+    private javax.swing.JPanel Items;
+    private javax.swing.JPanel Spots;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -325,10 +365,6 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private Game.Map map1;
     // End of variables declaration//GEN-END:variables
@@ -345,4 +381,39 @@ public final void setUP() {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
 }
+private File getFile(String selection, boolean textFile) {
+        //Player player;
+        //Map map;
+        JFileChooser chooser = new JFileChooser();
+        FileFilter filter;
+        if (textFile) {
+            filter = new FileNameExtensionFilter("Text-Files   .txt", "txt");
+        }
+        else {
+            filter = new FileNameExtensionFilter("Game-File   .she", "she");
+        }
+        chooser.addChoosableFileFilter(filter);
+        
+        int choosed = chooser.showDialog(null, selection);
+        //if (chooser.getSelectedFile() != null)
+        return chooser.getSelectedFile();
+        
+    }
+    public <T> T getObject(Class<T> data, String file) {
+        T clazz;
+        File f= getFile(file, false);
+        clazz = Serialize.xStreamIn(data, f);
+        return clazz;
+    }
+    private void update() {
+        Spots.validate();
+        Spots.repaint();
+    }
+    private void ItemMousePressed(java.awt.event.MouseEvent evt) {
+    spot = (Spot)evt.getComponent();
+    
+    
+    //table.get(l).setVisible(true);
+}
+
 }
