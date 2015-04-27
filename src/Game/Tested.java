@@ -5,15 +5,11 @@
  */
 package Game;
 
-import Events.Event;
-import IOUtil.Import;
 import IOUtil.Serialize;
-import Moveable.Enemies.Enemie;
 import Moveable.Player.Player;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
-import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
@@ -36,7 +32,8 @@ public class Tested extends javax.swing.JFrame {
     public Tested() {
         Map temp = Serialize.xStreamIn(Map.class, "C:\\Users\\f.harz\\Desktop\\player.sh");
         map1 = temp;
-        map1.getplayer().getInventory().addEvent();
+        map1.reUpdate();
+        //map1.getplayer().getInventory().addEvent();
 //        map1 = new Map();
 //        //map1.setUP(10, 10, 5, 5);
 //        map1.setUP(temp.width, temp.width, temp.getPlayerPosition().x, temp.getPlayerPosition().y);
