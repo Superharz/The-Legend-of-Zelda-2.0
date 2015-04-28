@@ -11,6 +11,8 @@ import IOUtil.Serialize;
 import Inventory.Items;
 import Moveable.Enemies.Enemie;
 import Moveable.Events;
+import java.awt.Color;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +21,9 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -29,24 +33,25 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author Flo
  */
 public class GUI extends javax.swing.JFrame {
-    Spot spot;
-    Event evt;
-    Enemie e;
-    Items item;
-    HashMap<Object, Object>
-    LinkedList<Spot> spots;
-    LinkedList<Event> events;
-    LinkedList<Enemie> enemies;
-    LinkedList<Items> items;
+    //Spot spot;
+    //Event evt;
+    //Enemie e;
+    //Items item;
+    public static final int EVENTS = 1, ENEMIES = 2, ITEMS = 3, SPOTS = 0;
+    int selection = SPOTS;
+    //HashMap<JLabel, Spot> spots;
+    //HashMap<JLabel, Event> events;
+    //HashMap<JLabel, Enemie> enemies;
+    //LinkedList<Items> items;
     /**
      * Creates new form GUI
      */
     public GUI() {
         initComponents();
-        spots = new LinkedList<Spot>();
-        events = new LinkedList<Event>();
-        enemies = new LinkedList<Enemie>();
-        items = new LinkedList<Items>();
+        //spots = new HashMap<JLabel, Spot>();
+       // events = new HashMap<JLabel, Event>();
+        //enemies = new HashMap<JLabel, Enemie>();
+        //items = new LinkedList<Items>();
         setUP();
     }
 
@@ -60,18 +65,18 @@ public class GUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jDesktopPane1 = new javax.swing.JDesktopPane();
-        jInternalFrame1 = new javax.swing.JInternalFrame();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        Spots = new javax.swing.JPanel();
+        Content = new javax.swing.JInternalFrame();
+        Tab = new javax.swing.JTabbedPane();
+        Spots = new Editor.Content<Spot>();
+        jButton5 = new javax.swing.JButton();
+        Events = new Editor.Content<Event>();
         jButton1 = new javax.swing.JButton();
-        Events = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        Enemies = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
-        Items = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
-        jInternalFrame2 = new javax.swing.JInternalFrame();
-        map1 = new Game.Map();
+        Enemies = new Editor.Content<Enemie>();
+        jButton6 = new javax.swing.JButton();
+        Items = new Editor.Content<Items>();
+        jButton7 = new javax.swing.JButton();
+        GUI = new javax.swing.JInternalFrame();
+        map1 = new Editor.MapEditor();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -84,130 +89,80 @@ public class GUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jInternalFrame1.setClosable(true);
-        jInternalFrame1.setMaximizable(true);
-        jInternalFrame1.setResizable(true);
-        jInternalFrame1.setTitle("Content");
-        jInternalFrame1.setVisible(true);
+        Content.setClosable(true);
+        Content.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        Content.setMaximizable(true);
+        Content.setResizable(true);
+        Content.setTitle("Content");
+        Content.setVisible(true);
+
+        Tab.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                TabStateChanged(evt);
+            }
+        });
+
+        jButton5.setText("New");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        Spots.add(jButton5);
+
+        Tab.addTab("Spots", Spots);
 
         jButton1.setText("New");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        Events.add(jButton1);
+
+        Tab.addTab("Events", Events);
+
+        jButton6.setText("New");
+        Enemies.add(jButton6);
+
+        Tab.addTab("Enemies", Enemies);
+
+        jButton7.setText("New");
+        Items.add(jButton7);
+
+        Tab.addTab("Items", Items);
+
+        javax.swing.GroupLayout ContentLayout = new javax.swing.GroupLayout(Content.getContentPane());
+        Content.getContentPane().setLayout(ContentLayout);
+        ContentLayout.setHorizontalGroup(
+            ContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(Tab, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
+        );
+        ContentLayout.setVerticalGroup(
+            ContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(Tab, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+        );
+
+        Content.setBounds(20, 40, 190, 300);
+        jDesktopPane1.add(Content, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        GUI.setTitle("GUI");
+        GUI.setVisible(true);
+
+        map1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                map1MouseClicked(evt);
             }
         });
 
-        javax.swing.GroupLayout SpotsLayout = new javax.swing.GroupLayout(Spots);
-        Spots.setLayout(SpotsLayout);
-        SpotsLayout.setHorizontalGroup(
-            SpotsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SpotsLayout.createSequentialGroup()
-                .addGap(0, 116, Short.MAX_VALUE)
-                .addComponent(jButton1))
+        javax.swing.GroupLayout GUILayout = new javax.swing.GroupLayout(GUI.getContentPane());
+        GUI.getContentPane().setLayout(GUILayout);
+        GUILayout.setHorizontalGroup(
+            GUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(map1, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
         );
-        SpotsLayout.setVerticalGroup(
-            SpotsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SpotsLayout.createSequentialGroup()
-                .addGap(0, 220, Short.MAX_VALUE)
-                .addComponent(jButton1))
-        );
-
-        jTabbedPane1.addTab("Spots", Spots);
-
-        jButton2.setText("New");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout EventsLayout = new javax.swing.GroupLayout(Events);
-        Events.setLayout(EventsLayout);
-        EventsLayout.setHorizontalGroup(
-            EventsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EventsLayout.createSequentialGroup()
-                .addGap(0, 116, Short.MAX_VALUE)
-                .addComponent(jButton2))
-        );
-        EventsLayout.setVerticalGroup(
-            EventsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EventsLayout.createSequentialGroup()
-                .addGap(0, 220, Short.MAX_VALUE)
-                .addComponent(jButton2))
-        );
-
-        jTabbedPane1.addTab("Events", Events);
-
-        jButton3.setText("New");
-
-        javax.swing.GroupLayout EnemiesLayout = new javax.swing.GroupLayout(Enemies);
-        Enemies.setLayout(EnemiesLayout);
-        EnemiesLayout.setHorizontalGroup(
-            EnemiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EnemiesLayout.createSequentialGroup()
-                .addGap(0, 116, Short.MAX_VALUE)
-                .addComponent(jButton3))
-        );
-        EnemiesLayout.setVerticalGroup(
-            EnemiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EnemiesLayout.createSequentialGroup()
-                .addGap(0, 220, Short.MAX_VALUE)
-                .addComponent(jButton3))
-        );
-
-        jTabbedPane1.addTab("Enemies", Enemies);
-
-        jButton4.setText("New");
-
-        javax.swing.GroupLayout ItemsLayout = new javax.swing.GroupLayout(Items);
-        Items.setLayout(ItemsLayout);
-        ItemsLayout.setHorizontalGroup(
-            ItemsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ItemsLayout.createSequentialGroup()
-                .addGap(0, 116, Short.MAX_VALUE)
-                .addComponent(jButton4))
-        );
-        ItemsLayout.setVerticalGroup(
-            ItemsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ItemsLayout.createSequentialGroup()
-                .addGap(0, 220, Short.MAX_VALUE)
-                .addComponent(jButton4))
-        );
-
-        jTabbedPane1.addTab("Items", Items);
-
-        javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
-        jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
-        jInternalFrame1Layout.setHorizontalGroup(
-            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
-        );
-        jInternalFrame1Layout.setVerticalGroup(
-            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
-        );
-
-        jInternalFrame1.setBounds(20, 70, 190, 300);
-        jDesktopPane1.add(jInternalFrame1, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        jInternalFrame2.setMaximizable(true);
-        jInternalFrame2.setResizable(true);
-        jInternalFrame2.setTitle("GUI");
-        jInternalFrame2.setVisible(true);
-
-        javax.swing.GroupLayout jInternalFrame2Layout = new javax.swing.GroupLayout(jInternalFrame2.getContentPane());
-        jInternalFrame2.getContentPane().setLayout(jInternalFrame2Layout);
-        jInternalFrame2Layout.setHorizontalGroup(
-            jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(map1, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
-        );
-        jInternalFrame2Layout.setVerticalGroup(
-            jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        GUILayout.setVerticalGroup(
+            GUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(map1, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
         );
 
-        jInternalFrame2.setBounds(290, 60, 420, 410);
-        jDesktopPane1.add(jInternalFrame2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        GUI.setBounds(300, 70, 430, 410);
+        jDesktopPane1.add(GUI, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jMenu1.setText("File");
 
@@ -236,6 +191,11 @@ public class GUI extends javax.swing.JFrame {
         jMenu3.setText("View");
 
         jMenuItem7.setText("Content");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem7);
 
         jMenuBar1.add(jMenu3);
@@ -266,47 +226,61 @@ public class GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+       Content.setVisible(!Content.isVisible());
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void map1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_map1MouseClicked
+        //map1.click(evt,spot);
+        mapCklicked(evt);
+    }//GEN-LAST:event_map1MouseClicked
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
         String[] options = {"Create new Object","Choose File"};
         int option = JOptionPane.showOptionDialog(null, "How to create the Object?", "Choose Object", 0, JOptionPane.QUESTION_MESSAGE, null, options,0 );
         if (option != JOptionPane.CLOSED_OPTION) {
             if(option == 0) {
-                
+
             }
             else {
                 Spot s= getObject(Spot.class, "Choose spot");
-                spots.add(s);
+                if (s == null) return;
+                Spots.add(s);
                 
-                spot.addMouseListener(new java.awt.event.MouseAdapter() {
-                    public void mousePressed(java.awt.event.MouseEvent evt) {
-                        ItemMousePressed(evt);
-                    }
-                    public void mouseEntered(java.awt.event.MouseEvent evt) {
-                        //ItemMouseEntered(evt);
-                        //p.show();
-                    }
-                    public void mouseExited(java.awt.event.MouseEvent evt) {
-                        //ItemMouseExited(evt);
-                        //p.show();
-                    }
-                });
+                //                JLabel l = new JLabel(s.getIcon());
+                //                spots.put(l,s);
+                //
+                //                l.addMouseListener(new java.awt.event.MouseAdapter() {
+                    //                    public void mousePressed(java.awt.event.MouseEvent evt) {
+                        //                        SpotMousePressed(evt);
+                        //                    }
+                    //                    public void mouseEntered(java.awt.event.MouseEvent evt) {
+                        //                        //ItemMouseEntered(evt);
+                        //                        //p.show();
+                        //                    }
+                    //                    public void mouseExited(java.awt.event.MouseEvent evt) {
+                        //                        //ItemMouseExited(evt);
+                        //                        //p.show();
+                        //                    }
+                    //                });
+            //
+            //                //table.put(l, item);
+            //                l.setSize(l.getIcon().getIconWidth(),l.getIcon().getIconHeight()) ;
+            //
+            //                Spots.add(l);
+            //                update();
+            //                System.out.println("Worked");
+            //                l.setVisible(true);
 
-                //table.put(l, item);
-                item.setSize(item.getIcon().getIconWidth(),item.getIcon().getIconHeight()) ;
-
-                Spots.add(item);
-                update();
-                System.out.println("Worked");
-                item.setVisible(true);
-                
-            }
-            
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void TabStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_TabStateChanged
+        selection = Tab.getSelectedIndex();
+        System.out.println(selection);
+    }//GEN-LAST:event_TabStateChanged
 
     /**
      * @param args the command line arguments
@@ -345,17 +319,18 @@ public class GUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel Enemies;
-    private javax.swing.JPanel Events;
-    private javax.swing.JPanel Items;
-    private javax.swing.JPanel Spots;
+    private javax.swing.JInternalFrame Content;
+    private Editor.Content<Enemie> Enemies;
+    private Editor.Content<Event> Events;
+    private javax.swing.JInternalFrame GUI;
+    private Editor.Content<Items> Items;
+    private Editor.Content<Spot> Spots;
+    private javax.swing.JTabbedPane Tab;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JDesktopPane jDesktopPane1;
-    private javax.swing.JInternalFrame jInternalFrame1;
-    private javax.swing.JInternalFrame jInternalFrame2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -365,8 +340,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private Game.Map map1;
+    private Editor.MapEditor map1;
     // End of variables declaration//GEN-END:variables
 public final void setUP() {
         try {
@@ -402,6 +376,7 @@ private File getFile(String selection, boolean textFile) {
     public <T> T getObject(Class<T> data, String file) {
         T clazz;
         File f= getFile(file, false);
+        if (f == null) return null;
         clazz = Serialize.xStreamIn(data, f);
         return clazz;
     }
@@ -409,11 +384,27 @@ private File getFile(String selection, boolean textFile) {
         Spots.validate();
         Spots.repaint();
     }
-    private void ItemMousePressed(java.awt.event.MouseEvent evt) {
-    spot = (Spot)evt.getComponent();
-    
-    
-    //table.get(l).setVisible(true);
-}
+//    private void SpotMousePressed(java.awt.event.MouseEvent evt) {
+//        JLabel l = (JLabel)evt.getComponent();
+//        Spot help = spots.get(l);
+//        if (spot != null && spot != help) {
+//            spots.
+//            l.setBorder(null);
+//        }
+//        spot = spots.get(l);   
+//        l.setBorder(BorderFactory.createEtchedBorder(Color.lightGray, Color.yellow));
+//        System.out.println("HI");
+//        
+//    //table.get(l).setVisible(true);
+//}
+
+    private void mapCklicked(MouseEvent evt) {
+        switch (selection) {
+            case EVENTS : map1.click(evt, Events.getContent());
+            case ENEMIES: map1.click(evt, Enemies.getContent());
+            case ITEMS  : map1.click(evt, Items.getContent());
+            case SPOTS  : map1.click(evt, Spots.getContent());
+        }
+    }
 
 }

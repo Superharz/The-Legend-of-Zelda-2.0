@@ -5,6 +5,7 @@
  */
 package Game;
 
+import IOUtil.Import;
 import IOUtil.Serialize;
 import Moveable.Player.Player;
 import java.awt.event.ActionEvent;
@@ -33,6 +34,9 @@ public class Tested extends javax.swing.JFrame {
         Map temp = Serialize.xStreamIn(Map.class, "C:\\Users\\f.harz\\Desktop\\player.sh");
         map1 = temp;
         map1.reUpdate();
+        
+        Serialize.xStreamOut(map1.getSpot(1, 0), "C:\\Users\\f.harz\\Desktop\\spot1.she");
+        Serialize.xStreamOut(map1.getSpot(0, 0), "C:\\Users\\f.harz\\Desktop\\spot2.she");
         //map1.getplayer().getInventory().addEvent();
 //        map1 = new Map();
 //        //map1.setUP(10, 10, 5, 5);
@@ -208,13 +212,16 @@ public class Tested extends javax.swing.JFrame {
       if (!move) {
           //System.out.println("FORM");
         move  = true;
+          //System.out.println("Work");
        switch (evt.getKeyChar()) {
             case 'a': map1.getplayer().move(3);break;
             case 'd': map1.getplayer().move(2);break;
             case 'w': map1.getplayer().move(1);break;
             case 's': map1.getplayer().move(0);break;
             case 'z': break;
-            case 'x': Serialize.xStreamOut(map1, "C:\\Users\\f.harz\\Desktop\\player.sh");break;
+            case 'x':
+                map1.play(false);
+                Serialize.xStreamOut(map1, "C:\\Users\\f.harz\\Desktop\\player.sh");break;
             case KeyEvent.VK_SPACE: map1.play(false);   ;break;
         }
       }

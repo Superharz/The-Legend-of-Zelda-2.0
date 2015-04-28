@@ -16,7 +16,7 @@ import javax.swing.ImageIcon;
  *
  * @author Flo
  */
-public class Spot implements java.io.Serializable{
+public class Spot implements java.io.Serializable, Image{
     LinkedList<Event> events;
     LinkedList<Items> items;
     //private BufferedImage img;
@@ -152,5 +152,8 @@ public class Spot implements java.io.Serializable{
             }
         }
         return s;
+    }
+    public ImageIcon getIcon() {
+        return img;
     }
 }

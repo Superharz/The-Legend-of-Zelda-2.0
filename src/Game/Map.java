@@ -164,7 +164,9 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
     public LinkedList<Enemie> getEnemies() {
         return enemies;
     }
-    
+    public int getSpotWidth() {
+        return spotWidth;
+    }
    public void build() {
         int x = spots[0][0].image().getWidth();
         int y = spots[0][0].image().getHeight();
@@ -577,10 +579,10 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    private int toPixel(int spot) {
+    public int toPixel(int spot) {
         return spot* spotWidth;
     }
-    private int toSpots(int pixels) {
+    public int toSpots(int pixels) {
         return pixels / spotWidth;
     }
     
@@ -638,12 +640,21 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
     }
 
     void reUpdate() {
+         build();
+        requestFocus();
+        this.play(true);
+        System.out.println(arrows);
+//        for (int i = 0;arrows != null && i < arrows.size(); i++) {
+//            removeMover(arrows.get(i));
+//        }
+        
         getplayer().getInventory().addEvent();
         for (int i = 0; i < enemies.size(); i++) {
             enemies.get(i).startMove();
         }
         move();
         
+       
     }
 
     
