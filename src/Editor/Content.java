@@ -68,7 +68,7 @@ public class Content<T extends Image> extends JPanel{
         selected = content.get(l);
         selectLabel = l;
         l.setBorder(BorderFactory.createEtchedBorder(Color.lightGray, Color.yellow));
-        System.out.println("HI");
+        //System.out.println("HI");
         
     //table.get(l).setVisible(true);
 }

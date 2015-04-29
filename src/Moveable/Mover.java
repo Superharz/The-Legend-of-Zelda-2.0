@@ -117,8 +117,9 @@ public abstract class Mover extends javax.swing.JLabel implements Image{
     public void addListener(Events toAdd) {
         listeners.add(toAdd);
     }
+    @Override
     public ImageIcon getIcon() {
-        return img[0];
+        return (ImageIcon)super.getIcon();
     }
     public void stopMoving() {
         move = false;

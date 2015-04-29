@@ -346,6 +346,27 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
         //e.randomMove();
         
     }
+     /**
+     * Point in spots
+     * @param e
+     * @param p 
+     */
+    public void addEnemy(Enemie e,Point p, boolean start) {
+        e = e.clone();
+        enemies.add(e);
+        this.add(e);
+        e.addListener(this);
+        e.setBounds(toPixel(p.x), toPixel(p.y), e.getWidth(), e.getWidth());
+        //e.setLocation(x, y);
+        
+        e.setUP(spots);
+        if (start)
+            e.startMove();
+        //System.out.println("Set up");
+        //player.setLocation(50,50);
+        //e.randomMove();
+        
+    }
     
     public void addEvent(int x, int y, Event evt) {
         evt.addListener(this);

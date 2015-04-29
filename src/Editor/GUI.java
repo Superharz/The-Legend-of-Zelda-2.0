@@ -11,29 +11,15 @@ import Game.Tested;
 import IOUtil.Serialize;
 import Inventory.Items;
 import Moveable.Enemies.Enemie;
-import Moveable.Events;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.file.DirectoryNotEmptyException;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -131,16 +117,31 @@ public class GUI extends javax.swing.JFrame {
         Tab.addTab("Spots", Spots);
 
         jButton1.setText("New");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         Events.add(jButton1);
 
         Tab.addTab("Events", Events);
 
         jButton6.setText("New");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
         Enemies.add(jButton6);
 
         Tab.addTab("Enemies", Enemies);
 
         jButton7.setText("New");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
         Items.add(jButton7);
 
         Tab.addTab("Items", Items);
@@ -149,15 +150,14 @@ public class GUI extends javax.swing.JFrame {
         Content.getContentPane().setLayout(ContentLayout);
         ContentLayout.setHorizontalGroup(
             ContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Tab, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
+            .addComponent(Tab, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
         );
         ContentLayout.setVerticalGroup(
             ContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Tab, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+            .addComponent(Tab, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
         );
 
         jDesktopPane1.add(Content);
-        Content.setBounds(20, 40, 190, 300);
 
         GUI.setResizable(true);
         GUI.setTitle("GUI");
@@ -176,15 +176,14 @@ public class GUI extends javax.swing.JFrame {
         GUI.getContentPane().setLayout(GUILayout);
         GUILayout.setHorizontalGroup(
             GUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(map1, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
+            .addComponent(map1, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
         );
         GUILayout.setVerticalGroup(
             GUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(map1, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
+            .addComponent(map1, javax.swing.GroupLayout.DEFAULT_SIZE, 9, Short.MAX_VALUE)
         );
 
         jDesktopPane1.add(GUI);
-        GUI.setBounds(300, 20, 430, 410);
 
         LaunchTab.setClosable(true);
         LaunchTab.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -195,7 +194,7 @@ public class GUI extends javax.swing.JFrame {
         Launch.setFont(new java.awt.Font("Arial Black", 1, 48)); // NOI18N
         Launch.setForeground(new java.awt.Color(255, 102, 102));
         Launch.setText("!LAUNCH!");
-        Launch.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        Launch.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         Launch.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
         Launch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -211,11 +210,10 @@ public class GUI extends javax.swing.JFrame {
         );
         LaunchTabLayout.setVerticalGroup(
             LaunchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Launch, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
+            .addComponent(Launch, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
         );
 
         jDesktopPane1.add(LaunchTab);
-        LaunchTab.setBounds(20, 390, 330, 160);
 
         jMenu1.setText("File");
 
@@ -303,36 +301,10 @@ public class GUI extends javax.swing.JFrame {
 
             }
             else {
-                Spot s= getObject(Spot.class, "Choose spot");
+                Spot s= getObject(Spot.class, "Choose Spot");
                 if (s == null) return;
                 Spots.add(s);
-                
-                //                JLabel l = new JLabel(s.getIcon());
-                //                spots.put(l,s);
-                //
-                //                l.addMouseListener(new java.awt.event.MouseAdapter() {
-                    //                    public void mousePressed(java.awt.event.MouseEvent evt) {
-                        //                        SpotMousePressed(evt);
-                        //                    }
-                    //                    public void mouseEntered(java.awt.event.MouseEvent evt) {
-                        //                        //ItemMouseEntered(evt);
-                        //                        //p.show();
-                        //                    }
-                    //                    public void mouseExited(java.awt.event.MouseEvent evt) {
-                        //                        //ItemMouseExited(evt);
-                        //                        //p.show();
-                        //                    }
-                    //                });
-            //
-            //                //table.put(l, item);
-            //                l.setSize(l.getIcon().getIconWidth(),l.getIcon().getIconHeight()) ;
-            //
-            //                Spots.add(l);
-            //                update();
-            //                System.out.println("Worked");
-            //                l.setVisible(true);
-
-        }
+            }
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -356,6 +328,51 @@ public class GUI extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         close();
     }//GEN-LAST:event_formWindowClosing
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String[] options = {"Create new Object","Choose File"};
+        int option = JOptionPane.showOptionDialog(null, "How to create the Object?", "Choose Object", 0, JOptionPane.QUESTION_MESSAGE, null, options,0 );
+        if (option != JOptionPane.CLOSED_OPTION) {
+            if(option == 0) {
+
+            }
+            else {
+                Event s= getObject(Event.class, "Choose Event");
+                if (s == null) return;
+                Events.add(s);
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        String[] options = {"Create new Object","Choose File"};
+        int option = JOptionPane.showOptionDialog(null, "How to create the Object?", "Choose Object", 0, JOptionPane.QUESTION_MESSAGE, null, options,0 );
+        if (option != JOptionPane.CLOSED_OPTION) {
+            if(option == 0) {
+
+            }
+            else {
+                Items s= getObject(Items.class, "Choose Item");
+                if (s == null) return;
+                Items.add(s);
+            }
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        String[] options = {"Create new Object","Choose File"};
+        int option = JOptionPane.showOptionDialog(null, "How to create the Object?", "Choose Object", 0, JOptionPane.QUESTION_MESSAGE, null, options,0 );
+        if (option != JOptionPane.CLOSED_OPTION) {
+            if(option == 0) {
+
+            }
+            else {
+                Enemie s= getObject(Enemie.class, "Choose Enemie");
+                if (s == null) return;
+                Enemies.add(s);
+            }
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -489,8 +506,8 @@ private File getFile(String selection, boolean textFile) {
     }
 
     private void launch() {
-        Serialize.xStreamOut(map1, "D:\\1GB\\The-Legend-of-Zelda-2.0\\Save\\temp.she");
-        Tested test = new Tested("D:\\1GB\\The-Legend-of-Zelda-2.0\\Save\\temp.she");
+        Serialize.xStreamOut(map1, "C:\\Users\\f.harz\\Desktop\\The-Legend-of-Zelda-2.0\\Save\\temp.she");
+        Tested test = new Tested("C:\\Users\\f.harz\\Desktop\\The-Legend-of-Zelda-2.0\\Save\\temp.she");
         test.setVisible(true);
         test.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
@@ -498,7 +515,7 @@ private File getFile(String selection, boolean textFile) {
     private void close() {
         try{
  
-    		File file = new File("D:\\1GB\\The-Legend-of-Zelda-2.0\\Save\\temp.she");
+    		File file = new File("C:\\Users\\f.harz\\Desktop\\The-Legend-of-Zelda-2.0\\Save\\temp.she");
  
     		if(file.delete()){
     			System.out.println(file.getName() + " is deleted!");

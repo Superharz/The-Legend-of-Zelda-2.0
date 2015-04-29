@@ -5,19 +5,28 @@
  */
 package Game;
 
+import Events.Event;
 import IOUtil.Import;
 import IOUtil.Serialize;
+import Inventory.Items;
+import Moveable.Enemies.Enemie;
 import Moveable.Player.Player;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 /**
  *
  * @author Flo
@@ -31,7 +40,7 @@ public class Tested extends javax.swing.JFrame {
      * Creates new form Tested
      */
     public Tested() {
-        this("C:\\Users\\f.harz\\Desktop\\player.sh");
+        //this("C:\\Users\\f.harz\\Desktop\\player.sh");
 //        Map temp = Serialize.xStreamIn(Map.class, "C:\\Users\\f.harz\\Desktop\\player.sh");
 //        map1 = temp;
 //        map1.reUpdate();
@@ -60,81 +69,82 @@ public class Tested extends javax.swing.JFrame {
 //        }
 //        Import m = new Import();
 //        map1 = m.buildMap();
-        //initComponents();
+        map1 = new Game.Map();
+        initComponents();
         //test();
         
-//        try {
-//            BufferedImage before = ImageIO.read (this.getClass().
-//                    getResource("/Pictures/tile1.png"));
-//            BufferedImage layer2 = ImageIO.read (this.getClass().
-//                    getResource("/Pictures/tile3.png"));
-//            BufferedImage plant = ImageIO.read (this.getClass().
-//                    getResource("/Pictures/plant.png"));
-//            BufferedImage before2 = ImageIO.read (this.getClass().
-//                    getResource("/Pictures/tile2.png"));
-//            BufferedImage sword = ImageIO.read (this.getClass().
-//                    getResource("/Pictures/sword4.png"));
-//            Spot s = new Spot(before, false);
-//            Spot stair = new Spot(plant,-1);
-//            Spot stair2 = new Spot(plant,-2);
-//            Spot l1 = new Spot(layer2,1);
-//            Spot l2 = new Spot(layer2,2);
-//            map1.setUP(10, 10,5,5);
-//            for (int i = 0; i < 10; i++) {
-//                for (int j = 0; j < 10; j++) {
-//                    Spot a = new Spot(before2, true);
-//                    map1.addSpot(a, i, j);
-//                }
-//            }
-//            map1.addSpot(s, 0, 0);
-//            map1.addSpot(s, 1, 1);
-//            map1.addSpot(s, 8, 8);
-//            map1.addSpot(s, 7, 8);
-//            map1.addSpot(s, 8, 6);
-//            map1.addSpot(s, 7, 6);
-//            map1.addSpot(s, 9, 0);
-//            map1.addSpot(l1, 8, 1);
-//            map1.addSpot(l1, 7, 1);
-//            map1.addSpot(l1, 6, 1);
-//            map1.addSpot(l1, 5, 1);
-//            map1.addSpot(stair, 4, 1);
-//            map1.addSpot(stair2, 8, 2);
-//            map1.addSpot(l2, 8, 3);
-//            map1.addSpot(l2, 7, 3);
-//            map1.addSpot(l2, 6, 3);
-//            map1.addSpot(l2, 5, 3);
-//            Event evt = new Event(new Point(5,1));
-//            Enemie e2 = new Enemie(Enemie.WALLMOVE);
-//            Event evt2 = new Event(new Point(2,5),e2);
-//            Event evt3 = new Event(1000);
-//            map1.addEvent(1, 0, evt2);
-//            map1.addEvent(0, 1, evt);
-//            map1.addEvent(9, 9, evt3);
-//            ImageIcon icon = new ImageIcon(sword);
-//            Items item = new Items("Wall","Wolf",icon,true);
-//            item.addStats(new JLabel("Damage: 50"), Items.DAMAGE, 50);
-//            Event evt4 = new Event(new Point(5,2),item);
-//            evt4.addEventCount(1);
-//            map1.addEvent(0, 9, evt4);
-//            Enemie e;
-//            
-//            map1.build();
-//            for (int i = 0; i < 5; i++) {
-//                e = new Enemie(Enemie.RANDOMMOVE);
-//                map1.addEnemy(e, 50+i*50, 50+i*50);
-//            }
-//            
-//            //Enemie e = new Enemie(1000/240, 100, 100, new Point(0,0),map1.getSpots());
-//            //map1.addEnemy(e, 100, 100);
-////            Player p = new Player();
-////            map1.add(p);
-//            
-//        } catch (IOException ex) {
-//            Logger.getLogger(Tested.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try {
+            BufferedImage before = ImageIO.read (this.getClass().
+                    getResource("/Pictures/tile1.png"));
+            BufferedImage layer2 = ImageIO.read (this.getClass().
+                    getResource("/Pictures/tile3.png"));
+            BufferedImage plant = ImageIO.read (this.getClass().
+                    getResource("/Pictures/plant.png"));
+            BufferedImage before2 = ImageIO.read (this.getClass().
+                    getResource("/Pictures/tile2.png"));
+            BufferedImage sword = ImageIO.read (this.getClass().
+                    getResource("/Pictures/sword4.png"));
+            Spot s = new Spot(before, false);
+            Spot stair = new Spot(plant,-1);
+            Spot stair2 = new Spot(plant,-2);
+            Spot l1 = new Spot(layer2,1);
+            Spot l2 = new Spot(layer2,2);
+            map1.setUP(10, 10,5,5);
+            for (int i = 0; i < 10; i++) {
+                for (int j = 0; j < 10; j++) {
+                    Spot a = new Spot(before2, true);
+                    map1.addSpot(a, i, j);
+                }
+            }
+            map1.addSpot(s, 0, 0);
+            map1.addSpot(s, 1, 1);
+            map1.addSpot(s, 8, 8);
+            map1.addSpot(s, 7, 8);
+            map1.addSpot(s, 8, 6);
+            map1.addSpot(s, 7, 6);
+            map1.addSpot(s, 9, 0);
+            map1.addSpot(l1, 8, 1);
+            map1.addSpot(l1, 7, 1);
+            map1.addSpot(l1, 6, 1);
+            map1.addSpot(l1, 5, 1);
+            map1.addSpot(stair, 4, 1);
+            map1.addSpot(stair2, 8, 2);
+            map1.addSpot(l2, 8, 3);
+            map1.addSpot(l2, 7, 3);
+            map1.addSpot(l2, 6, 3);
+            map1.addSpot(l2, 5, 3);
+            Event evt = new Event(new Point(5,1));
+            Enemie e2 = new Enemie(Enemie.WALLMOVE);
+            Event evt2 = new Event(new Point(2,5),e2);
+            Event evt3 = new Event(1000);
+            map1.addEvent(1, 0, evt2);
+            map1.addEvent(0, 1, evt);
+            map1.addEvent(9, 9, evt3);
+            ImageIcon icon = new ImageIcon(sword);
+            Items item = new Items("Wall","Wolf",icon,true);
+            item.addStats(new JLabel("Damage: 50"), Items.DAMAGE, 50);
+            Event evt4 = new Event(new Point(5,2),item);
+            evt4.addEventCount(1);
+            map1.addEvent(0, 9, evt4);
+            Enemie e;
+            
+            map1.build();
+            for (int i = 0; i < 5; i++) {
+                e = new Enemie(Enemie.RANDOMMOVE);
+                map1.addEnemy(e, 50+i*50, 50+i*50);
+            }
+            
+            //Enemie e = new Enemie(1000/240, 100, 100, new Point(0,0),map1.getSpots());
+            //map1.addEnemy(e, 100, 100);
+//            Player p = new Player();
+//            map1.add(p);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(Tested.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
        // map1.build();
-        //map1.requestFocus();
+        map1.requestFocus();
 //        this.validate();
 //        this.repaint();
 //        this.update(this.getGraphics());
@@ -178,7 +188,9 @@ public class Tested extends javax.swing.JFrame {
 //        }
 //        Import m = new Import();
 //        map1 = m.buildMap();
+        
         initComponents();
+        
         //test();
         
 //        try {
