@@ -1,0 +1,13 @@
+@V:0 P=/Pictures/tile1.png
+@V:1 P=/Pictures/tile2.png
+*N:0 V:0 W:1 
+*N:1 V:1 W:0
+`V:0 P=C:\\Users\\f.harz\\Desktop\\test.foo
+?S:10:10 P:5:5 N:0
+$P:0:0 N:1
+~M:0 V:0
+/T:2 V:0 H:100
+/T:4 V:1 E:9:0:0 A:1
+!P:0:9 V:0
+!P:9:9 V:1
+^P:4:4 V:0

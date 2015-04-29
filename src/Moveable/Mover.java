@@ -5,6 +5,7 @@
  */
 package Moveable;
 
+import Game.Image;
 import Game.Spot;
 import Inventory.Items;
 import java.awt.Point;
@@ -19,7 +20,7 @@ import javax.swing.ImageIcon;
  *
  * @author Flo
  */
-public abstract class Mover extends javax.swing.JLabel{
+public abstract class Mover extends javax.swing.JLabel implements Image{
     public  final List<Events> listeners = new ArrayList<Events>();
     public LinkedList<Items> stuff;
     public boolean move = false;
@@ -116,7 +117,9 @@ public abstract class Mover extends javax.swing.JLabel{
     public void addListener(Events toAdd) {
         listeners.add(toAdd);
     }
-    
+    public ImageIcon getIcon() {
+        return img[0];
+    }
     public void stopMoving() {
         move = false;
     }
@@ -332,7 +335,7 @@ public abstract class Mover extends javax.swing.JLabel{
 //        if (px-1 <= 0 || py - 1<= 0 || px + x +1 >=spots[0][0].image().getWidth()*width || py + y + 1 >= spots[0][0].image().getHeight()*height)
 //            return false;
         //Left
-        if (direction == 3) {
+        if (direction == LEFT) {
             if (px-1 < 0)
                 return false;
             Point[] points  = {new Point(px-1,py),new Point(px-1,py + y/2),new Point(px-1,py + y-1)};
@@ -343,7 +346,7 @@ public abstract class Mover extends javax.swing.JLabel{
             
         }
         //Right
-        if (direction == 2) {
+        if (direction == RIGHT) {
             if (px + x +1 >=w2*width)
                 return false;
             Point[] points  = {new Point(px+1+x,py),new Point(px+1+x,py + y/2),new Point(px+1+x,py + y-1)};
@@ -354,7 +357,7 @@ public abstract class Mover extends javax.swing.JLabel{
             
         }
         //Up
-        if (direction == 1) {
+        if (direction == UP) {
             if (py-1 < -1)
                 return false;
             Point[] points  = {new Point(px+1,py-1),new Point(px+x/2,py-1),new Point(px + x-1,py-1)};
@@ -365,10 +368,10 @@ public abstract class Mover extends javax.swing.JLabel{
             
         }
         //Down
-        if (direction == 0) {
+        if (direction == DOWN) {
             if (py + y + 1 < h2*verticalHeight) {
                // return false;
-                Point[] points  = {new Point(px+1,py + y+1),new Point(px+x/2,py + y+1),new Point(px + x-1,py + y+1)};
+                Point[] points  = {new Point(px+1,py + y),new Point(px+x/2,py + y),new Point(px + x-1,py + y)};
                 //System.out.println(px-1);
                 //System.out.println(points[1].x/width + "    |   " + points[0].y/height);
                 return checkPoints(points, w2, h2);

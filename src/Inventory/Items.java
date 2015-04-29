@@ -4,15 +4,17 @@
  */
 package Inventory;
 
+import Game.Image;
 import java.util.LinkedList;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 /**
  *
  * @author f.harz
  */
-public class Items extends JLabel {
+public class Items extends JLabel implements Image{
     LinkedList<JLabel> stats = new LinkedList<JLabel>();
     int basic[] = new int[4];
     public final static int LIVE = 0, DAMAGE = 1, ARMOR = 2, SPEED = 3; 
@@ -87,5 +89,12 @@ public class Items extends JLabel {
     public void setSelection(boolean isSelected) {
         this.isSelected = isSelected;
     }
+
+    @Override
+    public ImageIcon getIcon() {
+        return (ImageIcon)super.getIcon();
+    }
+
+   
 
 }
