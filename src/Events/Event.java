@@ -9,7 +9,10 @@ import Game.Image;
 import Inventory.Items;
 import Moveable.Enemies.Enemie;
 import Moveable.Events;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -128,7 +131,21 @@ public class Event implements Serializable, Image{
 
     @Override
     public ImageIcon getIcon() {
-        return null;
+        BufferedImage img = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+        Graphics g = img.getGraphics();
+        int w = g.getFontMetrics().stringWidth("TELEPORT");
+        img = new BufferedImage(w + 8, 32, BufferedImage.TYPE_INT_ARGB);
+        g = img.getGraphics();
+        g.setColor(Color.red);
+        switch (eventType) {
+            case TELEPORT: g.drawString("TELEPORT", 4, 16);break;
+            case HEAL: g.drawString("HEAL", 4, 16);break;
+            case SPAWN: g.drawString("SPAWN", 4, 16);break;
+            case ITEM: g.drawString("ITEM", 4, 16);break;
+            case TEXT: g.drawString("TEXT", 4, 16);break;
+        }
+        
+        return new ImageIcon(img);
     }
     
 }

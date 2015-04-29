@@ -60,7 +60,7 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jDesktopPane1 = new javax.swing.JDesktopPane();
+        jDesktopPane2 = new javax.swing.JDesktopPane();
         Content = new javax.swing.JInternalFrame();
         Tab = new javax.swing.JTabbedPane();
         Spots = new Editor.Content<Spot>();
@@ -71,10 +71,10 @@ public class GUI extends javax.swing.JFrame {
         jButton6 = new javax.swing.JButton();
         Items = new Editor.Content<Items>();
         jButton7 = new javax.swing.JButton();
-        GUI = new javax.swing.JInternalFrame();
-        map1 = new Editor.MapEditor();
         LaunchTab = new javax.swing.JInternalFrame();
         Launch = new javax.swing.JButton();
+        GUI = new javax.swing.JInternalFrame();
+        map1 = new Editor.MapEditor();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -150,40 +150,15 @@ public class GUI extends javax.swing.JFrame {
         Content.getContentPane().setLayout(ContentLayout);
         ContentLayout.setHorizontalGroup(
             ContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Tab, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
+            .addComponent(Tab, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
         );
         ContentLayout.setVerticalGroup(
             ContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Tab, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
+            .addComponent(Tab, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
         );
 
-        jDesktopPane1.add(Content);
-
-        GUI.setResizable(true);
-        GUI.setTitle("GUI");
-        GUI.setVisible(true);
-
-        map1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                map1MouseClicked(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                map1MousePressed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout GUILayout = new javax.swing.GroupLayout(GUI.getContentPane());
-        GUI.getContentPane().setLayout(GUILayout);
-        GUILayout.setHorizontalGroup(
-            GUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(map1, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
-        );
-        GUILayout.setVerticalGroup(
-            GUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(map1, javax.swing.GroupLayout.DEFAULT_SIZE, 9, Short.MAX_VALUE)
-        );
-
-        jDesktopPane1.add(GUI);
+        Content.setBounds(80, 200, 170, 250);
+        jDesktopPane2.add(Content, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         LaunchTab.setClosable(true);
         LaunchTab.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -213,7 +188,35 @@ public class GUI extends javax.swing.JFrame {
             .addComponent(Launch, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
         );
 
-        jDesktopPane1.add(LaunchTab);
+        LaunchTab.setBounds(160, 40, 331, 110);
+        jDesktopPane2.add(LaunchTab, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        GUI.setResizable(true);
+        GUI.setTitle("GUI");
+        GUI.setVisible(true);
+
+        map1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                map1MouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                map1MousePressed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout GUILayout = new javax.swing.GroupLayout(GUI.getContentPane());
+        GUI.getContentPane().setLayout(GUILayout);
+        GUILayout.setHorizontalGroup(
+            GUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(map1, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
+        );
+        GUILayout.setVerticalGroup(
+            GUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(map1, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
+        );
+
+        GUI.setBounds(290, 160, 440, 420);
+        jDesktopPane2.add(GUI, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jMenu1.setText("File");
 
@@ -265,14 +268,11 @@ public class GUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 751, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jDesktopPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 759, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 598, Short.MAX_VALUE)
+            .addComponent(jDesktopPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 587, Short.MAX_VALUE)
         );
 
         pack();
@@ -424,7 +424,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JDesktopPane jDesktopPane1;
+    private javax.swing.JDesktopPane jDesktopPane2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;

@@ -127,7 +127,7 @@ public class Tested extends javax.swing.JFrame {
             evt4.addEventCount(1);
             map1.addEvent(0, 9, evt4);
             Enemie e;
-            
+            Serialize.xStreamOut(item, "C:\\Users\\f.harz\\Desktop\\The-Legend-of-Zelda-2.0\\Content\\item1.she");
             map1.build();
             for (int i = 0; i < 5; i++) {
                 e = new Enemie(Enemie.RANDOMMOVE);
