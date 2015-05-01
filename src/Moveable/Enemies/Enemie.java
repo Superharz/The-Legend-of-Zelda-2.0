@@ -5,6 +5,7 @@
  */
 package Moveable.Enemies;
 
+import Game.Image;
 import Game.Spot;
 import Moveable.Mover;
 import Moveable.Player.Player;
@@ -21,7 +22,7 @@ import javax.swing.ImageIcon;
  *
  * @author Flo
  */
-public  class Enemie extends Mover{
+public  class Enemie extends Mover implements Image{
     public static final int RANDOMMOVE = 0, WALLMOVE = 1;
     private int moveMethod;
     boolean pause = false;
@@ -112,7 +113,9 @@ public  class Enemie extends Mover{
             this.notify();
         }
     }
-    
+//    public ImageIcon getIcon() {
+//        return img[0];
+//    }
     private void randomMove() {
         Thread t = new Thread() {
             @Override

@@ -94,6 +94,10 @@ public class Items extends JLabel implements Image{
     public ImageIcon getIcon() {
         return (ImageIcon)super.getIcon();
     }
+    @Override
+    public ImageIcon getImageIcon() {
+        return (ImageIcon)super.getIcon();
+    }
 
    
 

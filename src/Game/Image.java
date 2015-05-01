@@ -12,5 +12,5 @@ import javax.swing.ImageIcon;
  * @author f.harz
  */
 public interface Image {
-    public ImageIcon getIcon();
+    public ImageIcon getImageIcon();
 }

@@ -26,18 +26,24 @@ public class Spot implements java.io.Serializable, Image{
     
     
     public Spot(BufferedImage img, boolean walkable) {
-        this.img = new ImageIcon(img);
+       this(new ImageIcon(img),walkable);
+     
+    }
+    public Spot(BufferedImage img, int height) {
+        this(new ImageIcon(img),height);
+    }
+    public Spot(ImageIcon img, boolean walkable) {
+        this.img = img;
       //this.img = img;
       this.height = 0;
       this.walkable = walkable;
     }
-    public Spot(BufferedImage img, int height) {
-        this.img = new ImageIcon(img);
+    public Spot(ImageIcon img, int height) {
+        this.img = img;
       //this.img = img;
       this.walkable = true;
       this.height = height;
     }
-    
     public void addEvent(Event evt) {
         if (events == null) {
             events = new LinkedList<Event>();
@@ -93,6 +99,7 @@ public class Spot implements java.io.Serializable, Image{
         return !items.isEmpty();
     }
     public int itemLength() {
+        if (!hasItem()) return 0;
         return items.size();
     }
     public boolean walk() {
@@ -154,6 +161,9 @@ public class Spot implements java.io.Serializable, Image{
         return s;
     }
     public ImageIcon getIcon() {
+        return img;
+    }
+    public ImageIcon getImageIcon() {
         return img;
     }
 }

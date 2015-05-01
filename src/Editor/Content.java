@@ -29,7 +29,7 @@ public class Content<T extends Image> extends JPanel{
     }
     
     public void add(T data) {
-        JLabel l = new JLabel(data.getIcon());
+        JLabel l = new JLabel(data.getImageIcon());
                 content.put(l,data);
                 
                 l.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -57,6 +57,10 @@ public class Content<T extends Image> extends JPanel{
     private void update() {
         this.validate();
         this.repaint();
+    }
+    public void erase() {
+        selectLabel.setBorder(null);
+        selected = null;
     }
     private void ContentMousePressed(java.awt.event.MouseEvent evt) {
         JLabel l = (JLabel)evt.getComponent();

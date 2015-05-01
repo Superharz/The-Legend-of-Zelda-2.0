@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -118,8 +119,11 @@ public abstract class Mover extends javax.swing.JLabel implements Image{
         listeners.add(toAdd);
     }
     @Override
-    public ImageIcon getIcon() {
-        return (ImageIcon)super.getIcon();
+    public ImageIcon getImageIcon() {
+        //JOptionPane.showMessageDialog(null, "HI", "HI", 1, super.getIcon());
+        return img[0];
+       
+        //return (ImageIcon)super.getIcon();
     }
     public void stopMoving() {
         move = false;

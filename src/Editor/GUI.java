@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -67,10 +68,13 @@ public class GUI extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         Events = new Editor.Content<Event>();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         Enemies = new Editor.Content<Enemie>();
         jButton6 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         Items = new Editor.Content<Items>();
         jButton7 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         LaunchTab = new javax.swing.JInternalFrame();
         Launch = new javax.swing.JButton();
         GUI = new javax.swing.JInternalFrame();
@@ -124,6 +128,14 @@ public class GUI extends javax.swing.JFrame {
         });
         Events.add(jButton1);
 
+        jButton2.setText("Erase");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        Events.add(jButton2);
+
         Tab.addTab("Events", Events);
 
         jButton6.setText("New");
@@ -134,6 +146,14 @@ public class GUI extends javax.swing.JFrame {
         });
         Enemies.add(jButton6);
 
+        jButton4.setText("Erase");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        Enemies.add(jButton4);
+
         Tab.addTab("Enemies", Enemies);
 
         jButton7.setText("New");
@@ -143,6 +163,14 @@ public class GUI extends javax.swing.JFrame {
             }
         });
         Items.add(jButton7);
+
+        jButton3.setText("Erase");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        Items.add(jButton3);
 
         Tab.addTab("Items", Items);
 
@@ -157,7 +185,7 @@ public class GUI extends javax.swing.JFrame {
             .addComponent(Tab, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
         );
 
-        Content.setBounds(80, 200, 170, 250);
+        Content.setBounds(30, 160, 170, 250);
         jDesktopPane2.add(Content, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         LaunchTab.setClosable(true);
@@ -171,6 +199,11 @@ public class GUI extends javax.swing.JFrame {
         Launch.setText("!LAUNCH!");
         Launch.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         Launch.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
+        Launch.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentHidden(java.awt.event.ComponentEvent evt) {
+                LaunchComponentHidden(evt);
+            }
+        });
         Launch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 LaunchActionPerformed(evt);
@@ -215,7 +248,7 @@ public class GUI extends javax.swing.JFrame {
             .addComponent(map1, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
         );
 
-        GUI.setBounds(290, 160, 440, 420);
+        GUI.setBounds(280, 160, 440, 420);
         jDesktopPane2.add(GUI, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jMenu1.setText("File");
@@ -298,8 +331,17 @@ public class GUI extends javax.swing.JFrame {
         int option = JOptionPane.showOptionDialog(null, "How to create the Object?", "Choose Object", 0, JOptionPane.QUESTION_MESSAGE, null, options,0 );
         if (option != JOptionPane.CLOSED_OPTION) {
             if(option == 0) {
-
+                Spot spot= null;
+                final NewSpot s = new NewSpot(null, true);
+                s.setVisible(true);
+                 s.addComponentListener(new java.awt.event.ComponentAdapter() {
+                    public void componentHidden(java.awt.event.ComponentEvent evt) {
+                        Spots.add(s.getSpot());
+                        s.dispose();
+                    }
+                });
             }
+            
             else {
                 Spot s= getObject(Spot.class, "Choose Spot");
                 if (s == null) return;
@@ -314,7 +356,7 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_TabStateChanged
 
     private void map1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_map1MousePressed
-        map1MouseClicked(evt);
+       // map1MouseClicked(evt);
     }//GEN-LAST:event_map1MousePressed
 
     private void LaunchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LaunchActionPerformed
@@ -374,6 +416,22 @@ public class GUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        Enemies.erase();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        Items.erase();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Events.erase();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void LaunchComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_LaunchComponentHidden
+        // TODO add your handling code here:
+    }//GEN-LAST:event_LaunchComponentHidden
+
     /**
      * @param args the command line arguments
      */
@@ -421,6 +479,9 @@ public class GUI extends javax.swing.JFrame {
     private Editor.Content<Spot> Spots;
     private javax.swing.JTabbedPane Tab;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
@@ -450,17 +511,17 @@ public final void setUP() {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
 }
-private File getFile(String selection, boolean textFile) {
+private File getFile(String selection, String extension, String description) {
         //Player player;
         //Map map;
         JFileChooser chooser = new JFileChooser();
         FileFilter filter;
-        if (textFile) {
-            filter = new FileNameExtensionFilter("Text-Files   .txt", "txt");
-        }
-        else {
-            filter = new FileNameExtensionFilter("Game-File   .she", "she");
-        }
+        //if (textFile) {
+            filter = new FileNameExtensionFilter(description, extension);
+        //}
+//        else {
+//            filter = new FileNameExtensionFilter("Game-File   .she", "she");
+//        }
         chooser.addChoosableFileFilter(filter);
         
         int choosed = chooser.showDialog(null, selection);
@@ -470,7 +531,7 @@ private File getFile(String selection, boolean textFile) {
     }
     public <T> T getObject(Class<T> data, String file) {
         T clazz;
-        File f= getFile(file, false);
+        File f= getFile(file, "SuperHarz ENT.   .she", ".she");
         if (f == null) return null;
         clazz = Serialize.xStreamIn(data, f);
         return clazz;
@@ -497,10 +558,10 @@ private File getFile(String selection, boolean textFile) {
 
     private void mapCklicked(MouseEvent evt) {
         switch (selection) {
-            case EVENTS : map1.click(evt, Events.getContent());break;
-            case ENEMIES: map1.click(evt, Enemies.getContent());break;
-            case ITEMS  : map1.click(evt, Items.getContent());break;
-            case SPOTS  : map1.click(evt, Spots.getContent());break;
+            case EVENTS : map1.click(evt, Events.getContent(),EVENTS);break;
+            case ENEMIES: map1.click(evt, Enemies.getContent(), ENEMIES);break;
+            case ITEMS  : map1.click(evt, Items.getContent(), ITEMS);break;
+            case SPOTS  : map1.click(evt, Spots.getContent(), SPOTS);break;
         }
         update();
     }

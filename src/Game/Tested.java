@@ -27,6 +27,7 @@ import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Flo
@@ -126,8 +127,9 @@ public class Tested extends javax.swing.JFrame {
             Event evt4 = new Event(new Point(5,2),item);
             evt4.addEventCount(1);
             map1.addEvent(0, 9, evt4);
-            Enemie e;
-            Serialize.xStreamOut(item, "C:\\Users\\f.harz\\Desktop\\The-Legend-of-Zelda-2.0\\Content\\item1.she");
+            Enemie e = new Enemie(Enemie.RANDOMMOVE);
+            Serialize.xStreamOut(e, "C:\\Users\\f.harz\\Desktop\\The-Legend-of-Zelda-2.0\\Content\\enemie1.she");
+            //JOptionPane.showMessageDialog(null, "HI", "HI", 1, e.getImageIcon());
             map1.build();
             for (int i = 0; i < 5; i++) {
                 e = new Enemie(Enemie.RANDOMMOVE);

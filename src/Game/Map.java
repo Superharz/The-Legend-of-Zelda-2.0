@@ -379,6 +379,46 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
         System.out.println("Item added!");
         
     }
+    public void removeItem(int x, int y) {
+        Items j;
+        if (spots[y][x].hasItem()) {
+        for (int i = 0; i < spots[y][x].itemLength(); i++) {
+            j = spots[y][x].pickUp();
+            this.remove(j);
+            if (spots[y][x].hasItem()) break;
+        }
+        }
+        //item.setBounds(toPixel(x), toPixel(y), item.getIcon().getIconWidth(), item.getIcon().getIconHeight());
+        System.out.println("Item removed!");
+        
+    }
+    public void removeEvent(int x, int y) {
+        
+            spots[y][x].removeEvents();
+            System.gc();
+        
+        //item.setBounds(toPixel(x), toPixel(y), item.getIcon().getIconWidth(), item.getIcon().getIconHeight());
+        System.out.println("Event removed!");
+        
+    }
+    public void removeEnemie(int x, int y) {
+            int X;
+            int Y;
+            Enemie e;
+            for (int i = 0; i < enemies.size(); i++) {
+                e = enemies.get(i);
+                X = toSpots(e.getLocation().x);
+                Y = toSpots(e.getLocation().y);
+                if (X == x && Y == y) {
+                    this.removeMover(e);
+                }
+            }
+            System.gc();
+        
+        //item.setBounds(toPixel(x), toPixel(y), item.getIcon().getIconWidth(), item.getIcon().getIconHeight());
+        System.out.println("Enemie removed!");
+        
+    }
     public Spot[][] getSpots() {
         return spots;
     }

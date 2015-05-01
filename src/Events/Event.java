@@ -130,7 +130,7 @@ public class Event implements Serializable, Image{
     }
 
     @Override
-    public ImageIcon getIcon() {
+    public ImageIcon getImageIcon() {
         BufferedImage img = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
         Graphics g = img.getGraphics();
         int w = g.getFontMetrics().stringWidth("TELEPORT");

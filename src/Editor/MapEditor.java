@@ -5,6 +5,10 @@
 
 package Editor;
 
+import static Editor.GUI.ENEMIES;
+import static Editor.GUI.EVENTS;
+import static Editor.GUI.ITEMS;
+import static Editor.GUI.SPOTS;
 import Events.Event;
 import Game.Spot;
 import Inventory.Items;
@@ -40,33 +44,48 @@ public class MapEditor extends Game.Map{
         return null;
     }
 
-    void click(MouseEvent evt, Object obj) {
+    void click(MouseEvent evt, Object obj, int type) {
         Point s = getPoint(evt);
         if (s == null) return;
-        if (obj instanceof Spot) {
-            System.out.println("Spots");
-            Spot spot = (Spot)obj;
-            this.addSpot(spot, s.x, s.y);
-            this.build();
+        switch (type) {
+            case SPOTS :       
+                System.out.println("Spots");
+                Spot spot = (Spot)obj;
+                this.addSpot(spot, s.x, s.y);
+                this.build();
+                ;break;
+            case ITEMS:       
+                System.out.println("Item");
+                if (obj == null) {
+                    this.removeItem(s.x, s.y);
+                    return;
+                }
+                Items item = (Items)obj;
+                this.addItem( s.x, s.y, item);
+                this.build();
+                ;break;
+            case EVENTS  :       
+                System.out.println("Event");
+                if (obj == null) {
+                    this.removeEvent(s.x, s.y);
+                    return;
+                }
+                Event event = (Event)obj;
+                this.addEvent( s.x, s.y, event);
+                this.build();
+                ;break;
+            case ENEMIES  :       
+                System.out.println("Enemie");
+                if (obj == null) {
+                    this.removeEnemie(s.x, s.y);
+                    return;
+                }
+                Enemie e = (Enemie)obj;
+                this.addEnemy(e, s, false);
+                this.build();
+                ;break;
         }
-        if (obj instanceof Items) {
-            System.out.println("Item");
-            Items item = (Items)obj;
-            this.addItem( s.x, s.y, item);
-            this.build();
-        }
-        if (obj instanceof Event) {
-            System.out.println("Event");
-            Event event = (Event)obj;
-            this.addEvent( s.x, s.y, event);
-            this.build();
-        }
-        if (obj instanceof Enemie) {
-            System.out.println("Enemie");
-            Enemie e = (Enemie)obj;
-            this.addEnemy(e, s, false);
-            this.build();
-        }
+        
     }
     private Point getPoint(MouseEvent evt) {
         Point p = evt.getPoint();
