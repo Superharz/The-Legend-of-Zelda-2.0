@@ -17,8 +17,9 @@ import javax.swing.JLabel;
 public class Items extends JLabel implements Image{
     LinkedList<JLabel> stats = new LinkedList<JLabel>();
     int basic[] = new int[4];
-    public final static int LIVE = 0, DAMAGE = 1, ARMOR = 2, SPEED = 3; 
+    public final static int NONE = -1, LIVE = 0, DAMAGE = 1, ARMOR = 2, SPEED = 3; 
     private String type;
+    private int typeInt;
     private boolean useable;
     private boolean isSelected = false;
 
@@ -26,6 +27,9 @@ public class Items extends JLabel implements Image{
      * Creates new form Item
      */
     public Items(String type,String name, Icon icon,boolean useable) {
+        setUp(type, name, icon,useable);
+    }
+    public Items(int type,String name, Icon icon,boolean useable) {
         setUp(type, name, icon,useable);
     }
     /**
@@ -58,6 +62,13 @@ public class Items extends JLabel implements Image{
     public void setUp(String type,String name, Icon icon,boolean useable) {
         this.useable = useable;
         this.type = type;
+        this.setName(name);
+        this.setIcon(icon);
+        update();
+    }
+    public void setUp(int type,String name, Icon icon,boolean useable) {
+        this.useable = useable;
+        this.typeInt = type;
         this.setName(name);
         this.setIcon(icon);
         update();
