@@ -308,7 +308,9 @@ public class NewSpot extends javax.swing.JDialog {
     public void createImage(){
         ImageIcon img;
         try {
-            img = new ImageIcon(ImageIO.read(getFile("Choose Texture", "PNG-File  .png" , ".png")));
+            File f= getFile("Choose Texture", "PNG-File  .png" , "png");
+            if (f == null) return;
+            img = new ImageIcon(ImageIO.read(f));
             Image.setIcon(img);
             this.img = img;
         } catch (IOException ex) {
@@ -316,7 +318,7 @@ public class NewSpot extends javax.swing.JDialog {
         }
         
     }
-    private File getFile(String selection, String extension, String description) {
+    private File getFile(String selection,String description, String extension ) {
         //Player player;
         //Map map;
         JFileChooser chooser = new JFileChooser();

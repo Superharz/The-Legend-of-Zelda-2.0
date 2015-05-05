@@ -13,4 +13,5 @@ import javax.swing.ImageIcon;
  */
 public interface Image {
     public ImageIcon getImageIcon();
+    
 }

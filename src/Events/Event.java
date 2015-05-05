@@ -147,5 +147,6 @@ public class Event implements Serializable, Image{
         
         return new ImageIcon(img);
     }
+
     
 }

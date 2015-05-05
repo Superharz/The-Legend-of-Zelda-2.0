@@ -18,7 +18,7 @@ public class Items extends JLabel implements Image{
     LinkedList<JLabel> stats = new LinkedList<JLabel>();
     int basic[] = new int[4];
     public final static int NONE = -1, LIVE = 0, DAMAGE = 1, ARMOR = 2, SPEED = 3; 
-    private String type;
+    private String type, description;
     private int typeInt;
     private boolean useable;
     private boolean isSelected = false;
@@ -86,6 +86,9 @@ public class Items extends JLabel implements Image{
     public void addStats(JLabel stat){
         stats.add(stat);
         update();
+    }
+    public void setDescription(String description) {
+        this.description = description;
     }
     private void update() {
         this.validate();

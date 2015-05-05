@@ -17,6 +17,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -28,7 +29,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class NewItem extends javax.swing.JDialog {
     private boolean useable;
     private String name, typeName, description;
-    private int type, live, level, armor, damage, speed;
+    private int type, live, armor, damage, speed;
     private LinkedList<String> stats;
     Items item;
     ImageIcon img;
@@ -60,12 +61,10 @@ public class NewItem extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         Live = new javax.swing.JLabel();
-        Level = new javax.swing.JLabel();
         Damage = new javax.swing.JLabel();
         Armor = new javax.swing.JLabel();
         Speed = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
@@ -115,8 +114,6 @@ public class NewItem extends javax.swing.JDialog {
 
         Live.setText("Live:");
 
-        Level.setText("Level:");
-
         Damage.setText("Damage:");
 
         Armor.setText("Armor:");
@@ -132,23 +129,6 @@ public class NewItem extends javax.swing.JDialog {
         jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jTextField1KeyReleased(evt);
-            }
-        });
-
-        jTextField2.setText("0");
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
-        jTextField2.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField2FocusGained(evt);
-            }
-        });
-        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField2KeyReleased(evt);
             }
         });
 
@@ -196,13 +176,9 @@ public class NewItem extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Level)
-                            .addComponent(Live))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
-                            .addComponent(jTextField2)))
+                        .addComponent(Live)
+                        .addGap(24, 24, 24)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(Damage)
@@ -222,10 +198,6 @@ public class NewItem extends javax.swing.JDialog {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Live)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Level)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Damage)
@@ -365,9 +337,8 @@ public class NewItem extends javax.swing.JDialog {
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(Text, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Text)
                             .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -533,17 +504,9 @@ public class NewItem extends javax.swing.JDialog {
         JOptionPane.showMessageDialog(null, jPanel2);
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
-
     private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusGained
         jTextField1.setText("");
     }//GEN-LAST:event_jTextField1FocusGained
-
-    private void jTextField2FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusGained
-        jTextField2.setText("");
-    }//GEN-LAST:event_jTextField2FocusGained
 
     private void jTextField3FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField3FocusGained
         jTextField3.setText("");
@@ -565,15 +528,6 @@ public class NewItem extends javax.swing.JDialog {
         else
             jTextField1.setText("");
     }//GEN-LAST:event_jTextField1KeyReleased
-
-    private void jTextField2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyReleased
-        String t = jTextField2.getText();
-        if (check(t)) {
-            level = Integer.parseInt(t);
-        }
-        else
-            jTextField2.setText("");
-    }//GEN-LAST:event_jTextField2KeyReleased
 
     private void jTextField3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyReleased
         String t = jTextField3.getText();
@@ -648,7 +602,6 @@ public class NewItem extends javax.swing.JDialog {
     private javax.swing.JLabel Armor;
     private javax.swing.JLabel Damage;
     private javax.swing.JLabel Image;
-    private javax.swing.JLabel Level;
     private javax.swing.JLabel Live;
     private javax.swing.JLabel Speed;
     private javax.swing.JTextArea Stats;
@@ -672,7 +625,6 @@ public class NewItem extends javax.swing.JDialog {
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
@@ -680,7 +632,9 @@ public class NewItem extends javax.swing.JDialog {
     public void createImage(){
         ImageIcon img;
         try {
-            img = new ImageIcon(ImageIO.read(getFile("Choose Texture", "PNG-File  .png" , ".png")));
+            File f = getFile("Choose Texture", "PNG-File  .png" , "png");
+            if (f == null) return;
+            img = new ImageIcon(ImageIO.read(f));
             Image.setIcon(img);
             this.img = img;
         } catch (IOException ex) {
@@ -698,7 +652,7 @@ public class NewItem extends javax.swing.JDialog {
             return false;
         }
     }
-    private File getFile(String selection, String extension, String description) {
+    private File getFile(String selection,String description, String extension ) {
         //Player player;
         //Map map;
         JFileChooser chooser = new JFileChooser();
@@ -719,14 +673,25 @@ public class NewItem extends javax.swing.JDialog {
 
     private void createItem() {
         item = new Items(typeName, name, img, useable);
-        item.add
+        for (int i = 0; i < stats.size(); i++) {
+            item.addStats(new JLabel(stats.get(i)));
+        }
+        if (live != 0)
+        item.addStats(new JLabel("Live:  "+ live), Items.LIVE, live);
+        if (armor != 0)
+        item.addStats(new JLabel("Armor:  "+ armor), Items.ARMOR, armor);
+        if (damage != 0)
+        item.addStats(new JLabel("Damage:  "+ damage), Items.DAMAGE, damage);
+        if (speed != 0)
+        item.addStats(new JLabel("Speed:  "+ speed), Items.SPEED, speed);
+        item.setDescription(description);
         //Test j = new Test(null, true);
         this.setVisible(false);
         
     }
 
 
-    public Items getSpot() {
+    public Items getItem() {
         return item;
     }
 

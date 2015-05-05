@@ -6,6 +6,7 @@
 package Editor;
 
 import Events.Event;
+import Game.Map;
 import Game.Spot;
 import Game.Tested;
 import IOUtil.Serialize;
@@ -21,6 +22,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -82,7 +84,9 @@ public class GUI extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
@@ -261,8 +265,24 @@ public class GUI extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem2);
 
+        jMenuItem6.setText("Load Map");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem6);
+
         jMenuItem4.setText("Save");
         jMenu1.add(jMenuItem4);
+
+        jMenuItem8.setText("Save Map");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem8);
 
         jMenuItem5.setText("New");
         jMenu1.add(jMenuItem5);
@@ -391,7 +411,15 @@ public class GUI extends javax.swing.JFrame {
         int option = JOptionPane.showOptionDialog(null, "How to create the Object?", "Choose Object", 0, JOptionPane.QUESTION_MESSAGE, null, options,0 );
         if (option != JOptionPane.CLOSED_OPTION) {
             if(option == 0) {
-
+                Items item= null;
+                final NewItem i = new NewItem(null, true);
+                i.setVisible(true);
+                 i.addComponentListener(new java.awt.event.ComponentAdapter() {
+                    public void componentHidden(java.awt.event.ComponentEvent evt) {
+                        Items.add(i.getItem());
+                        i.dispose();
+                    }
+                });
             }
             else {
                 Items s= getObject(Items.class, "Choose Item");
@@ -432,6 +460,48 @@ public class GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_LaunchComponentHidden
 
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        final MapEditor m = getObject(MapEditor.class, "Load Map");
+        m.play(false);
+         m.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                map1MouseClicked(evt);
+            }
+        });
+         jDesktopPane2.remove(GUI);
+         map1.build();
+         map1 = m;
+         map1.build();
+         //GUI.remove(map1);
+         //GUI.removeAll();
+         //GUI.add(map1);
+         map1.repaint();
+         //map1.setVisible(false);
+         //map1.setVisible(true);
+         //GUI.removeAll();
+         //GUI.add(m);
+        JInternalFrame f = new JInternalFrame("GUI", true, false, true);
+        f.add(map1);
+        GUI = f;
+//        
+//        //m.setBounds(0, 0, 300, 300);
+        GUI.setBounds(300, 300, 400, 400);
+        jDesktopPane2.add(GUI);
+        GUI.setVisible(true);
+        //GUI = f;
+        this.update();
+        System.out.println("Map added");
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+    private void mapMouseClicked(java.awt.event.MouseEvent evt, MapEditor m) {                                  
+        //map1.click(evt,spot);
+        System.out.println("Worked");
+        mapCklicked(evt);
+    }
     /**
      * @param args the command line arguments
      */
@@ -495,7 +565,9 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
     private Editor.MapEditor map1;
     // End of variables declaration//GEN-END:variables
 public final void setUP() {
@@ -517,10 +589,10 @@ private File getFile(String selection, String extension, String description) {
         JFileChooser chooser = new JFileChooser();
         FileFilter filter;
         //if (textFile) {
-            filter = new FileNameExtensionFilter(description, extension);
+            //filter = new FileNameExtensionFilter(description, extension);
         //}
 //        else {
-//            filter = new FileNameExtensionFilter("Game-File   .she", "she");
+            filter = new FileNameExtensionFilter("Game-File   .she", "she");
 //        }
         chooser.addChoosableFileFilter(filter);
         
@@ -531,7 +603,7 @@ private File getFile(String selection, String extension, String description) {
     }
     public <T> T getObject(Class<T> data, String file) {
         T clazz;
-        File f= getFile(file, "SuperHarz ENT.   .she", ".she");
+        File f= getFile(file, "SuperHarz ENT.   .she", "she");
         if (f == null) return null;
         clazz = Serialize.xStreamIn(data, f);
         return clazz;
@@ -541,6 +613,12 @@ private File getFile(String selection, String extension, String description) {
         Spots.repaint();
         map1.validate();
         map1.repaint();
+        this.validate();
+        this.repaint();
+        jDesktopPane2.validate();
+        jDesktopPane2.repaint();
+        GUI.validate();
+        GUI.repaint();
     }
 //    private void SpotMousePressed(java.awt.event.MouseEvent evt) {
 //        JLabel l = (JLabel)evt.getComponent();
@@ -562,6 +640,15 @@ private File getFile(String selection, String extension, String description) {
             case ENEMIES: map1.click(evt, Enemies.getContent(), ENEMIES);break;
             case ITEMS  : map1.click(evt, Items.getContent(), ITEMS);break;
             case SPOTS  : map1.click(evt, Spots.getContent(), SPOTS);break;
+        }
+        update();
+    }
+    private void mapCklicked(MouseEvent evt, MapEditor map) {
+        switch (selection) {
+            case EVENTS : map.click(evt, Events.getContent(),EVENTS);break;
+            case ENEMIES: map.click(evt, Enemies.getContent(), ENEMIES);break;
+            case ITEMS  : map.click(evt, Items.getContent(), ITEMS);break;
+            case SPOTS  : map.click(evt, Spots.getContent(), SPOTS);break;
         }
         update();
     }
