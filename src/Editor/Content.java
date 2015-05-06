@@ -65,6 +65,23 @@ public class Content<T extends Image> extends JPanel{
         selectLabel.setBorder(null);
         selected = null;
     }
+    public void save(Object help) {
+        boolean again = false;
+        do {
+            String name = JOptionPane.showInputDialog("Name:");
+            File file = new File("C:\\Users\\f.harz\\Desktop\\The-Legend-of-Zelda-2.0\\Content\\"+name+".she");
+            if (file.exists()) {
+                int remove = JOptionPane.showConfirmDialog(null, name+" already exists! \n Remove?", "Collision detected!", JOptionPane.YES_NO_CANCEL_OPTION);
+                if (remove == 2) return;
+                if (remove == 0)
+                    again = false;
+                if (remove == 1)
+                    again = true;
+            }   
+            if (!again)
+                Serialize.xStreamOut(help, file.getAbsolutePath());
+        } while(again);
+    }
     private void ContentMousePressed(java.awt.event.MouseEvent evt) {
         JLabel l = (JLabel)evt.getComponent();
         T help = content.get(l);
@@ -72,22 +89,7 @@ public class Content<T extends Image> extends JPanel{
             String[] options = {"Save","Cancel","Delete"};
             int operation = JOptionPane.showOptionDialog(null, "Save or Delete", "Item Menu", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, 1);
             if (operation == 0) {
-                boolean again = false;
-                do {
-                    String name = JOptionPane.showInputDialog("Name:");
-                    File file = new File("C:\\Users\\f.harz\\Desktop\\The-Legend-of-Zelda-2.0\\Content\\"+name+".she");
-                    if (file.exists()) {
-                        int remove = JOptionPane.showConfirmDialog(null, name+" already exists! \n Remove?", "Collision detected!", JOptionPane.YES_NO_CANCEL_OPTION);
-                        if (remove == 2) return;
-                        if (remove == 0)
-                            again = false;
-                        if (remove == 1)
-                            again = true;
-                    }   
-                    if (!again)
-                        Serialize.xStreamOut(help, file.getAbsolutePath());
-                } while(again);
-                
+                save(help);
             }
             if (operation == 2) {
                 content.remove(l);

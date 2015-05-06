@@ -6,12 +6,13 @@
 package Editor;
 
 import Events.Event;
-import Game.Map;
 import Game.Spot;
 import Game.Tested;
 import IOUtil.Serialize;
 import Inventory.Items;
 import Moveable.Enemies.Enemie;
+import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -19,7 +20,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -82,6 +82,10 @@ public class GUI extends javax.swing.JFrame {
         GUI = new javax.swing.JInternalFrame();
         map1 = new Editor.MapEditor();
         jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu2 = new javax.swing.JMenu();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
@@ -89,10 +93,6 @@ public class GUI extends javax.swing.JFrame {
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem7 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -255,6 +255,29 @@ public class GUI extends javax.swing.JFrame {
         GUI.setBounds(280, 160, 440, 420);
         jDesktopPane2.add(GUI, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
+
+        jMenu3.setText("View");
+
+        jMenuItem1.setText("Launch");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem1);
+
+        jMenuItem7.setText("Content");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem7);
+
+        jMenuBar1.add(jMenu3);
+
         jMenu1.setText("File");
 
         jMenuItem2.setText("Open");
@@ -291,29 +314,6 @@ public class GUI extends javax.swing.JFrame {
         jMenu1.add(jMenuItem3);
 
         jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
-
-        jMenu3.setText("View");
-
-        jMenuItem1.setText("Launch");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem1);
-
-        jMenuItem7.setText("Content");
-        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem7ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem7);
-
-        jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
 
@@ -457,11 +457,12 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void LaunchComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_LaunchComponentHidden
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_LaunchComponentHidden
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         final MapEditor m = getObject(MapEditor.class, "Load Map");
+        if (m == null) return;
         m.play(false);
          m.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -469,6 +470,8 @@ public class GUI extends javax.swing.JFrame {
                 map1MouseClicked(evt);
             }
         });
+         Dimension d = GUI.getSize();
+         Point p = GUI.getLocation();
          jDesktopPane2.remove(GUI);
          map1.build();
          map1 = m;
@@ -487,6 +490,8 @@ public class GUI extends javax.swing.JFrame {
 //        
 //        //m.setBounds(0, 0, 300, 300);
         GUI.setBounds(300, 300, 400, 400);
+        GUI.setSize(d);
+        GUI.setLocation(p);
         jDesktopPane2.add(GUI);
         GUI.setVisible(true);
         //GUI = f;
@@ -495,7 +500,7 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        // TODO add your handling code here:
+        Spots.save(map1);
     }//GEN-LAST:event_jMenuItem8ActionPerformed
     private void mapMouseClicked(java.awt.event.MouseEvent evt, MapEditor m) {                                  
         //map1.click(evt,spot);
