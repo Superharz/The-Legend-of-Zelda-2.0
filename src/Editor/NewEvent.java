@@ -4,13 +4,17 @@
  */
 package Editor;
 
+import Events.Event;
 import Game.Spot;
 import Inventory.Items;
+import Moveable.Enemies.Enemie;
+import java.awt.Point;
 import java.awt.PopupMenu;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -27,23 +31,34 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author f.harz
  */
 public class NewEvent extends javax.swing.JDialog {
-    private boolean useable;
-    private String name, typeName, description;
-    private int type, live, armor, damage, speed;
+    Content<Items> items;
+    Content<Enemie> enemies;
+    private boolean limitation;
+    private Point destiny;
+    private String name, text, description, mapName;
+    private int type, heal, count;
     private LinkedList<String> stats;
+    Event event;
     Items item;
+    Enemie enemie;
     ImageIcon img;
     /**
      * Creates new form NewSpot
      */
-    public NewEvent(java.awt.Frame parent, boolean modal) {
+    public NewEvent(java.awt.Frame parent, boolean modal, Content<Items> items, Content<Enemie> enemies) {
         super(parent, modal);
         initComponents();
+        this.items = items;
+        this.enemies = enemies;
         stats = new LinkedList<String>();
         name = "None";
-        useable = true;
-        type = Items.NONE;
-        typeName = "None";
+        limitation = false;
+        type = Event.TELEPORT;
+        text = "";
+        mapName = "";
+        heal = 0;
+        item = null;
+        enemie = null;
     }
 
     /**
@@ -55,19 +70,7 @@ public class NewEvent extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        Stats = new javax.swing.JTextArea();
         jTextArea1 = new javax.swing.JTextArea();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
-        Live = new javax.swing.JLabel();
-        Damage = new javax.swing.JLabel();
-        Armor = new javax.swing.JLabel();
-        Speed = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         CountLabel = new javax.swing.JLabel();
@@ -81,17 +84,7 @@ public class NewEvent extends javax.swing.JDialog {
         jCheckBox2 = new javax.swing.JCheckBox();
         Image = new javax.swing.JLabel();
         jSeparator4 = new javax.swing.JSeparator();
-
-        Stats.setColumns(20);
-        Stats.setRows(5);
-        Stats.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                StatsFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                StatsFocusLost(evt);
-            }
-        });
+        Info = new javax.swing.JLabel();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -106,132 +99,6 @@ public class NewEvent extends javax.swing.JDialog {
             }
         });
 
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Stats");
-
-        Live.setText("Live:");
-
-        Damage.setText("Damage:");
-
-        Armor.setText("Armor:");
-
-        Speed.setText("Speed:");
-
-        jTextField1.setText("0");
-        jTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField1FocusGained(evt);
-            }
-        });
-        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField1KeyReleased(evt);
-            }
-        });
-
-        jTextField3.setText("0");
-        jTextField3.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField3FocusGained(evt);
-            }
-        });
-        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField3KeyReleased(evt);
-            }
-        });
-
-        jTextField4.setText("0");
-        jTextField4.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField4FocusGained(evt);
-            }
-        });
-        jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField4KeyReleased(evt);
-            }
-        });
-
-        jTextField5.setText("0");
-        jTextField5.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField5FocusGained(evt);
-            }
-        });
-        jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField5KeyReleased(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(Live)
-                        .addGap(24, 24, 24)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Damage)
-                            .addComponent(Armor)
-                            .addComponent(Speed))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField3)
-                            .addComponent(jTextField4)
-                            .addComponent(jTextField5))))
-                .addContainerGap(140, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Live)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Damage)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Armor)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Speed)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -240,16 +107,6 @@ public class NewEvent extends javax.swing.JDialog {
         CountLabel.setText("Event-Count:");
 
         Count.setText("Count");
-        Count.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                CountMouseClicked(evt);
-            }
-        });
-        Count.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CountActionPerformed(evt);
-            }
-        });
         Count.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 CountFocusGained(evt);
@@ -259,8 +116,8 @@ public class NewEvent extends javax.swing.JDialog {
             }
         });
         Count.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                CountKeyPressed(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                CountKeyReleased(evt);
             }
         });
 
@@ -287,7 +144,7 @@ public class NewEvent extends javax.swing.JDialog {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Teleport", "Map-Teleport", "Item", "Enemie (Spawn)", "Text", " " }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Teleport", "Text", "Heal", "Item", "Enemie (Spawn)", "Map-Teleport" }));
         jComboBox1.setToolTipText("Select a Type");
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -296,6 +153,11 @@ public class NewEvent extends javax.swing.JDialog {
         });
 
         jCheckBox2.setText("Limitation");
+        jCheckBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox2ActionPerformed(evt);
+            }
+        });
 
         jSeparator4.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
@@ -310,17 +172,17 @@ public class NewEvent extends javax.swing.JDialog {
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(2, 2, 2)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(CountLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(Count, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jCheckBox2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(CountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jCheckBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Count, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
+                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Info, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(29, 29, 29)
                         .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -336,19 +198,22 @@ public class NewEvent extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Info, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton4))
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+                    .addComponent(jSeparator1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jCheckBox2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(CountLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Count, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(Count, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE))
                     .addComponent(Image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jSeparator4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -360,6 +225,9 @@ public class NewEvent extends javax.swing.JDialog {
                 .addGap(65, 65, 65))
         );
 
+        CountLabel.setVisible(false);
+        Count.setVisible(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -368,32 +236,18 @@ public class NewEvent extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 299, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void CountMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CountMouseClicked
-        Count.setText("");
-    }//GEN-LAST:event_CountMouseClicked
-
-    private void CountKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CountKeyPressed
-        if (Count.getText().equals("")) return;
-       
-        else {
-            name = Count.getText();
-         
-            System.out.println(name);
-        }
-    }//GEN-LAST:event_CountKeyPressed
 
     private void CountFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_CountFocusGained
         Count.setText("");
     }//GEN-LAST:event_CountFocusGained
 
     private void CountFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_CountFocusLost
-            Count.setText("Name:   " + name);
+        Count.setText("Count:   " + count);
     }//GEN-LAST:event_CountFocusLost
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -401,98 +255,121 @@ public class NewEvent extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        createItem();
+        createEvent();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-       typeName = jComboBox1.getSelectedItem().toString();
-        System.out.println(typeName);
+       type = jComboBox1.getSelectedIndex();
+        System.out.println("Type: "+type);
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        JOptionPane.showMessageDialog(null, jTextArea1);
-        if (!jTextArea1.getText().equals("")) {
-            description = jTextArea1.getText();
-            System.out.println(description);
+        Scanner s;
+        String str;
+        String[] lines;
+        String[] line;
+        int x = -1, y = -1;
+        int choosed;
+        switch (type) {
+            case Event.TELEPORT     : 
+                str = "Set Coordinates (In spots): \nX: \nY: ";
+                
+                destiny = destination(str);
+                System.out.println(destiny);
+                ;break;
+            case Event.MAPTELEPORT  : 
+                str = "Set Coordinates (In spots): \nX: \nY: \nSet MapName: \nMapName: ";
+                jTextArea1.setText(str);
+                JOptionPane.showMessageDialog(null, jTextArea1, "Parameters", JOptionPane.PLAIN_MESSAGE);
+                str = jTextArea1.getText();
+                lines = str.split("\n");
+                x = -1;
+                y = -1;
+                for (int i = 1; i < 3; i++) {
+                    line = lines[i].split(" ");
+                    String l = line[1].trim();
+                    if(check(l)) {
+                        if (i == 1)
+                            x = Integer.parseInt(l);
+                        else
+                            y = Integer.parseInt(l);
+                    }
+                }
+                destiny = new Point(x, y);
+                str = lines[4].replace("MapName: ", "");
+                mapName = str;
+                System.out.println(destiny + " | "+ mapName);
+                ;break;
+            case Event.SPAWN        : 
+                choosed = JOptionPane.showConfirmDialog(null, enemies, "Choose an Enemie", JOptionPane.OK_CANCEL_OPTION);
+                if (choosed == 1) return;
+                enemie = enemies.selected;
+                str = "Set Coordinates (In spots): \nX: \nY: ";
+                destiny = destination(str);
+                ;break;
+            case Event.ITEM         : 
+                choosed = JOptionPane.showConfirmDialog(null, items, "Choose an Item", JOptionPane.OK_CANCEL_OPTION);
+                if (choosed == 1) return;
+                item = items.selected;
+                str = "Set Coordinates (In spots): \nX: \nY: ";
+                destiny = destination(str);
+                ;break;
+            case Event.HEAL         : 
+                str = "Set Heal Amount (Integer): \nAmount: ";
+                jTextArea1.setText(str);
+                JOptionPane.showMessageDialog(null, jTextArea1, "Parameters", JOptionPane.PLAIN_MESSAGE);
+                str = jTextArea1.getText();
+                lines = str.split("\n");
+                line = lines[1].split(" ");
+                String l = line[1].trim();
+                if(check(l)) {
+                    heal = Integer.parseInt(l);
+                }
+                System.out.println("Heal: " + heal);
+                ;break;
+            case Event.TEXT         : 
+                str = "Set Text: \n";
+                jTextArea1.setText(str);
+                JOptionPane.showMessageDialog(null, jTextArea1, "Parameters", JOptionPane.PLAIN_MESSAGE);
+                str = jTextArea1.getText();
+                text = str.replace("Set Text: \n", "");
+                System.out.println(text);
+                ;break;
         }
+        
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTextArea1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea1FocusGained
-        jTextArea1.setText(description);
+
     }//GEN-LAST:event_jTextArea1FocusGained
 
     private void jTextArea1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea1FocusLost
         //jTextArea1.setText(description);
     }//GEN-LAST:event_jTextArea1FocusLost
 
-    private void StatsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_StatsFocusGained
-        String text = "";
-        for (int i = 0; i < stats.size(); i++) {
-            text += stats.get(i) + "\n";
+    private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
+        limitation = !limitation;
+        if (limitation) {
+            Count.setVisible(true);
+            CountLabel.setVisible(true);
         }
-        Stats.setText(text);
-    }//GEN-LAST:event_StatsFocusGained
-
-    private void StatsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_StatsFocusLost
-        // TODO add your handling code here:
-    }//GEN-LAST:event_StatsFocusLost
-
-    private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusGained
-        jTextField1.setText("");
-    }//GEN-LAST:event_jTextField1FocusGained
-
-    private void jTextField3FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField3FocusGained
-        jTextField3.setText("");
-    }//GEN-LAST:event_jTextField3FocusGained
-
-    private void jTextField4FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField4FocusGained
-        jTextField4.setText("");
-    }//GEN-LAST:event_jTextField4FocusGained
-
-    private void jTextField5FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField5FocusGained
-        jTextField5.setText("");
-    }//GEN-LAST:event_jTextField5FocusGained
-
-    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
-        String t = jTextField1.getText();
-        if (check(t)) {
-            live = Integer.parseInt(t);
+        else {
+            Count.setVisible(false);
+            CountLabel.setVisible(false);
         }
-        else
-            jTextField1.setText("");
-    }//GEN-LAST:event_jTextField1KeyReleased
+    }//GEN-LAST:event_jCheckBox2ActionPerformed
 
-    private void jTextField3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyReleased
-        String t = jTextField3.getText();
-        if (check(t)) {
-            damage = Integer.parseInt(t);
+    private void CountKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CountKeyReleased
+        String number = Count.getText();
+        if (number.equals("")) return;
+        if (check(number)) {
+            count = Integer.parseInt(number);
+            System.out.println("Count: "+count);
         }
-        else
-            jTextField3.setText("");
-        
-    }//GEN-LAST:event_jTextField3KeyReleased
-
-    private void jTextField4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyReleased
-        String t = jTextField4.getText();
-        if (check(t)) {
-            armor = Integer.parseInt(t);
+        else {
+            Count.setText("");
         }
-        else
-            jTextField4.setText("");
-    }//GEN-LAST:event_jTextField4KeyReleased
-
-    private void jTextField5KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyReleased
-        String t = jTextField5.getText();
-        if (check(t)) {
-            speed = Integer.parseInt(t);
-        }
-        else
-            jTextField5.setText("");
-    }//GEN-LAST:event_jTextField5KeyReleased
-
-    private void CountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CountActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_CountActionPerformed
+    }//GEN-LAST:event_CountKeyReleased
 
     /**
      * @param args the command line arguments
@@ -524,7 +401,7 @@ public class NewEvent extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                NewEvent dialog = new NewEvent(new javax.swing.JFrame(), true);
+                NewEvent dialog = new NewEvent(new javax.swing.JFrame(), true, null, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -536,32 +413,21 @@ public class NewEvent extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Armor;
     private javax.swing.JTextField Count;
     private javax.swing.JLabel CountLabel;
-    private javax.swing.JLabel Damage;
     private javax.swing.JLabel Image;
-    private javax.swing.JLabel Live;
-    private javax.swing.JLabel Speed;
-    private javax.swing.JTextArea Stats;
+    private javax.swing.JLabel Info;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
     public void createImage(){
         ImageIcon img;
@@ -575,6 +441,31 @@ public class NewEvent extends javax.swing.JDialog {
             
         }
         
+    }
+    private Point destination(String description) {
+       String str;
+       String[] lines;
+       String[] line;
+       int x = -1, y = -1;
+        str = description;
+        jTextArea1.setText(str);
+        JOptionPane.showMessageDialog(null, jTextArea1, "Parameters", JOptionPane.PLAIN_MESSAGE);
+        str = jTextArea1.getText();
+        lines = str.split("\n");
+
+        for (int i = 1; i < 3; i++) {
+            System.out.println(lines[i]);
+            line = lines[i].split(" ");
+            String l = line[1].trim();
+            System.out.println(l);
+            if(check(l)) {
+                if (i == 1)
+                    x = Integer.parseInt(l);
+                else
+                    y = Integer.parseInt(l);
+            }
+        }
+        return new Point(x, y);
     }
     private boolean check(String t) {
         if (t.equals("")) return false;
@@ -605,28 +496,25 @@ public class NewEvent extends javax.swing.JDialog {
         
     }
 
-    private void createItem() {
-        item = new Items(typeName, name, img, useable);
-        for (int i = 0; i < stats.size(); i++) {
-            item.addStats(new JLabel(stats.get(i)));
+    private void createEvent() {
+        switch (type) {
+            case Event.TELEPORT     : event = new Event(destiny); break;
+            case Event.MAPTELEPORT  : event = new Event(destiny, mapName);break;
+            case Event.SPAWN        : event = new Event(destiny, enemie);break;
+            case Event.ITEM         : event = new Event(destiny, item);break;
+            case Event.HEAL         : event = new Event(heal);break;
+            case Event.TEXT         : event = new Event(text);break;
+                    
         }
-        if (live != 0)
-        item.addStats(new JLabel("Live:  "+ live), Items.LIVE, live);
-        if (armor != 0)
-        item.addStats(new JLabel("Armor:  "+ armor), Items.ARMOR, armor);
-        if (damage != 0)
-        item.addStats(new JLabel("Damage:  "+ damage), Items.DAMAGE, damage);
-        if (speed != 0)
-        item.addStats(new JLabel("Speed:  "+ speed), Items.SPEED, speed);
-        item.setDescription(description);
-        //Test j = new Test(null, true);
+        if (limitation)
+            event.addEventCount(count);
         this.setVisible(false);
         
     }
 
 
-    public Items getItem() {
-        return item;
+    public Event getEvent() {
+        return event;
     }
 
 

@@ -24,7 +24,7 @@ import javax.swing.ImageIcon;
  */
 public class Event implements Serializable, Image{
     public final List<Events> listeners = new ArrayList<Events>();
-    public static final int TELEPORT = 0, TEXT = 1, HEAL = 2, ITEM = 3, SPAWN = 4;
+    public static final int TELEPORT = 0, TEXT = 1, HEAL = 2, ITEM = 3, SPAWN = 4, MAPTELEPORT = 5;
     private final String EMPTY = "";
     private final int NOCOUNT = -1;
     private int eventType;
@@ -84,6 +84,7 @@ public class Event implements Serializable, Image{
     
     public boolean callEvent() {
         switch (eventType) {
+            case MAPTELEPORT: teleport(); break;
             case TELEPORT   : teleport(); break;
             case TEXT       : text(); break;
             case HEAL       : heal(); break;
@@ -138,6 +139,7 @@ public class Event implements Serializable, Image{
         g = img.getGraphics();
         g.setColor(Color.red);
         switch (eventType) {
+            case MAPTELEPORT: g.drawString("TELEPORT", 4, 16);break;
             case TELEPORT: g.drawString("TELEPORT", 4, 16);break;
             case HEAL: g.drawString("HEAL", 4, 16);break;
             case SPAWN: g.drawString("SPAWN", 4, 16);break;
