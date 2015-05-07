@@ -9,7 +9,9 @@ import Game.Image;
 import IOUtil.Serialize;
 import java.awt.Color;
 import java.io.File;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -126,6 +128,14 @@ public class Content<T extends Image> extends JPanel{
     }
     @Override
     public Content clone() {
-        return null;
+        Content c = new Content<T>();
+        if (content.isEmpty()) return c;
+        T[] values = null;
+        values = content.values().toArray(values);
+        for (int i = 0; i < values.length; i++) {
+            c.add(values[i]);
+        }
+        return c;
+        
     }
 }

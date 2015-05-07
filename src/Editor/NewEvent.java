@@ -41,7 +41,7 @@ public class NewEvent extends javax.swing.JDialog {
     Event event;
     Items item;
     Enemie enemie;
-    ImageIcon img;
+    //ImageIcon img;
     /**
      * Creates new form NewSpot
      */
@@ -84,7 +84,8 @@ public class NewEvent extends javax.swing.JDialog {
         jCheckBox2 = new javax.swing.JCheckBox();
         Image = new javax.swing.JLabel();
         jSeparator4 = new javax.swing.JSeparator();
-        Info = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        Info = new javax.swing.JTextArea();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -161,6 +162,15 @@ public class NewEvent extends javax.swing.JDialog {
 
         jSeparator4.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+        Info.setEditable(false);
+        Info.setColumns(20);
+        Info.setRows(5);
+        Info.setFocusable(false);
+        jScrollPane1.setViewportView(Info);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -182,11 +192,11 @@ public class NewEvent extends javax.swing.JDialog {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
                             .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(Info, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(29, 29, 29)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Image, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(Image, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -203,7 +213,7 @@ public class NewEvent extends javax.swing.JDialog {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Info, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton4))
                     .addComponent(jSeparator1)
@@ -213,7 +223,7 @@ public class NewEvent extends javax.swing.JDialog {
                         .addComponent(CountLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Count, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE))
                     .addComponent(Image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jSeparator4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -236,7 +246,7 @@ public class NewEvent extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -259,7 +269,10 @@ public class NewEvent extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-       type = jComboBox1.getSelectedIndex();
+        if (type == jComboBox1.getSelectedIndex()) return;
+        type = jComboBox1.getSelectedIndex();
+        Image.setIcon(null);
+        Info.setText("");
         System.out.println("Type: "+type);
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
@@ -275,7 +288,8 @@ public class NewEvent extends javax.swing.JDialog {
                 str = "Set Coordinates (In spots): \nX: \nY: ";
                 
                 destiny = destination(str);
-                System.out.println(destiny);
+                Info.setText("Teleport: \n  X: "+destiny.x+"\n  Y: "+destiny.y);
+                System.out.println(destiny); 
                 ;break;
             case Event.MAPTELEPORT  : 
                 str = "Set Coordinates (In spots): \nX: \nY: \nSet MapName: \nMapName: ";
@@ -298,19 +312,23 @@ public class NewEvent extends javax.swing.JDialog {
                 destiny = new Point(x, y);
                 str = lines[4].replace("MapName: ", "");
                 mapName = str;
+                Info.setText("Teleport: \n  X: "+destiny.x+"\n  Y: "+destiny.y
+                        +"\nMapName: \n  "+mapName);
                 System.out.println(destiny + " | "+ mapName);
                 ;break;
             case Event.SPAWN        : 
                 choosed = JOptionPane.showConfirmDialog(null, enemies, "Choose an Enemie", JOptionPane.OK_CANCEL_OPTION);
-                if (choosed == 1) return;
+                if (choosed != 0) return;
                 enemie = enemies.selected;
+                Image.setIcon(enemie.getImageIcon());
                 str = "Set Coordinates (In spots): \nX: \nY: ";
                 destiny = destination(str);
                 ;break;
             case Event.ITEM         : 
                 choosed = JOptionPane.showConfirmDialog(null, items, "Choose an Item", JOptionPane.OK_CANCEL_OPTION);
-                if (choosed == 1) return;
+                if (choosed != 0) return;
                 item = items.selected;
+                Image.setIcon(item.getImageIcon());
                 str = "Set Coordinates (In spots): \nX: \nY: ";
                 destiny = destination(str);
                 ;break;
@@ -325,6 +343,7 @@ public class NewEvent extends javax.swing.JDialog {
                 if(check(l)) {
                     heal = Integer.parseInt(l);
                 }
+                Info.setText("Heal: \n  Heal Amount: "+heal);
                 System.out.println("Heal: " + heal);
                 ;break;
             case Event.TEXT         : 
@@ -333,6 +352,7 @@ public class NewEvent extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(null, jTextArea1, "Parameters", JOptionPane.PLAIN_MESSAGE);
                 str = jTextArea1.getText();
                 text = str.replace("Set Text: \n", "");
+                Info.setText("Text: \n"+text  );
                 System.out.println(text);
                 ;break;
         }
@@ -416,7 +436,7 @@ public class NewEvent extends javax.swing.JDialog {
     private javax.swing.JTextField Count;
     private javax.swing.JLabel CountLabel;
     private javax.swing.JLabel Image;
-    private javax.swing.JLabel Info;
+    private javax.swing.JTextArea Info;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -424,24 +444,25 @@ public class NewEvent extends javax.swing.JDialog {
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
-    public void createImage(){
-        ImageIcon img;
-        try {
-            File f = getFile("Choose Texture", "PNG-File  .png" , "png");
-            if (f == null) return;
-            img = new ImageIcon(ImageIO.read(f));
-            Image.setIcon(img);
-            this.img = img;
-        } catch (IOException ex) {
-            
-        }
-        
-    }
+//    public void createImage(){
+//        ImageIcon img;
+//        try {
+//            File f = getFile("Choose Texture", "PNG-File  .png" , "png");
+//            if (f == null) return;
+//            img = new ImageIcon(ImageIO.read(f));
+//            Image.setIcon(img);
+//            this.img = img;
+//        } catch (IOException ex) {
+//            
+//        }
+//        
+//    }
     private Point destination(String description) {
        String str;
        String[] lines;
@@ -477,24 +498,24 @@ public class NewEvent extends javax.swing.JDialog {
             return false;
         }
     }
-    private File getFile(String selection,String description, String extension ) {
-        //Player player;
-        //Map map;
-        JFileChooser chooser = new JFileChooser();
-        FileFilter filter;
-        //if (textFile) {
-            filter = new FileNameExtensionFilter(description, extension);
-        //}
-//        else {
-//            filter = new FileNameExtensionFilter("Game-File   .she", "she");
-//        }
-        chooser.addChoosableFileFilter(filter);
-        
-        int choosed = chooser.showDialog(null, selection);
-        //if (chooser.getSelectedFile() != null)
-        return chooser.getSelectedFile();
-        
-    }
+//    private File getFile(String selection,String description, String extension ) {
+//        //Player player;
+//        //Map map;
+//        JFileChooser chooser = new JFileChooser();
+//        FileFilter filter;
+//        //if (textFile) {
+//            filter = new FileNameExtensionFilter(description, extension);
+//        //}
+////        else {
+////            filter = new FileNameExtensionFilter("Game-File   .she", "she");
+////        }
+//        chooser.addChoosableFileFilter(filter);
+//        
+//        int choosed = chooser.showDialog(null, selection);
+//        //if (chooser.getSelectedFile() != null)
+//        return chooser.getSelectedFile();
+//        
+//    }
 
     private void createEvent() {
         switch (type) {
@@ -508,6 +529,8 @@ public class NewEvent extends javax.swing.JDialog {
         }
         if (limitation)
             event.addEventCount(count);
+        items = null;
+        enemies = null;
         this.setVisible(false);
         
     }

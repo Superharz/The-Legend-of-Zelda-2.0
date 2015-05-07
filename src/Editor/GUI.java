@@ -355,6 +355,7 @@ public class GUI extends javax.swing.JFrame {
                 final NewSpot s = new NewSpot(null, true);
                 s.setVisible(true);
                  s.addComponentListener(new java.awt.event.ComponentAdapter() {
+                    @Override
                     public void componentHidden(java.awt.event.ComponentEvent evt) {
                         Spots.add(s.getSpot());
                         s.dispose();
@@ -396,7 +397,18 @@ public class GUI extends javax.swing.JFrame {
         int option = JOptionPane.showOptionDialog(null, "How to create the Object?", "Choose Object", 0, JOptionPane.QUESTION_MESSAGE, null, options,0 );
         if (option != JOptionPane.CLOSED_OPTION) {
             if(option == 0) {
-
+                    Event event= null;
+                final NewEvent i = new NewEvent(null, true,Items,Enemies);
+                i.setVisible(true);
+                 i.addComponentListener(new java.awt.event.ComponentAdapter() {
+                    @Override
+                    public void componentHidden(java.awt.event.ComponentEvent evt) {
+                        Events.add(i.getEvent());
+                        i.dispose();
+                    }
+                });
+                 Tab.add(Items, "Items");
+                 Tab.add(Enemies, "Enemies");
             }
             else {
                 Event s= getObject(Event.class, "Choose Event");
@@ -415,6 +427,7 @@ public class GUI extends javax.swing.JFrame {
                 final NewItem i = new NewItem(null, true);
                 i.setVisible(true);
                  i.addComponentListener(new java.awt.event.ComponentAdapter() {
+                    @Override
                     public void componentHidden(java.awt.event.ComponentEvent evt) {
                         Items.add(i.getItem());
                         i.dispose();
