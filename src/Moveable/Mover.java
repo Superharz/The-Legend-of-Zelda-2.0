@@ -397,7 +397,7 @@ public abstract class Mover extends javax.swing.JLabel implements Image{
             if (!s.walk()) return false;     
         }
         Spot s = spots[points[1].y / h2][points[1].x / w2];
-        System.out.println((points[1].y / h2)+"   |   "+(points[1].x / w2)+"    |   Height: " + s.getHeight()+"     |       My Height:  "+height);
+        //System.out.println((points[1].y / h2)+"   |   "+(points[1].x / w2)+"    |   Height: " + s.getHeight()+"     |       My Height:  "+height);
         int h = s.getHeight();
         if (canChangeHeight) {
             if (s.getHeight() < 0){
@@ -416,7 +416,7 @@ public abstract class Mover extends javax.swing.JLabel implements Image{
             }
         }
         if (s.getHeight() != height) {
-            System.out.println("Other Height: "+s.getHeight());
+            //System.out.println("Other Height: "+s.getHeight());
             return false;
         }
         return true;

@@ -447,7 +447,16 @@ public class GUI extends javax.swing.JFrame {
         int option = JOptionPane.showOptionDialog(null, "How to create the Object?", "Choose Object", 0, JOptionPane.QUESTION_MESSAGE, null, options,0 );
         if (option != JOptionPane.CLOSED_OPTION) {
             if(option == 0) {
-
+                Enemie enemie= null;
+                final NewEnemie i = new NewEnemie(null, true);
+                i.setVisible(true);
+                 i.addComponentListener(new java.awt.event.ComponentAdapter() {
+                    @Override
+                    public void componentHidden(java.awt.event.ComponentEvent evt) {
+                        Enemies.add(i.getEnemie());
+                        i.dispose();
+                    }
+                });
             }
             else {
                 Enemie s= getObject(Enemie.class, "Choose Enemie");

@@ -26,6 +26,7 @@ public  class Enemie extends Mover implements Image{
     public static final int RANDOMMOVE = 0, WALLMOVE = 1;
     private int moveMethod;
     boolean pause = false;
+    boolean defaultStats = true;
    
     //private final List<PlayerEvent> listeners = new ArrayList<PlayerEvent>();
     public Enemie(int moveMethod) {
@@ -57,10 +58,25 @@ public  class Enemie extends Mover implements Image{
        
         //}
     }
+    public void setStats(int live, int damage, int speed, int armor) {
+        this.live = live;
+        this.damage = damage;
+        this.speed = speed;
+        this.armor = armor;
+        defaultStats = false;
+        System.out.println("Stats Set");
+        System.out.println("LIVE: "+live);
+    }
     
     public void setUP(Spot[][] spots) {
         Rectangle r = new Rectangle(this.getX(), this.getY(),  getWidth(), getWidth());
-        this.setMover(1000/24, 100, 100, new Point(img[0].getIconWidth()/2,img[0].getIconHeight()/2), img, spots,r);
+        if (defaultStats) {
+            this.setMover(1000/24, 100, 100, new Point(img[0].getIconWidth()/2,img[0].getIconHeight()/2), img, spots,r);
+            System.out.println("Default");
+        }
+        else
+            this.setMover(speed, live, damage, new Point(img[0].getIconWidth()/2,img[0].getIconHeight()/2), img, spots,r);
+        System.out.println("LIVE: "+live);
         //Rectangle r = new Rectangle(10, 10, 10, 10);
         
         //this.setLocation(100,100);
@@ -151,6 +167,8 @@ public  class Enemie extends Mover implements Image{
                         if (getRandom(100)==50) {
                             direction = getRandom();
                             setIcon((img[direction]));
+                            for (Events hl : listeners) 
+                                hl.spawnArrow(false, getLocation().x, getLocation().y, direction, damage);
                         }
                         checkForPaused();
 //                        if (!work)
@@ -269,7 +287,8 @@ public  class Enemie extends Mover implements Image{
     
     @Override
     public Enemie clone() {
-        Enemie e = new Enemie(moveMethod);
+        Enemie e = new Enemie(moveMethod,img);
+        e.setStats(live, damage, speed, armor);
         return e;
         
     }

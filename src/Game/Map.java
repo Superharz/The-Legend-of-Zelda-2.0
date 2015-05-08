@@ -516,8 +516,10 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
 //                                remove(arrows.get(i));
 //                                arrows.remove(i);
                                 
-                                if (arrows.size() <= 0)
+                                if (arrows.size() <= 0) {
                                     move = false;
+                                    break;
+                                }
                                 
                                 
                             }
@@ -590,6 +592,7 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
             
         
         Arrow a = new Arrow(x, y, direction, damage, arrow,spots, player.getLayer());
+        a.setFrienfly(friendly);
         arrows.add(a);
         this.add(a);
         //e.addListener(this);
