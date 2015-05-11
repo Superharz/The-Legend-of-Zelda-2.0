@@ -90,9 +90,11 @@ public class GUI extends javax.swing.JFrame {
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
+        jCheckBoxMenuItem2 = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -293,25 +295,36 @@ public class GUI extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem1.setText("Undo");
+        jMenu2.add(jMenuItem1);
+
+        jMenuItem7.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem7.setText("Redo");
+        jMenu2.add(jMenuItem7);
+
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("View");
 
-        jMenuItem1.setText("Launch");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        jCheckBoxMenuItem1.setSelected(true);
+        jCheckBoxMenuItem1.setText("Launch");
+        jCheckBoxMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                jCheckBoxMenuItem1ActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem1);
+        jMenu3.add(jCheckBoxMenuItem1);
 
-        jMenuItem7.setText("Content");
-        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+        jCheckBoxMenuItem2.setSelected(true);
+        jCheckBoxMenuItem2.setText("Content");
+        jCheckBoxMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem7ActionPerformed(evt);
+                jCheckBoxMenuItem2ActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem7);
+        jMenu3.add(jCheckBoxMenuItem2);
 
         jMenuBar1.add(jMenu3);
 
@@ -334,10 +347,6 @@ public class GUI extends javax.swing.JFrame {
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem2ActionPerformed
-
-    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-       Content.setVisible(!Content.isVisible());
-    }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void map1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_map1MouseClicked
         //map1.click(evt,spot);
@@ -384,10 +393,6 @@ public class GUI extends javax.swing.JFrame {
         launch();
     }//GEN-LAST:event_LaunchActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        LaunchTab.setVisible(!LaunchTab.isVisible());
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         close();
     }//GEN-LAST:event_formWindowClosing
@@ -407,8 +412,9 @@ public class GUI extends javax.swing.JFrame {
                         i.dispose();
                     }
                 });
-                 Tab.add(Items, "Items");
-                 Tab.add(Enemies, "Enemies");
+                 
+                 Tab.add(Items, "Items",ITEMS);
+                 Tab.add(Enemies, "Enemies",ENEMIES);
             }
             else {
                 Event s= getObject(Event.class, "Choose Event");
@@ -524,6 +530,14 @@ public class GUI extends javax.swing.JFrame {
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
         Spots.save(map1);
     }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
+        LaunchTab.setVisible(!LaunchTab.isVisible());
+    }//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
+
+    private void jCheckBoxMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem2ActionPerformed
+       Content.setVisible(!Content.isVisible());
+    }//GEN-LAST:event_jCheckBoxMenuItem2ActionPerformed
     private void mapMouseClicked(java.awt.event.MouseEvent evt, MapEditor m) {                                  
         //map1.click(evt,spot);
         System.out.println("Worked");
@@ -582,6 +596,8 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
     private javax.swing.JDesktopPane jDesktopPane2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -613,7 +629,14 @@ public final void setUP() {
 private File getFile(String selection, String extension, String description) {
         //Player player;
         //Map map;
-        JFileChooser chooser = new JFileChooser();
+        JFileChooser chooser;
+        //Map map;
+        File f=new File("Content/");
+        //URL u = new URL(f.getAbsolutePath());
+        //URL u = (this.getClass().getResource("/pictures"));
+    
+        chooser = new JFileChooser(f);
+        
         FileFilter filter;
         //if (textFile) {
             //filter = new FileNameExtensionFilter(description, extension);
@@ -662,6 +685,7 @@ private File getFile(String selection, String extension, String description) {
 //}
 
     private void mapCklicked(MouseEvent evt) {
+        System.out.println("Selection: "+selection);
         switch (selection) {
             case EVENTS : map1.click(evt, Events.getContent(),EVENTS);break;
             case ENEMIES: map1.click(evt, Enemies.getContent(), ENEMIES);break;
@@ -681,8 +705,8 @@ private File getFile(String selection, String extension, String description) {
     }
 
     private void launch() {
-        Serialize.xStreamOut(map1, "C:\\Users\\f.harz\\Desktop\\The-Legend-of-Zelda-2.0\\Save\\temp.she");
-        Tested test = new Tested("C:\\Users\\f.harz\\Desktop\\The-Legend-of-Zelda-2.0\\Save\\temp.she");
+        Serialize.xStreamOut(map1, "Save\\temp.she");
+        Tested test = new Tested("Save\\temp.she");
         test.setVisible(true);
         test.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
@@ -690,7 +714,7 @@ private File getFile(String selection, String extension, String description) {
     private void close() {
         try{
  
-    		File file = new File("C:\\Users\\f.harz\\Desktop\\The-Legend-of-Zelda-2.0\\Save\\temp.she");
+    		File file = new File("Save\\temp.she");
  
     		if(file.delete()){
     			System.out.println(file.getName() + " is deleted!");

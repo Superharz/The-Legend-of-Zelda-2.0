@@ -64,7 +64,8 @@ public class Content<T extends Image> extends JPanel{
         this.repaint();
     }
     public void erase() {
-        selectLabel.setBorder(null);
+        if (selectLabel != null)
+            selectLabel.setBorder(null);
         selected = null;
     }
     public void save(Object help) {

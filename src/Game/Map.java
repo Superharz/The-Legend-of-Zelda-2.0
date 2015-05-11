@@ -494,6 +494,39 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
         }
         return killed;
     }
+    private synchronized boolean playerAttack(Rectangle r, boolean friendly, int strength) {
+        Rectangle enemieBox;
+        boolean killed = false;
+        //Rectangle playerBox = player.getHitBox();
+        if (friendly) {
+        for (int i = 0; i < enemies.size(); i++) {
+            if (enemies.get(i).getLayer() == player.getLayer()) {
+                enemieBox = enemies.get(i).getHitBox();
+
+                if (r.intersects(enemieBox)) {
+                        killed = true;
+                        enemies.get(i).takeDamage(player.getStrength());
+                        //if (!enemies.get(i).isAlive()) {
+                            //this.remove(enemies.get(i));
+                            //enemies.get(i).stopMoving();
+                            //enemies.remove(enemies.get(i));
+                        //}
+
+
+                }
+            }
+        }
+        return killed; 
+        }
+        else {
+            if (r.intersects(player.getHitBox())) {
+                killed = true;
+                player.takeDamage(strength);
+            }
+            return killed;
+        }
+            
+    }
     
     public void move() {
         //lastDirection = direction;
@@ -511,7 +544,7 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
                         Thread.sleep(10);
                         for (int i = 0; i < arrows.size(); i++) {
                             
-                            if (!arrows.get(i).move() || playerAttack(arrows.get(i).getHitBox())) {
+                            if (!arrows.get(i).move() || playerAttack(arrows.get(i).getHitBox(),arrows.get(i).isFriendly(), arrows.get(i).getDamage())) {
                                 removeMover(arrows.get(i));
 //                                remove(arrows.get(i));
 //                                arrows.remove(i);
@@ -533,6 +566,8 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
                 }
                 }   
             //}
+
+             
         };
         t.start();
     }

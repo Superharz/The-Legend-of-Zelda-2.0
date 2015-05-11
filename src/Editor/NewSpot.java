@@ -8,6 +8,7 @@ import Game.Spot;
 import java.awt.PopupMenu;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -26,6 +27,7 @@ public class NewSpot extends javax.swing.JDialog {
     private int height;
     Spot s;
     ImageIcon img;
+    File f;
     /**
      * Creates new form NewSpot
      */
@@ -321,7 +323,16 @@ public class NewSpot extends javax.swing.JDialog {
     private File getFile(String selection,String description, String extension ) {
         //Player player;
         //Map map;
-        JFileChooser chooser = new JFileChooser();
+        JFileChooser chooser;
+        //Map map;
+        if (f == null) {
+            URL u = (this.getClass().getResource("/pictures"));
+        
+            chooser = new JFileChooser(u.getPath());
+        }
+        else {
+            chooser = new JFileChooser(f);
+        }
         FileFilter filter;
         //if (textFile) {
             filter = new FileNameExtensionFilter(description, extension);

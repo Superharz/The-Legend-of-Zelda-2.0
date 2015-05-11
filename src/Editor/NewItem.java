@@ -9,6 +9,7 @@ import Inventory.Items;
 import java.awt.PopupMenu;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -33,6 +34,7 @@ public class NewItem extends javax.swing.JDialog {
     private LinkedList<String> stats;
     Items item;
     ImageIcon img;
+    File f;
     /**
      * Creates new form NewSpot
      */
@@ -655,7 +657,16 @@ public class NewItem extends javax.swing.JDialog {
     private File getFile(String selection,String description, String extension ) {
         //Player player;
         //Map map;
-        JFileChooser chooser = new JFileChooser();
+        JFileChooser chooser;
+        //Map map;
+        if (f == null) {
+            URL u = (this.getClass().getResource("/pictures"));
+        
+            chooser = new JFileChooser(u.getPath());
+        }
+        else {
+            chooser = new JFileChooser(f);
+        }
         FileFilter filter;
         //if (textFile) {
             filter = new FileNameExtensionFilter(description, extension);

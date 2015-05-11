@@ -6,7 +6,6 @@
 package Game;
 
 import Events.Event;
-import IOUtil.Import;
 import IOUtil.Serialize;
 import Inventory.Items;
 import Moveable.Enemies.Enemie;
@@ -27,7 +26,6 @@ import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 /**
  *
  * @author Flo
@@ -128,7 +126,7 @@ public class Tested extends javax.swing.JFrame {
             evt4.addEventCount(1);
             map1.addEvent(0, 9, evt4);
             Enemie e = new Enemie(Enemie.RANDOMMOVE);
-            Serialize.xStreamOut(e, "C:\\Users\\f.harz\\Desktop\\The-Legend-of-Zelda-2.0\\Content\\enemie1.she");
+            Serialize.xStreamOut(e, "Content\\enemie1.she");
             //JOptionPane.showMessageDialog(null, "HI", "HI", 1, e.getImageIcon());
             map1.build();
             for (int i = 0; i < 5; i++) {
@@ -351,7 +349,7 @@ public class Tested extends javax.swing.JFrame {
             case 'z': break;
             case 'x':
                 map1.play(false);
-                Serialize.xStreamOut(map1, "C:\\Users\\f.harz\\Desktop\\player.sh");break;
+                Serialize.xStreamOut(map1, "Save\\MAP.she");break;
             case KeyEvent.VK_SPACE: map1.play(false);   ;break;
         }
       }
