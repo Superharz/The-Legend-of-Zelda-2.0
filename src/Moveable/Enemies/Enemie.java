@@ -168,7 +168,7 @@ public  class Enemie extends Mover implements Image{
                             direction = getRandom();
                             setIcon((img[direction]));
                             for (Events hl : listeners) 
-                                hl.spawnArrow(false, getLocation().x, getLocation().y, direction, 10000);
+                                hl.spawnArrow(false, getHotSpot().x, getHotSpot().y, direction, 10000);
                         }
                         checkForPaused();
 //                        if (!work)
