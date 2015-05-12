@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -27,6 +28,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
 
 /**
  *
@@ -733,17 +735,23 @@ private File getFile(String selection, String extension, String description) {
     }
 
     private void launch() {
-        Serialize.xStreamOut(map1, "Save\\temp.she");
-        Tested test = new Tested("Save\\temp.she");
-        test.setVisible(true);
-        test.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        try {
+            Serialize.xStreamOut(map1, "Save\\temp.she");
+            File file = new File("Save\\temp.she");
+            Tested test = new Tested("Save\\temp.she");
+            ImageIO.write(ImageIO.read(new File("C:\\Users\\f.harz\\Desktop\\The-Legend-of-Zelda-2.0\\src\\Pictures\\tile1.png")), "png", file);
+            test.setVisible(true);
+            test.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        } catch (IOException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void close() {
         try{
  
     		File file = new File("Save\\temp.she");
- 
+                ImageIO.write(ImageIO.read(new File("C:\\Users\\f.harz\\Desktop\\The-Legend-of-Zelda-2.0\\src\\Pictures\\tile1.png")), ".she", file);
     		if(file.delete()){
     			System.out.println(file.getName() + " is deleted!");
     		}else{
