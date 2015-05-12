@@ -68,11 +68,11 @@ public class Content<T extends Image> extends JPanel{
             selectLabel.setBorder(null);
         selected = null;
     }
-    public void save(Object help) {
+    public static void save(Object help) {
         boolean again = false;
         do {
             String name = JOptionPane.showInputDialog("Name:");
-            File file = new File("C:\\Users\\f.harz\\Desktop\\The-Legend-of-Zelda-2.0\\Content\\"+name+".she");
+            File file = new File("Content/"+name+".she");
             if (file.exists()) {
                 int remove = JOptionPane.showConfirmDialog(null, name+" already exists! \n Remove?", "Collision detected!", JOptionPane.YES_NO_CANCEL_OPTION);
                 if (remove == 2) return;

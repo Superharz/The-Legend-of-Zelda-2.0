@@ -379,37 +379,50 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
         System.out.println("Item added!");
         
     }
-    public void removeItem(int x, int y) {
-        Items j;
+    public Items removeItem(int x, int y) {
+        Items j,f = null;
+        
         if (spots[y][x].hasItem()) {
-        for (int i = 0; i < spots[y][x].itemLength(); i++) {
-            j = spots[y][x].pickUp();
-            this.remove(j);
-            if (spots[y][x].hasItem()) break;
-        }
+            for (int i = 0; i < spots[y][x].itemLength(); i++) {
+                if (i == 0) {
+                    f = spots[y][x].pickUp();
+                    j = f;
+                }
+                else {
+                    j = spots[y][x].pickUp();
+                }
+                this.remove(j);
+                if (spots[y][x].hasItem()) break;
+            }
         }
         //item.setBounds(toPixel(x), toPixel(y), item.getIcon().getIconWidth(), item.getIcon().getIconHeight());
         System.out.println("Item removed!");
-        
+        return f;
     }
-    public void removeEvent(int x, int y) {
-        
-            spots[y][x].removeEvents();
+    public Event removeEvent(int x, int y) {
+            LinkedList<Event> events;
+            Event evt = null;
+            events = spots[y][x].removeEvents();
+            if (events != null)
+                evt = events.getLast();
+            events = null;
             System.gc();
         
         //item.setBounds(toPixel(x), toPixel(y), item.getIcon().getIconWidth(), item.getIcon().getIconHeight());
         System.out.println("Event removed!");
-        
+        return evt;
     }
-    public void removeEnemie(int x, int y) {
+    public Enemie removeEnemie(int x, int y) {
             int X;
             int Y;
+            Enemie f = null;
             Enemie e;
             for (int i = 0; i < enemies.size(); i++) {
                 e = enemies.get(i);
                 X = toSpots(e.getLocation().x);
                 Y = toSpots(e.getLocation().y);
                 if (X == x && Y == y) {
+                    f = e;
                     this.removeMover(e);
                 }
             }
@@ -417,7 +430,7 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
         
         //item.setBounds(toPixel(x), toPixel(y), item.getIcon().getIconWidth(), item.getIcon().getIconHeight());
         System.out.println("Enemie removed!");
-        
+        return f;
     }
     public Spot[][] getSpots() {
         return spots;
@@ -543,7 +556,7 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
                     while(move) {
                         Thread.sleep(10);
                         for (int i = 0; i < arrows.size(); i++) {
-                            
+                            if (i >= arrows.size()) break;
                             if (!arrows.get(i).move() || playerAttack(arrows.get(i).getHitBox(),arrows.get(i).isFriendly(), arrows.get(i).getDamage())) {
                                 removeMover(arrows.get(i));
 //                                remove(arrows.get(i));

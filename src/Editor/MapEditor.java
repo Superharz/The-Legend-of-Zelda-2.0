@@ -21,9 +21,9 @@ import java.awt.event.MouseEvent;
  * @author f.harz
  */
 public class MapEditor extends Game.Map{
-    
+    UnReDo unre;
     public MapEditor() {
-        
+        unre = new UnReDo();
     }
 
 
@@ -43,22 +43,42 @@ public class MapEditor extends Game.Map{
     public MapEditor clone() {
         return null;
     }
-
-    void click(MouseEvent evt, Object obj, int type) {
-        Point s = getPoint(evt);
-        if (s == null) return;
+    
+    public void click (MouseEvent evt, Object obj, int type) {
+        ObjectHelp help = click(evt, obj, type,null);
+        unre.clearRedo();
+        if (help != null)
+            unre.addUndo(help); 
+ 
+    }
+    
+    ObjectHelp click(MouseEvent evt, Object obj, int type, Point p) {
+        Point s;
+        if (p != null) {
+           s = p;
+        }
+        else {
+            s = getPoint(evt);
+        }
+        
+        if (s == null) return null;
+        ObjectHelp help = new ObjectHelp(s, type, null);
+        //ObjectHelp help = new ObjectHelp(s, type, null);
         switch (type) {
             case SPOTS :       
                 System.out.println("Spots");
                 Spot spot = (Spot)obj;
+                //object = this.getSpot(s.x, s.y);
+                help  = new ObjectHelp(s, type, this.getSpot(s.x, s.y));
                 this.addSpot(spot, s.x, s.y);
                 this.build();
                 ;break;
             case ITEMS:       
                 System.out.println("Item");
                 if (obj == null) {
-                    this.removeItem(s.x, s.y);
-                    return;
+                    
+                    Items i  = this.removeItem(s.x, s.y);
+                    return new ObjectHelp(s, type, i);
                 }
                 Items item = (Items)obj;
                 this.addItem( s.x, s.y, item);
@@ -67,8 +87,8 @@ public class MapEditor extends Game.Map{
             case EVENTS  :       
                 System.out.println("Event");
                 if (obj == null) {
-                    this.removeEvent(s.x, s.y);
-                    return;
+                    Event e = this.removeEvent(s.x, s.y);
+                    return new ObjectHelp(s, type, e);
                 }
                 Event event = (Event)obj;
                 this.addEvent( s.x, s.y, event);
@@ -77,15 +97,31 @@ public class MapEditor extends Game.Map{
             case ENEMIES  :       
                 System.out.println("Enemie");
                 if (obj == null) {
-                    this.removeEnemie(s.x, s.y);
-                    return;
+                    Enemie e = this.removeEnemie(s.x, s.y);
+                    return new ObjectHelp(s, type, e);
                 }
                 Enemie e = (Enemie)obj;
                 this.addEnemy(e, s, false);
                 this.build();
                 ;break;
         }
+        return help;
+        //unre.addRedo(help);
         
+    }
+    public void undo() {
+        ObjectHelp help = unre.undo();
+        if (help == null) return;
+        ObjectHelp redo = click(null, help.obj, help.type, help.location);
+        if (redo != null)
+            unre.addRedo(redo);
+    }
+    public void redo() {
+        ObjectHelp help = unre.redo();
+        if (help == null) return;
+        ObjectHelp undo = click(null, help.obj, help.type, help.location);
+        if (undo != null)
+            unre.addUndo(undo);
     }
     private Point getPoint(MouseEvent evt) {
         Point p = evt.getPoint();
