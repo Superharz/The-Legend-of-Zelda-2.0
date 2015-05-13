@@ -17,6 +17,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 /**
  *
@@ -36,6 +37,7 @@ public class Event implements Serializable, Image{
     int healAmount;
     private int eventCount = NOCOUNT;
     private int count;
+    JLabel label;
     
     public Event(Point destiny) {
         this(destiny,"");
@@ -81,7 +83,12 @@ public class Event implements Serializable, Image{
     public int getEventType() {
         return eventType;
     }
-    
+    public void setJLabel(JLabel label) {
+        this.label = label;
+    }
+    public JLabel getJLabel() {
+        return label;
+    }
     public boolean callEvent() {
         switch (eventType) {
             case MAPTELEPORT: teleport(); break;

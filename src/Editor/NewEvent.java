@@ -5,26 +5,12 @@
 package Editor;
 
 import Events.Event;
-import Game.Spot;
 import Inventory.Items;
 import Moveable.Enemies.Enemie;
 import java.awt.Point;
-import java.awt.PopupMenu;
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -311,7 +297,7 @@ public class NewEvent extends javax.swing.JDialog {
                 }
                 destiny = new Point(x, y);
                 str = lines[4].replace("MapName: ", "");
-                mapName = str;
+                mapName = str.trim();
                 Info.setText("Teleport: \n  X: "+destiny.x+"\n  Y: "+destiny.y
                         +"\nMapName: \n  "+mapName);
                 System.out.println(destiny + " | "+ mapName);

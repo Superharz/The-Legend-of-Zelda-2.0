@@ -8,6 +8,7 @@ package Game;
 import Events.Event;
 import Inventory.Items;
 import Moveable.Enemies.Enemie;
+import Moveable.Events;
 import Moveable.Mover;
 import Moveable.Player.Player;
 import Moveable.Weapons.Arrow;
@@ -17,16 +18,20 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Flo
  */
 public class Map extends ImagePanel implements Moveable.Events, java.io.Serializable{
+    public final List<MapChange> listeners = new ArrayList<MapChange>();
     boolean pause = false, first = true;
     Spot[][] spots;
     Point playerPosition = new Point(-1, -1);
@@ -35,6 +40,7 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
     LinkedList<Enemie> enemies;
     LinkedList<Arrow> arrows;
     int spotWidth;
+    String mapName = "Map1";
     transient Thread t;
     private int startX,startY;
     //private final Object obj = new Object();
@@ -61,8 +67,19 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
         enemies = new LinkedList();
         arrows = new LinkedList<Arrow>();
     }
-    
-
+    public void setMapName(String mapName) {
+        this.mapName = mapName;
+    }
+    public String getMapName() {
+        return mapName;
+    }
+    public void setPlayer(Player player) {
+        this.player = player;
+        
+        player.addListener(this);
+        startX = toSpots(player.getLocation().x);
+        startY = toSpots(player.getLocation().y);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -680,15 +697,18 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
         player.setLocation(toPixel(destination.x), toPixel(destination.y) );
         player.updateHeight();
     }
-
+    public void addListener(MapChange toAdd) {
+        listeners.add(toAdd);
+    }
     @Override
     public void teleport(Point destination, String mapName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (MapChange hl : listeners)
+                hl.mapChange(destination, mapName);
     }
 
     @Override
     public void text(String text) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        JOptionPane.showMessageDialog(null, text, "Message", JOptionPane.INFORMATION_MESSAGE, null);
     }
     
     public int toPixel(int spot) {
@@ -701,7 +721,9 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
     public Inventory getInventory(){
         return player.getInventory();
     }
-    
+    public BufferedImage getImage() {
+        return img;
+    }
     
     
     @Override

@@ -30,7 +30,7 @@ import javax.swing.JLabel;
  *
  * @author Flo
  */
-public class Tested extends javax.swing.JFrame {
+public class Tested extends javax.swing.JFrame implements MapChange{
     boolean move = false;
     Inventory i;
     boolean menu = false;
@@ -153,7 +153,11 @@ public class Tested extends javax.swing.JFrame {
     }
     public Tested (Map map1) {
         this.map1 = map1;
+        map1.addListener(this);
+        map1.reUpdate();
+
         initComponents();
+
         map1.build();
         map1.requestFocus();
         
@@ -162,107 +166,11 @@ public class Tested extends javax.swing.JFrame {
     public Tested (String file) {
         Map temp = Serialize.xStreamIn(Map.class, file);
         map1 = temp;
+        map1.addListener(this);
         map1.reUpdate();
-        
-        //Serialize.xStreamOut(map1.getSpot(1, 0), "C:\\Users\\f.harz\\Desktop\\spot1.she");
-        //Serialize.xStreamOut(map1.getSpot(0, 0), "C:\\Users\\f.harz\\Desktop\\spot2.she");
-        //map1.getplayer().getInventory().addEvent();
-//        map1 = new Map();
-//        //map1.setUP(10, 10, 5, 5);
-//        map1.setUP(temp.width, temp.width, temp.getPlayerPosition().x, temp.getPlayerPosition().y);
-//        //LinkedList<Enemie> e = temp.getEnemies();
-//        for (int j = 0; j < temp.spots.length; j++) { //row
-//            for (int k = 0; k < temp.spots[0].length; k++) {//colum
-//                LinkedList<Event> evt = temp.getSpot(k, j).removeEvents();
-//                map1.addSpot(temp.getSpot(k,j), k, j);
-//                if (evt != null) {
-//                    for (int l = 0; l < evt.size(); l++) {
-//                        evt.get(l).resetListener();
-//                        map1.addEvent(k, j, evt.get(l));
-//                    }
-//                }
-//            }
-//        }
-//        for (int j = 0; j < e.size(); j++) {
-//            map1.addEnemy(e.get(j), e.get(j).getLocation().x, e.get(j).getLocation().y);
-//        }
-//        Import m = new Import();
-//        map1 = m.buildMap();
-        
+
         initComponents();
-        
-        //test();
-        
-//        try {
-//            BufferedImage before = ImageIO.read (this.getClass().
-//                    getResource("/Pictures/tile1.png"));
-//            BufferedImage layer2 = ImageIO.read (this.getClass().
-//                    getResource("/Pictures/tile3.png"));
-//            BufferedImage plant = ImageIO.read (this.getClass().
-//                    getResource("/Pictures/plant.png"));
-//            BufferedImage before2 = ImageIO.read (this.getClass().
-//                    getResource("/Pictures/tile2.png"));
-//            BufferedImage sword = ImageIO.read (this.getClass().
-//                    getResource("/Pictures/sword4.png"));
-//            Spot s = new Spot(before, false);
-//            Spot stair = new Spot(plant,-1);
-//            Spot stair2 = new Spot(plant,-2);
-//            Spot l1 = new Spot(layer2,1);
-//            Spot l2 = new Spot(layer2,2);
-//            map1.setUP(10, 10,5,5);
-//            for (int i = 0; i < 10; i++) {
-//                for (int j = 0; j < 10; j++) {
-//                    Spot a = new Spot(before2, true);
-//                    map1.addSpot(a, i, j);
-//                }
-//            }
-//            map1.addSpot(s, 0, 0);
-//            map1.addSpot(s, 1, 1);
-//            map1.addSpot(s, 8, 8);
-//            map1.addSpot(s, 7, 8);
-//            map1.addSpot(s, 8, 6);
-//            map1.addSpot(s, 7, 6);
-//            map1.addSpot(s, 9, 0);
-//            map1.addSpot(l1, 8, 1);
-//            map1.addSpot(l1, 7, 1);
-//            map1.addSpot(l1, 6, 1);
-//            map1.addSpot(l1, 5, 1);
-//            map1.addSpot(stair, 4, 1);
-//            map1.addSpot(stair2, 8, 2);
-//            map1.addSpot(l2, 8, 3);
-//            map1.addSpot(l2, 7, 3);
-//            map1.addSpot(l2, 6, 3);
-//            map1.addSpot(l2, 5, 3);
-//            Event evt = new Event(new Point(5,1));
-//            Enemie e2 = new Enemie(Enemie.WALLMOVE);
-//            Event evt2 = new Event(new Point(2,5),e2);
-//            Event evt3 = new Event(1000);
-//            map1.addEvent(1, 0, evt2);
-//            map1.addEvent(0, 1, evt);
-//            map1.addEvent(9, 9, evt3);
-//            ImageIcon icon = new ImageIcon(sword);
-//            Items item = new Items("Wall","Wolf",icon,true);
-//            item.addStats(new JLabel("Damage: 50"), Items.DAMAGE, 50);
-//            Event evt4 = new Event(new Point(5,2),item);
-//            evt4.addEventCount(1);
-//            map1.addEvent(0, 9, evt4);
-//            Enemie e;
-//            
-//            map1.build();
-//            for (int i = 0; i < 5; i++) {
-//                e = new Enemie(Enemie.RANDOMMOVE);
-//                map1.addEnemy(e, 50+i*50, 50+i*50);
-//            }
-//            
-//            //Enemie e = new Enemie(1000/240, 100, 100, new Point(0,0),map1.getSpots());
-//            //map1.addEnemy(e, 100, 100);
-////            Player p = new Player();
-////            map1.add(p);
-//            
-//        } catch (IOException ex) {
-//            Logger.getLogger(Tested.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        
+
         map1.build();
         map1.requestFocus();
         
@@ -281,7 +189,7 @@ public class Tested extends javax.swing.JFrame {
         //map1 = new Game.Map();
         HUT = new javax.swing.JPanel();
         
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(true);
          addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
@@ -301,6 +209,7 @@ public class Tested extends javax.swing.JFrame {
                 formKeyTyped(evt);
             }
         });
+       
         Action doNothing = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -334,7 +243,6 @@ public class Tested extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>                        
-
     private void formKeyTyped(java.awt.event.KeyEvent evt) {                              
       
       if (!move) {
@@ -349,7 +257,9 @@ public class Tested extends javax.swing.JFrame {
             case 'z': break;
             case 'x':
                 map1.play(false);
-                Serialize.xStreamOut(map1, "Save\\MAP.she");break;
+                Serialize.xStreamOut(map1, "Save\\MAP.she");
+                map1.play(true);
+                break;
             case KeyEvent.VK_SPACE: map1.play(false);   ;break;
         }
       }
@@ -466,6 +376,68 @@ public class Tested extends javax.swing.JFrame {
        
        //i.setVisible(true);
    }
+
+    @Override
+    public void mapChange(Point destination, String newMap) {
+        map1.play(false);
+        map1.removeAll();
+        //Serialize.xStreamOut(map1, "Content\\"+map1.getMapName()+".she");
+        //map1.play(true);
+        Player p = map1.getplayer();
+        Map temp = Serialize.xStreamIn(Map.class, "Content\\"+newMap+".she");
+        this.map1 = temp;
+        map1.setPlayer(p);
+        map1.addListener(this);
+        map1.reUpdate();
+
+        initComponents();
+
+        map1.build();
+        map1.requestFocus();
+        System.gc();
+        HUT.validate();
+        HUT.repaint();
+        map1.repaint();
+        //new Tested(temp).setVisible(true);
+//        return;
+//        map1 = temp;
+//        map1.addKeyListener(new java.awt.event.KeyAdapter() {
+//            public void keyPressed(java.awt.event.KeyEvent evt) {
+//                formKeyPressed(evt);
+//            }
+//            public void keyReleased(java.awt.event.KeyEvent evt) {
+//                formKeyReleased(evt);
+//            }
+//            public void keyTyped(java.awt.event.KeyEvent evt) {
+//                formKeyTyped(evt);
+//            }
+//        });
+//        map1.addMouseListener(new java.awt.event.MouseAdapter() {
+//            public void mousePressed(java.awt.event.MouseEvent evt) {
+//                map1MousePressed(evt);
+//            }
+//        });
+//        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(HUT);
+//        HUT.setLayout(layout);
+//        layout.setHorizontalGroup(
+//            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//            .addComponent(map1, javax.swing.GroupLayout.PREFERRED_SIZE, 623, javax.swing.GroupLayout.PREFERRED_SIZE)
+//        );
+//        layout.setVerticalGroup(
+//            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//            .addComponent(map1, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE)
+//        );
+//
+//        map1.addListener(this);
+//        //map1.setPlayer(p);
+//        map1.reUpdate();
+//        
+//        //initComponents();
+//
+//        map1.build();
+//        map1.requestFocus();
+        
+    }
     
     
 }

@@ -13,8 +13,12 @@ import Events.Event;
 import Game.Spot;
 import Inventory.Items;
 import Moveable.Enemies.Enemie;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 /**
  *
@@ -88,11 +92,24 @@ public class MapEditor extends Game.Map{
                 System.out.println("Event");
                 if (obj == null) {
                     Event e = this.removeEvent(s.x, s.y);
+                    //if (e!=null)
+                        //this.remove(e.getJLabel());
                     return new ObjectHelp(s, type, e);
                 }
                 Event event = (Event)obj;
                 this.addEvent( s.x, s.y, event);
+//                ImageIcon i = event.getImageIcon();
+                
                 this.build();
+//                BufferedImage img = this.getImage();
+//                Graphics g = img.getGraphics();
+//                g.drawImage(img, toPixel(s.x), toPixel(s.y), null);
+//                //JLabel l = new JLabel(i);
+//                //l.setBounds(toPixel(s.x), toPixel(s.y), i.getIconWidth(), i.getIconHeight());
+//                //this.add(l);
+//                //event.setJLabel(l);
+//                this.validate();
+//                this.repaint();
                 ;break;
             case ENEMIES  :       
                 System.out.println("Enemie");
@@ -115,6 +132,7 @@ public class MapEditor extends Game.Map{
         ObjectHelp redo = click(null, help.obj, help.type, help.location);
         if (redo != null)
             unre.addRedo(redo);
+        this.build();
     }
     public void redo() {
         ObjectHelp help = unre.redo();
@@ -122,6 +140,7 @@ public class MapEditor extends Game.Map{
         ObjectHelp undo = click(null, help.obj, help.type, help.location);
         if (undo != null)
             unre.addUndo(undo);
+        this.build();
     }
     private Point getPoint(MouseEvent evt) {
         Point p = evt.getPoint();

@@ -735,32 +735,30 @@ private File getFile(String selection, String extension, String description) {
     }
 
     private void launch() {
-        try {
+        
             Serialize.xStreamOut(map1, "Save\\temp.she");
             File file = new File("Save\\temp.she");
             Tested test = new Tested("Save\\temp.she");
-            ImageIO.write(ImageIO.read(new File("C:\\Users\\f.harz\\Desktop\\The-Legend-of-Zelda-2.0\\src\\Pictures\\tile1.png")), "png", file);
+            file.deleteOnExit();
             test.setVisible(true);
             test.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        } catch (IOException ex) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
     }
 
     private void close() {
-        try{
- 
-    		File file = new File("Save\\temp.she");
-                ImageIO.write(ImageIO.read(new File("C:\\Users\\f.harz\\Desktop\\The-Legend-of-Zelda-2.0\\src\\Pictures\\tile1.png")), ".she", file);
-    		if(file.delete()){
-    			System.out.println(file.getName() + " is deleted!");
-    		}else{
-    			System.out.println("Delete operation is failed.");
-    		}
- 
-    	}catch(Exception e){
-            System.out.println(e.getMessage());
-    	}
+//        try{
+// 
+//    		File file = new File("Save\\temp.she");
+//                ImageIO.write(ImageIO.read(new File("C:\\Users\\f.harz\\Desktop\\The-Legend-of-Zelda-2.0\\src\\Pictures\\tile1.png")), ".she", file);
+//    		if(file.delete()){
+//    			System.out.println(file.getName() + " is deleted!");
+//    		}else{
+//    			System.out.println("Delete operation is failed.");
+//    		}
+// 
+//    	}catch(Exception e){
+//            System.out.println(e.getMessage());
+//    	}
     }
 
 }
