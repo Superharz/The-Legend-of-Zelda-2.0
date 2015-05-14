@@ -257,7 +257,9 @@ public class Tested extends javax.swing.JFrame implements MapChange{
             case 'z': break;
             case 'x':
                 map1.play(false);
+                map1.releaseEvents();
                 Serialize.xStreamOut(map1, "Save\\MAP.she");
+                map1.addListener(this); 
                 map1.play(true);
                 break;
             case KeyEvent.VK_SPACE: map1.play(false);   ;break;
@@ -379,25 +381,44 @@ public class Tested extends javax.swing.JFrame implements MapChange{
 
     @Override
     public void mapChange(Point destination, String newMap) {
-        map1.play(false);
-        map1.removeAll();
-        //Serialize.xStreamOut(map1, "Content\\"+map1.getMapName()+".she");
-        //map1.play(true);
-        Player p = map1.getplayer();
+//        map1.play(false);
+//                map1.releaseEvents();
+//                Serialize.xStreamOut(map1, "Save\\MAP.she");
+//                map1.play(true);
+//        map1.play(false);
+//        //map1.removeAll();
+//        map1.releaseEvents();
+//        Serialize.xStreamOut(map1, "Content\\"+map1.getMapName()+".she");
+//        System.out.println("Saved!");
+//        //map1.play(true);
+//        Player p = map1.getplayer();
+//        //p.setLocation(destination.x, destination.y);
+//        map1.removeAll();
+        HUT.remove(map1);
+        map1=null;
         Map temp = Serialize.xStreamIn(Map.class, "Content\\"+newMap+".she");
-        this.map1 = temp;
-        map1.setPlayer(p);
+        System.out.println("DONE!");
+        map1 = temp;
         map1.addListener(this);
         map1.reUpdate();
-
-        initComponents();
-
+        secondaryInit();
+        
         map1.build();
         map1.requestFocus();
-        System.gc();
-        HUT.validate();
-        HUT.repaint();
-        map1.repaint();
+//        System.out.println("Loaded!");
+//        this.map1 = temp;
+//        map1.setPlayer(p,destination);
+//        map1.addListener(this);
+//        map1.reUpdate();
+//
+//        //initComponents();
+//        secondaryInit();
+//        map1.build();
+//        map1.requestFocus();
+//        System.gc();
+        //HUT.validate();
+        //HUT.repaint();
+        //map1.repaint();
         //new Tested(temp).setVisible(true);
 //        return;
 //        map1 = temp;
@@ -437,6 +458,37 @@ public class Tested extends javax.swing.JFrame implements MapChange{
 //        map1.build();
 //        map1.requestFocus();
         
+    }
+    public void secondaryInit() {
+        map1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                formKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                formKeyTyped(evt);
+            }
+        });
+         map1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                map1MousePressed(evt);
+            }
+        });
+         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(HUT);
+        HUT.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(map1, javax.swing.GroupLayout.PREFERRED_SIZE, 623, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(map1, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        pack();
+       
     }
     
     

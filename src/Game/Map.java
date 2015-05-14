@@ -73,12 +73,17 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
     public String getMapName() {
         return mapName;
     }
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void setPlayer(Player player, Point location) {
+        this.remove(this.player);
         
+        this.player = player;
+        this.add(this.player);
         player.addListener(this);
-        startX = toSpots(player.getLocation().x);
-        startY = toSpots(player.getLocation().y);
+        player.setBounds(toPixel(location.x), toPixel(location.y), player.getIcon().getIconWidth(), player.getIcon().getIconHeight());
+        startX = location.x;
+        startY = location.y;
+        this.validate();
+        this.repaint();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -183,6 +188,9 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
     }
     public int getSpotWidth() {
         return spotWidth;
+    }
+    public void releaseEvents() {
+        listeners.clear();
     }
    public void build() {
         int x = spots[0][0].image().getWidth();
