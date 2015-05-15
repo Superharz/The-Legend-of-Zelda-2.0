@@ -269,6 +269,10 @@ public class Tested extends javax.swing.JFrame implements MapChange{
     private void formComponentResized(ComponentEvent evt) {
         if (i != null)
             i.setBounds(0, 0, this.getWidth(), this.getHeight()); 
+        HUT.repaint();
+        map1.setSize(HUT.getSize());
+        map1.repaint();
+        map1.build();
     }
     private void formKeyReleased(java.awt.event.KeyEvent evt) {                                 
         //System.out.println("RIGHT");
@@ -332,7 +336,7 @@ public class Tested extends javax.swing.JFrame implements MapChange{
                     while (true) {
                         int t = java.lang.Thread.activeCount();
                         Thread.sleep(1000);
-                        System.out.println(t);
+                        //System.out.println(t);
                     }
                 } catch (Exception ex) {
                     Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
@@ -391,7 +395,7 @@ public class Tested extends javax.swing.JFrame implements MapChange{
 //        Serialize.xStreamOut(map1, "Content\\"+map1.getMapName()+".she");
 //        System.out.println("Saved!");
 //        //map1.play(true);
-//        Player p = map1.getplayer();
+        Player p = map1.getplayer();
 //        //p.setLocation(destination.x, destination.y);
 //        map1.removeAll();
         HUT.remove(map1);
@@ -399,6 +403,7 @@ public class Tested extends javax.swing.JFrame implements MapChange{
         Map temp = Serialize.xStreamIn(Map.class, "Content\\"+newMap+".she");
         System.out.println("DONE!");
         map1 = temp;
+        map1.setPlayer(p, destination);
         map1.addListener(this);
         map1.reUpdate();
         secondaryInit();

@@ -645,7 +645,7 @@ public class GUI extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 public final void setUP() {
         try {
-            map1.setUP(10, 10, 5, 5);
+            map1.setUP(20, 20, 5, 5);
 
             BufferedImage before = ImageIO.read (this.getClass().
                 getResource("/Pictures/tile1.png"));

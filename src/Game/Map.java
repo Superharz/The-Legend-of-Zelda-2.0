@@ -581,7 +581,8 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
                     while(move) {
                         Thread.sleep(10);
                         for (int i = 0; i < arrows.size(); i++) {
-                            if (i >= arrows.size()) break;
+                            if (i >= arrows.size()) 
+                                System.out.println("TOO big!!!");
                             if (!arrows.get(i).move() || playerAttack(arrows.get(i).getHitBox(),arrows.get(i).isFriendly(), arrows.get(i).getDamage())) {
                                 removeMover(arrows.get(i));
 //                                remove(arrows.get(i));
@@ -671,6 +672,11 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
         //e.addListener(this);
         a.setBounds(x, y, arrow.getWidth(), arrow.getHeight());
         this.repaint();
+        if (arrows.size() > 1 && !t.isAlive()){
+            this.removeArrows(arrows);
+            //arrows.clear();
+            arrows.add(a);
+        }
         if (arrows.size() == 1)
             move();
         
@@ -692,7 +698,19 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
         repaint();
         System.gc();
     }
-
+    public void removeArrows(LinkedList<Arrow> m) {
+        
+        
+            for (int i = 0; i < m.size(); i++) {
+                this.remove(m.get(i));
+                
+            }
+            
+            
+        arrows.clear();
+        repaint();
+        System.gc();
+    }
     @Override
     public void heal(int amount) {
         player.heal(amount);
@@ -716,6 +734,7 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
 
     @Override
     public void text(String text) {
+        player.stopMoving();
         JOptionPane.showMessageDialog(null, text, "Message", JOptionPane.INFORMATION_MESSAGE, null);
     }
     
@@ -785,7 +804,7 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
          build();
         requestFocus();
         this.play(true);
-        System.out.println(arrows);
+        //System.out.println(arrows);
 //        for (int i = 0;arrows != null && i < arrows.size(); i++) {
 //            removeMover(arrows.get(i));
 //        }

@@ -76,6 +76,11 @@ public class GUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                formComponentResized(evt);
+            }
+        });
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 formKeyPressed(evt);
@@ -135,6 +140,10 @@ public class GUI extends javax.swing.JFrame {
     private void map1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_map1MousePressed
         System.out.println("Works");
     }//GEN-LAST:event_map1MousePressed
+
+    private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formComponentResized
 
     /**
      * @param args the command line arguments

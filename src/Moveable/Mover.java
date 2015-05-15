@@ -135,7 +135,6 @@ public abstract class Mover extends javax.swing.JLabel implements Image{
     public void setImmortal() {
         immortal = true;
     }
-    
     public boolean moveUP() {
         lastDirection = UP;
         if (collision(1)) {
@@ -239,7 +238,7 @@ public abstract class Mover extends javax.swing.JLabel implements Image{
     public void updateHeight() {
         Point p = this.getHotSpot();
         height = spots[toSpots(p.y)][toSpots(p.x)].getHeight();
-        System.out.println("Height: "+height);
+        //System.out.println("Height: "+height);
     }
     
     public void stop() {

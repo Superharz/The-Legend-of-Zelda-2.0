@@ -243,7 +243,7 @@ public class Inventory extends javax.swing.JPanel {
             //Info.getLayout().addLayoutComponent("stuff", stuff[value]);
             //Info.
             //Info.addComponent(stuff[value], javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);
-            System.out.println(stuff[value].isVisible());
+            //System.out.println(stuff[value].isVisible());
             //this.repaint();
             //this.validate();
             
