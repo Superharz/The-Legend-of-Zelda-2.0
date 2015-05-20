@@ -30,6 +30,7 @@ public class Player extends Mover{
     ImageIcon[][] before = new ImageIcon[3][4];
     Inventory inventory;
     private boolean first = true;
+    private String mapName;
     //private final List<PlayerEvent> listeners = new ArrayList<PlayerEvent>();
     public Player() {
         //t = new Thread(this,"test");
@@ -68,6 +69,12 @@ public class Player extends Mover{
     public void use(Items item) {
         super.useItem(item);
         updateInvent();
+    }
+    public void setMapName(String name){
+        mapName = name;
+    }
+    public String setMapName(){
+        return mapName;
     }
     public void updateInvent() {
         inventory.setStats(super.getLevel(), super.getHealth(), super.getDamage(), super.getArmor(),super.getSpeed());

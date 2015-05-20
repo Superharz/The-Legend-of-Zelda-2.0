@@ -20,15 +20,12 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.filechooser.FileSystemView;
 
 /**
  *
@@ -67,6 +64,10 @@ public class GUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jDesktopPane2 = new javax.swing.JDesktopPane();
+        LaunchTab = new javax.swing.JInternalFrame();
+        Launch = new javax.swing.JButton();
+        GUI = new javax.swing.JInternalFrame();
+        map1 = new Editor.MapEditor();
         Content = new javax.swing.JInternalFrame();
         Tab = new javax.swing.JTabbedPane();
         Spots = new Editor.Content<Spot>();
@@ -80,10 +81,8 @@ public class GUI extends javax.swing.JFrame {
         Items = new Editor.Content<Items>();
         jButton7 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        LaunchTab = new javax.swing.JInternalFrame();
-        Launch = new javax.swing.JButton();
-        GUI = new javax.swing.JInternalFrame();
-        map1 = new Editor.MapEditor();
+        jInternalFrame1 = new javax.swing.JInternalFrame();
+        fileTree1 = new Editor.FileTree(".");
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -104,6 +103,71 @@ public class GUI extends javax.swing.JFrame {
                 formWindowClosing(evt);
             }
         });
+
+        LaunchTab.setClosable(true);
+        LaunchTab.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        LaunchTab.setTitle("LAUNCH");
+        LaunchTab.setVisible(true);
+
+        Launch.setBackground(new java.awt.Color(255, 255, 51));
+        Launch.setFont(new java.awt.Font("Arial Black", 1, 48)); // NOI18N
+        Launch.setForeground(new java.awt.Color(255, 102, 102));
+        Launch.setText("!LAUNCH!");
+        Launch.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        Launch.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
+        Launch.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentHidden(java.awt.event.ComponentEvent evt) {
+                LaunchComponentHidden(evt);
+            }
+        });
+        Launch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LaunchActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout LaunchTabLayout = new javax.swing.GroupLayout(LaunchTab.getContentPane());
+        LaunchTab.getContentPane().setLayout(LaunchTabLayout);
+        LaunchTabLayout.setHorizontalGroup(
+            LaunchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(Launch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        LaunchTabLayout.setVerticalGroup(
+            LaunchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(Launch, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
+        );
+
+        LaunchTab.setBounds(160, 40, 331, 110);
+        jDesktopPane2.add(LaunchTab, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        GUI.setMaximizable(true);
+        GUI.setResizable(true);
+        GUI.setTitle("GUI");
+        GUI.setVisible(true);
+
+        map1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 51, 51), 1, true));
+        map1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                map1MouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                map1MousePressed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout GUILayout = new javax.swing.GroupLayout(GUI.getContentPane());
+        GUI.getContentPane().setLayout(GUILayout);
+        GUILayout.setHorizontalGroup(
+            GUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(map1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
+        );
+        GUILayout.setVerticalGroup(
+            GUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(map1, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
+        );
+
+        GUI.setBounds(430, 120, 440, 420);
+        jDesktopPane2.add(GUI, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         Content.setClosable(true);
         Content.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -190,75 +254,40 @@ public class GUI extends javax.swing.JFrame {
         );
         ContentLayout.setVerticalGroup(
             ContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Tab, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+            .addComponent(Tab, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
         );
 
-        Content.setBounds(30, 160, 170, 250);
+        Content.setBounds(240, 170, 170, 258);
         jDesktopPane2.add(Content, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        LaunchTab.setClosable(true);
-        LaunchTab.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
-        LaunchTab.setTitle("LAUNCH");
-        LaunchTab.setVisible(true);
+        jInternalFrame1.setVisible(true);
 
-        Launch.setBackground(new java.awt.Color(255, 255, 51));
-        Launch.setFont(new java.awt.Font("Arial Black", 1, 48)); // NOI18N
-        Launch.setForeground(new java.awt.Color(255, 102, 102));
-        Launch.setText("!LAUNCH!");
-        Launch.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        Launch.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
-        Launch.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentHidden(java.awt.event.ComponentEvent evt) {
-                LaunchComponentHidden(evt);
-            }
-        });
-        Launch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LaunchActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout LaunchTabLayout = new javax.swing.GroupLayout(LaunchTab.getContentPane());
-        LaunchTab.getContentPane().setLayout(LaunchTabLayout);
-        LaunchTabLayout.setHorizontalGroup(
-            LaunchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Launch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        javax.swing.GroupLayout fileTree1Layout = new javax.swing.GroupLayout(fileTree1);
+        fileTree1.setLayout(fileTree1Layout);
+        fileTree1Layout.setHorizontalGroup(
+            fileTree1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 200, Short.MAX_VALUE)
         );
-        LaunchTabLayout.setVerticalGroup(
-            LaunchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Launch, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
+        fileTree1Layout.setVerticalGroup(
+            fileTree1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        LaunchTab.setBounds(160, 40, 331, 110);
-        jDesktopPane2.add(LaunchTab, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        GUI.setMaximizable(true);
-        GUI.setResizable(true);
-        GUI.setTitle("GUI");
-        GUI.setVisible(true);
-
-        map1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                map1MouseClicked(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                map1MousePressed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout GUILayout = new javax.swing.GroupLayout(GUI.getContentPane());
-        GUI.getContentPane().setLayout(GUILayout);
-        GUILayout.setHorizontalGroup(
-            GUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(map1, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
+        javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
+        jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
+        jInternalFrame1Layout.setHorizontalGroup(
+            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jInternalFrame1Layout.createSequentialGroup()
+                .addComponent(fileTree1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
-        GUILayout.setVerticalGroup(
-            GUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(map1, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
+        jInternalFrame1Layout.setVerticalGroup(
+            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(fileTree1, javax.swing.GroupLayout.PREFERRED_SIZE, 381, Short.MAX_VALUE)
         );
 
-        GUI.setBounds(280, 160, 440, 420);
-        jDesktopPane2.add(GUI, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jInternalFrame1.setBounds(10, 80, 210, 410);
+        jDesktopPane2.add(jInternalFrame1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jMenu1.setText("File");
 
@@ -539,6 +568,8 @@ public class GUI extends javax.swing.JFrame {
         GUI.setVisible(true);
         //GUI = f;
         this.update();
+        map1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 51, 51), 1, true));
+        map1.setPreferredSize(map1.getDimension());
         System.out.println("Map added");
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
@@ -620,6 +651,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JInternalFrame LaunchTab;
     private Editor.Content<Spot> Spots;
     private javax.swing.JTabbedPane Tab;
+    private Editor.FileTree fileTree1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -630,6 +662,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
     private javax.swing.JDesktopPane jDesktopPane2;
+    private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -652,6 +685,7 @@ public final void setUP() {
             Spot s = new Spot(before, true);
             map1.setAllSpots(s);
             map1.build();
+            map1.setPreferredSize(map1.getDimension());
         } catch (IOException ex) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }

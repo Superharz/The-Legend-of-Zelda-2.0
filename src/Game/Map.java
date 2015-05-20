@@ -13,6 +13,7 @@ import Moveable.Mover;
 import Moveable.Player.Player;
 import Moveable.Weapons.Arrow;
 import Tools.ImagePanel;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -25,7 +26,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
-
 /**
  *
  * @author Flo
@@ -191,6 +191,9 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
     }
     public void releaseEvents() {
         listeners.clear();
+    }
+    public Dimension getDimension() {
+        return new Dimension(img.getWidth(), img.getHeight());
     }
    public void build() {
         int x = spots[0][0].image().getWidth();
@@ -537,24 +540,29 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
         boolean killed = false;
         //Rectangle playerBox = player.getHitBox();
         if (friendly) {
-        for (int i = 0; i < enemies.size(); i++) {
-            if (enemies.get(i).getLayer() == player.getLayer()) {
-                enemieBox = enemies.get(i).getHitBox();
+            for (int i = 0; i < enemies.size(); i++) {
+                if (enemies.get(i).getLayer() == player.getLayer()) {
+                    enemieBox = enemies.get(i).getHitBox();
 
-                if (r.intersects(enemieBox)) {
-                        killed = true;
-                        enemies.get(i).takeDamage(player.getStrength());
-                        //if (!enemies.get(i).isAlive()) {
-                            //this.remove(enemies.get(i));
-                            //enemies.get(i).stopMoving();
-                            //enemies.remove(enemies.get(i));
-                        //}
+                    if (r.intersects(enemieBox)) {
+                            killed = true;
+                            enemies.get(i).takeDamage(strength);
+                            //if (!enemies.get(i).isAlive()) {
+                                //this.remove(enemies.get(i));
+                                //enemies.get(i).stopMoving();
+                                //enemies.remove(enemies.get(i));
+                            //}
+                            return killed;
 
-
+                    }
+    //                if (r.intersects(player.getHitBox())) {
+    //                killed = true;
+    //                player.takeDamage(strength);
+    //            }
+    //            return killed;
                 }
             }
-        }
-        return killed; 
+             return killed;
         }
         else {
             if (r.intersects(player.getHitBox())) {
@@ -563,7 +571,7 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
             }
             return killed;
         }
-            
+        //return killed;
     }
     
     public void move() {
@@ -583,7 +591,8 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
                         for (int i = 0; i < arrows.size(); i++) {
                             if (i >= arrows.size()) 
                                 System.out.println("TOO big!!!");
-                            if (!arrows.get(i).move() || playerAttack(arrows.get(i).getHitBox(),arrows.get(i).isFriendly(), arrows.get(i).getDamage())) {
+                            
+                            else if (!arrows.get(i).move() || playerAttack(arrows.get(i).getHitBox(),arrows.get(i).isFriendly(), arrows.get(i).getDamage())) {
                                 removeMover(arrows.get(i));
 //                                remove(arrows.get(i));
 //                                arrows.remove(i);
@@ -661,8 +670,8 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
         BufferedImage arrow = null;
         
             
-                arrow = ImageIO.read (this.getClass().
-                            getResource("/Pictures/Arrow"+direction+".png"));
+        arrow = ImageIO.read (this.getClass().
+            getResource("/Pictures/Arrow"+direction+".png"));
             
         
         Arrow a = new Arrow(x, y, direction, damage, arrow,spots, player.getLayer());
@@ -672,7 +681,7 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
         //e.addListener(this);
         a.setBounds(x, y, arrow.getWidth(), arrow.getHeight());
         this.repaint();
-        if (arrows.size() > 1 && !t.isAlive()){
+        if (arrows.size() > 1 && !t.isAlive() || arrows.size() >= 50){
             this.removeArrows(arrows);
             //arrows.clear();
             arrows.add(a);
@@ -681,8 +690,8 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
             move();
         
         } catch (IOException ex) {
-                Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -696,7 +705,7 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
             arrows.remove(m);
         }
         repaint();
-        System.gc();
+        //System.gc();
     }
     public void removeArrows(LinkedList<Arrow> m) {
         
@@ -709,7 +718,7 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
             
         arrows.clear();
         repaint();
-        System.gc();
+        //System.gc();
     }
     @Override
     public void heal(int amount) {
@@ -765,7 +774,7 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
                     player.addItem(item);
                     this.remove(item);
                     repaint();
-                    System.gc();
+                    //System.gc();
                     
                     
                     

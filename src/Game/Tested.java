@@ -173,7 +173,11 @@ public class Tested extends javax.swing.JFrame implements MapChange{
 
         map1.build();
         map1.requestFocus();
-        
+        map1.setPreferredSize(map1.getDimension());
+        this.setSize(map1.getDimension().width+30,map1.getDimension().height+100);
+        HUT.setSize(map1.getDimension());
+        HUT.setPreferredSize(map1.getDimension());
+        //HUT.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 51, 51), 1, true));
         
     }
 
@@ -234,11 +238,11 @@ public class Tested extends javax.swing.JFrame implements MapChange{
         HUT.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(map1, javax.swing.GroupLayout.PREFERRED_SIZE, 623, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(map1, javax.swing.GroupLayout.DEFAULT_SIZE, 623, javax.swing.GroupLayout.DEFAULT_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(map1, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(map1, javax.swing.GroupLayout.DEFAULT_SIZE, 407, javax.swing.GroupLayout.DEFAULT_SIZE)
         );
 
         pack();
@@ -268,9 +272,10 @@ public class Tested extends javax.swing.JFrame implements MapChange{
     }                             
     private void formComponentResized(ComponentEvent evt) {
         if (i != null)
-            i.setBounds(0, 0, this.getWidth(), this.getHeight()); 
+            i.setBounds(0, 0, this.getWidth(), this.getHeight());
+        HUT.setSize(map1.getDimension());
         HUT.repaint();
-        map1.setSize(HUT.getSize());
+        map1.setSize(map1.getDimension());
         map1.repaint();
         map1.build();
     }
@@ -410,6 +415,7 @@ public class Tested extends javax.swing.JFrame implements MapChange{
         
         map1.build();
         map1.requestFocus();
+        
 //        System.out.println("Loaded!");
 //        this.map1 = temp;
 //        map1.setPlayer(p,destination);
