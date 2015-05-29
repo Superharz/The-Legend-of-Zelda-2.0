@@ -11,6 +11,8 @@ import Game.Tested;
 import IOUtil.Serialize;
 import Inventory.Items;
 import Moveable.Enemies.Enemie;
+import Moveable.Player.Player;
+import Tools.ReadWriteTextFileWithEncoding;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -38,6 +40,7 @@ public class GUI extends javax.swing.JFrame {
     //Items item;
     public static final int EVENTS = 1, ENEMIES = 2, ITEMS = 3, SPOTS = 0;
     int selection = SPOTS;
+    String gameName = "My_Game";
     //HashMap<JLabel, Spot> spots;
     //HashMap<JLabel, Event> events;
     //HashMap<JLabel, Enemie> enemies;
@@ -85,10 +88,12 @@ public class GUI extends javax.swing.JFrame {
         fileTree1 = new Editor.FileTree(".");
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -98,6 +103,7 @@ public class GUI extends javax.swing.JFrame {
         jCheckBoxMenuItem2 = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("My_Game");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -291,6 +297,14 @@ public class GUI extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
+        jMenuItem4.setText("New Game");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem4);
+
         jMenuItem2.setText("Open");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -322,6 +336,14 @@ public class GUI extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItem5);
+
+        jMenuItem9.setText("Compile");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem9);
 
         jMenuItem3.setText("Close");
         jMenu1.add(jMenuItem3);
@@ -389,7 +411,8 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
+        gameName=JOptionPane.showInputDialog("Map Name:");
+        this.setTitle(gameName);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void map1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_map1MouseClicked
@@ -574,7 +597,7 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        Editor.Content.save(map1);
+        Editor.Content.save(map1,gameName);
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
@@ -597,9 +620,35 @@ public class GUI extends javax.swing.JFrame {
         int option =JOptionPane.showConfirmDialog(null, "Would you like to save the map?", "Save?", JOptionPane.YES_NO_CANCEL_OPTION);
         if (option == 2) return;
         if (option == 0) 
-            Editor.Content.save(map1);
+            Editor.Content.save(map1,gameName);
         setUP();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        String name = JOptionPane.showInputDialog("Game Name:");
+        File f = new File("Games/"+name+"/Original");
+        f.mkdirs();
+        f= new File("Games/"+name+"/Players/Player1/Save");
+        f.mkdirs();
+        gameName = name;
+        this.setTitle(name);
+        
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        try {
+            String mainMap = JOptionPane.showInputDialog("Main Map:");
+            if (mainMap.isEmpty()) return;
+            Player p =new Player();
+            File f = new File("Games/"+gameName+"/game.ini");
+            ReadWriteTextFileWithEncoding r = new ReadWriteTextFileWithEncoding(f.getAbsolutePath());
+            String[] s = {gameName, mainMap};
+            r.write(s, false);
+        } catch (IOException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
     private void mapMouseClicked(java.awt.event.MouseEvent evt, MapEditor m) {                                  
         //map1.click(evt,spot);
         System.out.println("Worked");
@@ -670,10 +719,12 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private Editor.MapEditor map1;
     // End of variables declaration//GEN-END:variables
 public final void setUP() {
@@ -690,12 +741,14 @@ public final void setUP() {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
 }
-private File getFile(String selection, String extension, String description) {
+private File getFile(String selection, boolean map) {
         //Player player;
         //Map map;
         JFileChooser chooser;
         //Map map;
         File f=new File("Content/");
+        if (map)
+            f=new File("Games/"+gameName+"/Original");
         //URL u = new URL(f.getAbsolutePath());
         //URL u = (this.getClass().getResource("/pictures"));
     
@@ -717,7 +770,7 @@ private File getFile(String selection, String extension, String description) {
     }
     public <T> T getObject(Class<T> data, String file) {
         T clazz;
-        File f= getFile(file, "SuperHarz ENT.   .she", "she");
+        File f= getFile(file, true);
         if (f == null) return null;
         clazz = Serialize.xStreamIn(data, f);
         return clazz;

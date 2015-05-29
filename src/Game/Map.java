@@ -82,6 +82,8 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
         player.setBounds(toPixel(location.x), toPixel(location.y), player.getIcon().getIconWidth(), player.getIcon().getIconHeight());
         startX = location.x;
         startY = location.y;
+        if(spots!=null)
+            player.setSpots(spots);
         this.validate();
         this.repaint();
     }

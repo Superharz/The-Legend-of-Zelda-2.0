@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,6 +35,7 @@ public class Tested extends javax.swing.JFrame implements MapChange{
     boolean move = false;
     Inventory i;
     boolean menu = false;
+    File original,save;
   
     /**
      * Creates new form Tested
@@ -160,6 +162,29 @@ public class Tested extends javax.swing.JFrame implements MapChange{
 
         map1.build();
         map1.requestFocus();
+        
+        
+    }
+    public Tested (Player p,File original, File save) {
+        this.original = original;
+        this.save = save;
+        //this.map1 = map1;
+        String name = p.getMapName();
+        File f = new File(save.getPath()+"/"+name+".she");
+        if (!f.exists())
+            f = new File(original.getPath()+"/"+name+".she");
+        map1=Serialize.xStreamIn(Map.class, f);
+        map1.addListener(this);
+        map1.reUpdate();
+
+        initComponents();
+
+        map1.build();
+        map1.requestFocus();
+        map1.setPreferredSize(map1.getDimension());
+        this.setSize(map1.getDimension().width+30,map1.getDimension().height+100);
+        HUT.setSize(map1.getDimension());
+        HUT.setPreferredSize(map1.getDimension());
         
         
     }
@@ -405,10 +430,15 @@ public class Tested extends javax.swing.JFrame implements MapChange{
 //        map1.removeAll();
         HUT.remove(map1);
         map1=null;
-        Map temp = Serialize.xStreamIn(Map.class, "Content\\"+newMap+".she");
+        File f = new File(save.getPath()+"/"+newMap+".she");
+        
+        if (!f.exists())
+            f = new File(original.getPath()+"/"+newMap+".she");
+        Map temp = Serialize.xStreamIn(Map.class, f);
         System.out.println("DONE!");
         map1 = temp;
         map1.setPlayer(p, destination);
+        p.setMapName(newMap);
         map1.addListener(this);
         map1.reUpdate();
         secondaryInit();

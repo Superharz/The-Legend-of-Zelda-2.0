@@ -49,6 +49,23 @@ public class Serialize{
             out.close();
         }
     }
+    public static void xStreamOut(Object obj, File file) {
+        PrintWriter out = null;
+        XStream x = new XStream(new StaxDriver());
+        try {
+            String xml = x.toXML(obj);
+            out = new PrintWriter(file);
+            out.write(xml);
+            out.close();
+            System.out.println("Serialized data is saved in " + file);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Serialize.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Serialize.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            out.close();
+        }
+    }
     public static <T> T xStreamIn(Class<T> data, String file) {
         return xStreamIn(data, new File(file));
     }

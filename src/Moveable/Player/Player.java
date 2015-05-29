@@ -73,7 +73,7 @@ public class Player extends Mover{
     public void setMapName(String name){
         mapName = name;
     }
-    public String setMapName(){
+    public String getMapName(){
         return mapName;
     }
     public void updateInvent() {
@@ -272,5 +272,6 @@ public class Player extends Mover{
     public Inventory getInventory() {
         return inventory;
     }
+
     
 }

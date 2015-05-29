@@ -68,11 +68,13 @@ public class Content<T extends Image> extends JPanel{
             selectLabel.setBorder(null);
         selected = null;
     }
-    public static void save(Object help) {
+    public static void save(Object help,String gameName) {
         boolean again = false;
         do {
             String name = JOptionPane.showInputDialog("Name:");
             File file = new File("Content/"+name+".she");
+            if (gameName != null)
+                file = new File("Games/"+gameName+"/Original/"+name+".she");
             if (file.exists()) {
                 int remove = JOptionPane.showConfirmDialog(null, name+" already exists! \n Remove?", "Collision detected!", JOptionPane.YES_NO_CANCEL_OPTION);
                 if (remove == 2) return;
@@ -92,7 +94,7 @@ public class Content<T extends Image> extends JPanel{
             String[] options = {"Save","Cancel","Delete"};
             int operation = JOptionPane.showOptionDialog(null, "Save or Delete", "Item Menu", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, 1);
             if (operation == 0) {
-                save(help);
+                save(help,null);
             }
             if (operation == 2) {
                 content.remove(l);
