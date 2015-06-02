@@ -124,7 +124,7 @@ public class Game {
     folder.delete();
 }
 
-    void startGame(String dir) {
+   public Tested startGame(String dir) {
         File f = players.get(dir);
         File player = new File(f.getPath()+"/player.she");
         System.out.println(player);
@@ -141,9 +141,13 @@ public class Game {
         }
         if (p!=null){
             File original = new File(directory.getPath()+"/Original");
-            File save = new File(playerFile.getPath()+"/Save");
+            File save = new File(f.getPath()+"/Save");
             Tested t =new Tested(p,original,save);
+            
             t.setVisible(true);
+            return t;
         }
+        return null;
     }
+  
 }

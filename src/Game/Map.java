@@ -763,7 +763,16 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
         return img;
     }
     
-    
+    public void destroy(){
+        for (int i = 0; i < spots.length; i++) {
+            for (int j = 0; j < spots[i].length; j++) {
+                spots[i][j].destroy();
+            }
+        }
+        player.setSpots(null);
+        if (listeners!= null)
+            listeners.clear();
+    }
     @Override
     public void playerMoved() {
         boolean moved = updatePlayerPosition();

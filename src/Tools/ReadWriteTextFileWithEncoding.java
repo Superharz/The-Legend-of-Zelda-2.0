@@ -36,7 +36,21 @@ public final class ReadWriteTextFileWithEncoding {
     if(!sorted)
         sort();
   }
-  
+  public void write(String[] what) throws IOException  {
+    PrintWriter out;
+    
+        out = new PrintWriter(new FileWriter(fFileName, false));
+
+    try {
+        for (String what1 : what) {  
+            out.write(what1);
+                out.write(System.getProperty("line.separator"));
+        }
+    }
+    finally {
+      out.close();
+    }
+    }
   /** Read the contents of the given file. */
   public LinkedList<String> read() throws IOException {
     LinkedList<String> list = new LinkedList<String>();

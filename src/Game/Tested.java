@@ -35,6 +35,7 @@ public class Tested extends javax.swing.JFrame implements MapChange{
     boolean move = false;
     Inventory i;
     boolean menu = false;
+    String currentMap;
     File original,save;
   
     /**
@@ -170,6 +171,7 @@ public class Tested extends javax.swing.JFrame implements MapChange{
         this.save = save;
         //this.map1 = map1;
         String name = p.getMapName();
+        currentMap = name;
         File f = new File(save.getPath()+"/"+name+".she");
         if (!f.exists())
             f = new File(original.getPath()+"/"+name+".she");
@@ -284,17 +286,20 @@ public class Tested extends javax.swing.JFrame implements MapChange{
             case 'w': map1.getplayer().move(1);break;
             case 's': map1.getplayer().move(0);break;
             case 'z': break;
-            case 'x':
-                map1.play(false);
-                map1.releaseEvents();
-                Serialize.xStreamOut(map1, "Save\\MAP.she");
-                map1.addListener(this); 
-                map1.play(true);
+            case 'x': save();
+                
                 break;
             case KeyEvent.VK_SPACE: map1.play(false);   ;break;
         }
       }
-    }                             
+    }
+    public void save(){
+        map1.play(false);
+                map1.releaseEvents();
+                Serialize.xStreamOut(map1, save.getPath()+"/"+currentMap+".she");
+                map1.addListener(this); 
+                map1.play(true);
+    }
     private void formComponentResized(ComponentEvent evt) {
         if (i != null)
             i.setBounds(0, 0, this.getWidth(), this.getHeight());
@@ -414,7 +419,7 @@ public class Tested extends javax.swing.JFrame implements MapChange{
    }
 
     @Override
-    public void mapChange(Point destination, String newMap) {
+    public  void mapChange(Point destination, String newMap) {
 //        map1.play(false);
 //                map1.releaseEvents();
 //                Serialize.xStreamOut(map1, "Save\\MAP.she");
@@ -422,13 +427,16 @@ public class Tested extends javax.swing.JFrame implements MapChange{
 //        map1.play(false);
 //        //map1.removeAll();
 //        map1.releaseEvents();
-//        Serialize.xStreamOut(map1, "Content\\"+map1.getMapName()+".she");
+        //Serialize.xStreamOut(map1, "Content\\HI.she");
 //        System.out.println("Saved!");
 //        //map1.play(true);
+        
         Player p = map1.getplayer();
 //        //p.setLocation(destination.x, destination.y);
 //        map1.removeAll();
         HUT.remove(map1);
+        map1.destroy();
+        System.gc();
         map1=null;
         File f = new File(save.getPath()+"/"+newMap+".she");
         
@@ -446,6 +454,9 @@ public class Tested extends javax.swing.JFrame implements MapChange{
         map1.build();
         map1.requestFocus();
         
+        formComponentResized(null);
+        currentMap = newMap;
+        //pack();
 //        System.out.println("Loaded!");
 //        this.map1 = temp;
 //        map1.setPlayer(p,destination);
@@ -521,11 +532,11 @@ public class Tested extends javax.swing.JFrame implements MapChange{
         HUT.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(map1, javax.swing.GroupLayout.PREFERRED_SIZE, 623, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(map1, javax.swing.GroupLayout.PREFERRED_SIZE, map1.getDimension().width, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(map1, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(map1, javax.swing.GroupLayout.PREFERRED_SIZE, map1.getDimension().height, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();

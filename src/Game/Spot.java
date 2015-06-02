@@ -166,4 +166,12 @@ public class Spot implements java.io.Serializable, Image{
     public ImageIcon getImageIcon() {
         return img;
     }
+
+    void destroy() {
+        if(events != null)
+            events.clear();
+        if(items != null)
+            items.clear();
+        img = null;
+    }
 }

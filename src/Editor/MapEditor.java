@@ -13,12 +13,8 @@ import Events.Event;
 import Game.Spot;
 import Inventory.Items;
 import Moveable.Enemies.Enemie;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 /**
  *
@@ -40,9 +36,7 @@ public class MapEditor extends Game.Map{
     public boolean equals(MapEditor object) {
         return false;
     }
-    public void destroy() {
 
-    }
     @Override
     public MapEditor clone() {
         return null;

@@ -28,6 +28,9 @@ import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
 
 /**
  *
@@ -86,6 +89,9 @@ public class GUI extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jInternalFrame1 = new javax.swing.JInternalFrame();
         fileTree1 = new Editor.FileTree(".");
+        jInternalFrame2 = new javax.swing.JInternalFrame();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTree1 = new javax.swing.JTree();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -165,7 +171,9 @@ public class GUI extends javax.swing.JFrame {
         GUI.getContentPane().setLayout(GUILayout);
         GUILayout.setHorizontalGroup(
             GUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(map1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, GUILayout.createSequentialGroup()
+                .addGap(80, 80, 80)
+                .addComponent(map1, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE))
         );
         GUILayout.setVerticalGroup(
             GUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -268,6 +276,12 @@ public class GUI extends javax.swing.JFrame {
 
         jInternalFrame1.setVisible(true);
 
+        fileTree1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                fileTree1MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout fileTree1Layout = new javax.swing.GroupLayout(fileTree1);
         fileTree1.setLayout(fileTree1Layout);
         fileTree1Layout.setHorizontalGroup(
@@ -295,6 +309,30 @@ public class GUI extends javax.swing.JFrame {
         jInternalFrame1.setBounds(10, 80, 210, 410);
         jDesktopPane2.add(jInternalFrame1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
+        jInternalFrame2.setVisible(true);
+
+        jScrollPane1.setViewportView(jTree1);
+
+        javax.swing.GroupLayout jInternalFrame2Layout = new javax.swing.GroupLayout(jInternalFrame2.getContentPane());
+        jInternalFrame2.getContentPane().setLayout(jInternalFrame2Layout);
+        jInternalFrame2Layout.setHorizontalGroup(
+            jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jInternalFrame2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(110, Short.MAX_VALUE))
+        );
+        jInternalFrame2Layout.setVerticalGroup(
+            jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jInternalFrame2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(31, Short.MAX_VALUE))
+        );
+
+        jInternalFrame2.setBounds(220, 420, 210, 393);
+        jDesktopPane2.add(jInternalFrame2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
         jMenu1.setText("File");
 
         jMenuItem4.setText("New Game");
@@ -305,7 +343,7 @@ public class GUI extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem4);
 
-        jMenuItem2.setText("Open");
+        jMenuItem2.setText("Open Game");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
@@ -329,7 +367,7 @@ public class GUI extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem8);
 
-        jMenuItem5.setText("New");
+        jMenuItem5.setText("New Map");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem5ActionPerformed(evt);
@@ -440,7 +478,7 @@ public class GUI extends javax.swing.JFrame {
             }
             
             else {
-                Spot s= getObject(Spot.class, "Choose Spot");
+                Spot s= getObject(Spot.class, "Choose Spot",false);
                 if (s == null) return;
                 Spots.add(s);
             }
@@ -484,7 +522,7 @@ public class GUI extends javax.swing.JFrame {
                  Tab.add(Enemies, "Enemies",ENEMIES);
             }
             else {
-                Event s= getObject(Event.class, "Choose Event");
+                Event s= getObject(Event.class, "Choose Event",false);
                 if (s == null) return;
                 Events.add(s);
             }
@@ -508,7 +546,7 @@ public class GUI extends javax.swing.JFrame {
                 });
             }
             else {
-                Items s= getObject(Items.class, "Choose Item");
+                Items s= getObject(Items.class, "Choose Item",false);
                 if (s == null) return;
                 Items.add(s);
             }
@@ -532,7 +570,7 @@ public class GUI extends javax.swing.JFrame {
                 });
             }
             else {
-                Enemie s= getObject(Enemie.class, "Choose Enemie");
+                Enemie s= getObject(Enemie.class, "Choose Enemie",false);
                 if (s == null) return;
                 Enemies.add(s);
             }
@@ -556,7 +594,7 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_LaunchComponentHidden
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        final MapEditor m = getObject(MapEditor.class, "Load Map");
+        final MapEditor m = getObject(MapEditor.class, "Load Map", true);
         if (m == null) return;
         m.play(false);
          m.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -643,12 +681,16 @@ public class GUI extends javax.swing.JFrame {
             File f = new File("Games/"+gameName+"/game.ini");
             ReadWriteTextFileWithEncoding r = new ReadWriteTextFileWithEncoding(f.getAbsolutePath());
             String[] s = {gameName, mainMap};
-            r.write(s, false);
+            r.write(s);
         } catch (IOException ex) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void fileTree1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fileTree1MouseClicked
+        jTree1.setModel(new DefaultTreeModel(new DefaultMutableTreeNode("HI")));
+    }//GEN-LAST:event_fileTree1MouseClicked
     private void mapMouseClicked(java.awt.event.MouseEvent evt, MapEditor m) {                                  
         //map1.click(evt,spot);
         System.out.println("Worked");
@@ -712,6 +754,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
     private javax.swing.JDesktopPane jDesktopPane2;
     private javax.swing.JInternalFrame jInternalFrame1;
+    private javax.swing.JInternalFrame jInternalFrame2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -725,6 +768,8 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTree jTree1;
     private Editor.MapEditor map1;
     // End of variables declaration//GEN-END:variables
 public final void setUP() {
@@ -768,9 +813,9 @@ private File getFile(String selection, boolean map) {
         return chooser.getSelectedFile();
         
     }
-    public <T> T getObject(Class<T> data, String file) {
+    public <T> T getObject(Class<T> data, String file, boolean map) {
         T clazz;
-        File f= getFile(file, true);
+        File f= getFile(file, map);
         if (f == null) return null;
         clazz = Serialize.xStreamIn(data, f);
         return clazz;
