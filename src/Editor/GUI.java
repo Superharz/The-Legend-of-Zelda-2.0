@@ -5,6 +5,10 @@
  */
 package Editor;
 
+import Editor.Costume.NewEvent;
+import Editor.Costume.NewSpot;
+import Editor.Costume.NewItem;
+import Editor.Costume.NewEnemie;
 import Events.Event;
 import Game.Spot;
 import Game.Tested;
@@ -15,6 +19,7 @@ import Moveable.Player.Player;
 import Tools.ReadWriteTextFileWithEncoding;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -26,6 +31,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -87,8 +94,6 @@ public class GUI extends javax.swing.JFrame {
         Items = new Editor.Content<Items>();
         jButton7 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jInternalFrame1 = new javax.swing.JInternalFrame();
-        fileTree1 = new Editor.FileTree(".");
         jInternalFrame2 = new javax.swing.JInternalFrame();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTree1 = new javax.swing.JTree();
@@ -107,6 +112,7 @@ public class GUI extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         jCheckBoxMenuItem2 = new javax.swing.JCheckBoxMenuItem();
+        jCheckBoxMenuItem3 = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("My_Game");
@@ -118,8 +124,15 @@ public class GUI extends javax.swing.JFrame {
 
         LaunchTab.setClosable(true);
         LaunchTab.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        LaunchTab.setMaximizable(true);
+        LaunchTab.setResizable(true);
         LaunchTab.setTitle("LAUNCH");
         LaunchTab.setVisible(true);
+        LaunchTab.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentHidden(java.awt.event.ComponentEvent evt) {
+                LaunchTabComponentHidden(evt);
+            }
+        });
 
         Launch.setBackground(new java.awt.Color(255, 255, 51));
         Launch.setFont(new java.awt.Font("Arial Black", 1, 48)); // NOI18N
@@ -142,14 +155,14 @@ public class GUI extends javax.swing.JFrame {
         LaunchTab.getContentPane().setLayout(LaunchTabLayout);
         LaunchTabLayout.setHorizontalGroup(
             LaunchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Launch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Launch, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
         );
         LaunchTabLayout.setVerticalGroup(
             LaunchTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(Launch, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
         );
 
-        LaunchTab.setBounds(160, 40, 331, 110);
+        LaunchTab.setBounds(160, 40, 547, 110);
         jDesktopPane2.add(LaunchTab, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         GUI.setMaximizable(true);
@@ -171,16 +184,14 @@ public class GUI extends javax.swing.JFrame {
         GUI.getContentPane().setLayout(GUILayout);
         GUILayout.setHorizontalGroup(
             GUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, GUILayout.createSequentialGroup()
-                .addGap(80, 80, 80)
-                .addComponent(map1, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE))
+            .addComponent(map1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
         );
         GUILayout.setVerticalGroup(
             GUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(map1, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
         );
 
-        GUI.setBounds(430, 120, 440, 420);
+        GUI.setBounds(300, 150, 440, 420);
         jDesktopPane2.add(GUI, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         Content.setClosable(true);
@@ -189,6 +200,11 @@ public class GUI extends javax.swing.JFrame {
         Content.setResizable(true);
         Content.setTitle("Content");
         Content.setVisible(true);
+        Content.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentHidden(java.awt.event.ComponentEvent evt) {
+                ContentComponentHidden(evt);
+            }
+        });
 
         Tab.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -271,66 +287,36 @@ public class GUI extends javax.swing.JFrame {
             .addComponent(Tab, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
         );
 
-        Content.setBounds(240, 170, 170, 258);
+        Content.setBounds(170, 170, 170, 258);
         jDesktopPane2.add(Content, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jInternalFrame1.setVisible(true);
-
-        fileTree1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                fileTree1MouseClicked(evt);
+        jInternalFrame2.setClosable(true);
+        jInternalFrame2.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        jInternalFrame2.setMaximizable(true);
+        jInternalFrame2.setResizable(true);
+        jInternalFrame2.setTitle("Files");
+        jInternalFrame2.setVisible(true);
+        jInternalFrame2.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentHidden(java.awt.event.ComponentEvent evt) {
+                jInternalFrame2ComponentHidden(evt);
             }
         });
 
-        javax.swing.GroupLayout fileTree1Layout = new javax.swing.GroupLayout(fileTree1);
-        fileTree1.setLayout(fileTree1Layout);
-        fileTree1Layout.setHorizontalGroup(
-            fileTree1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 200, Short.MAX_VALUE)
-        );
-        fileTree1Layout.setVerticalGroup(
-            fileTree1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
-        jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
-        jInternalFrame1Layout.setHorizontalGroup(
-            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                .addComponent(fileTree1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-        jInternalFrame1Layout.setVerticalGroup(
-            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(fileTree1, javax.swing.GroupLayout.PREFERRED_SIZE, 381, Short.MAX_VALUE)
-        );
-
-        jInternalFrame1.setBounds(10, 80, 210, 410);
-        jDesktopPane2.add(jInternalFrame1, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        jInternalFrame2.setVisible(true);
-
+        jTree1.setModel(null);
         jScrollPane1.setViewportView(jTree1);
 
         javax.swing.GroupLayout jInternalFrame2Layout = new javax.swing.GroupLayout(jInternalFrame2.getContentPane());
         jInternalFrame2.getContentPane().setLayout(jInternalFrame2Layout);
         jInternalFrame2Layout.setHorizontalGroup(
             jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jInternalFrame2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(110, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
         );
         jInternalFrame2Layout.setVerticalGroup(
             jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jInternalFrame2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
         );
 
-        jInternalFrame2.setBounds(220, 420, 210, 393);
+        jInternalFrame2.setBounds(10, 190, 187, 310);
         jDesktopPane2.add(jInternalFrame2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jMenu1.setText("File");
@@ -430,6 +416,15 @@ public class GUI extends javax.swing.JFrame {
         });
         jMenu3.add(jCheckBoxMenuItem2);
 
+        jCheckBoxMenuItem3.setSelected(true);
+        jCheckBoxMenuItem3.setText("Files");
+        jCheckBoxMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jCheckBoxMenuItem3);
+
         jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
@@ -451,6 +446,7 @@ public class GUI extends javax.swing.JFrame {
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         gameName=JOptionPane.showInputDialog("Map Name:");
         this.setTitle(gameName);
+        updateTree();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void map1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_map1MouseClicked
@@ -596,46 +592,12 @@ public class GUI extends javax.swing.JFrame {
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         final MapEditor m = getObject(MapEditor.class, "Load Map", true);
         if (m == null) return;
-        m.play(false);
-         m.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                map1MouseClicked(evt);
-            }
-        });
-         Dimension d = GUI.getSize();
-         Point p = GUI.getLocation();
-         jDesktopPane2.remove(GUI);
-         map1.build();
-         map1 = m;
-         map1.build();
-         //GUI.remove(map1);
-         //GUI.removeAll();
-         //GUI.add(map1);
-         map1.repaint();
-         //map1.setVisible(false);
-         //map1.setVisible(true);
-         //GUI.removeAll();
-         //GUI.add(m);
-        JInternalFrame f = new JInternalFrame("GUI", true, false, true);
-        f.add(map1);
-        GUI = f;
-//        
-//        //m.setBounds(0, 0, 300, 300);
-        GUI.setBounds(300, 300, 400, 400);
-        GUI.setSize(d);
-        GUI.setLocation(p);
-        jDesktopPane2.add(GUI);
-        GUI.setVisible(true);
-        //GUI = f;
-        this.update();
-        map1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 51, 51), 1, true));
-        map1.setPreferredSize(map1.getDimension());
-        System.out.println("Map added");
+        loadMap(m);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
         Editor.Content.save(map1,gameName);
+        updateTree();
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
@@ -670,6 +632,7 @@ public class GUI extends javax.swing.JFrame {
         f.mkdirs();
         gameName = name;
         this.setTitle(name);
+        updateTree();
         
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
@@ -682,15 +645,28 @@ public class GUI extends javax.swing.JFrame {
             ReadWriteTextFileWithEncoding r = new ReadWriteTextFileWithEncoding(f.getAbsolutePath());
             String[] s = {gameName, mainMap};
             r.write(s);
+            updateTree();
         } catch (IOException ex) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
-    private void fileTree1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fileTree1MouseClicked
-        jTree1.setModel(new DefaultTreeModel(new DefaultMutableTreeNode("HI")));
-    }//GEN-LAST:event_fileTree1MouseClicked
+    private void jCheckBoxMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem3ActionPerformed
+        jInternalFrame2.setVisible(!jInternalFrame2.isVisible());
+    }//GEN-LAST:event_jCheckBoxMenuItem3ActionPerformed
+
+    private void LaunchTabComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_LaunchTabComponentHidden
+       jCheckBoxMenuItem1.setState(false);
+    }//GEN-LAST:event_LaunchTabComponentHidden
+
+    private void ContentComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_ContentComponentHidden
+        jCheckBoxMenuItem2.setState(false);
+    }//GEN-LAST:event_ContentComponentHidden
+
+    private void jInternalFrame2ComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jInternalFrame2ComponentHidden
+        jCheckBoxMenuItem3.setState(false);
+    }//GEN-LAST:event_jInternalFrame2ComponentHidden
     private void mapMouseClicked(java.awt.event.MouseEvent evt, MapEditor m) {                                  
         //map1.click(evt,spot);
         System.out.println("Worked");
@@ -742,7 +718,6 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JInternalFrame LaunchTab;
     private Editor.Content<Spot> Spots;
     private javax.swing.JTabbedPane Tab;
-    private Editor.FileTree fileTree1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -752,8 +727,8 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton7;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem3;
     private javax.swing.JDesktopPane jDesktopPane2;
-    private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JInternalFrame jInternalFrame2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -832,20 +807,6 @@ private File getFile(String selection, boolean map) {
         GUI.validate();
         GUI.repaint();
     }
-//    private void SpotMousePressed(java.awt.event.MouseEvent evt) {
-//        JLabel l = (JLabel)evt.getComponent();
-//        Spot help = spots.get(l);
-//        if (spot != null && spot != help) {
-//            spots.
-//            l.setBorder(null);
-//        }
-//        spot = spots.get(l);   
-//        l.setBorder(BorderFactory.createEtchedBorder(Color.lightGray, Color.yellow));
-//        System.out.println("HI");
-//        
-//    //table.get(l).setVisible(true);
-//}
-
     private void mapCklicked(MouseEvent evt) {
         System.out.println("Selection: "+selection);
         switch (selection) {
@@ -892,5 +853,67 @@ private File getFile(String selection, boolean map) {
 //            System.out.println(e.getMessage());
 //    	}
     }
+    private void updateTree(){
+        FileTree tree = new FileTree();
+        jTree1.setModel(new DefaultTreeModel(tree.addNodes(null, new File("Games/"+gameName))));
+//        jTree1.addTreeSelectionListener(new TreeSelectionListener() {
+//            public void valueChanged(TreeSelectionEvent e) {
+//                DefaultMutableTreeNode node = (DefaultMutableTreeNode) e
+//                    .getPath().getLastPathComponent();
+//                System.out.println("You selected " + ((FileUtil)node.getUserObject()).path);
+//            }
+//        });
+        jTree1.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                //JList list = (JList)evt.getSource();
+                if (evt.getClickCount() == 2) {
+                    DefaultMutableTreeNode t = ((DefaultMutableTreeNode)jTree1.getLastSelectedPathComponent());
+                    FileUtil f = (FileUtil) t.getUserObject();
+                    File file = f.path;
+                    if(file.isDirectory()) return;
+                    loadMap(Serialize.xStreamIn(MapEditor.class, file));
 
+                    System.out.println("You selected " + f.path);
+                }
+            } 
+        });
+    }
+    private void loadMap(MapEditor m) {
+        m.play(false);
+         m.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                map1MouseClicked(evt);
+            }
+        });
+         Dimension d = GUI.getSize();
+         Point p = GUI.getLocation();
+         jDesktopPane2.remove(GUI);
+         map1.build();
+         map1 = m;
+         map1.build();
+         //GUI.remove(map1);
+         //GUI.removeAll();
+         //GUI.add(map1);
+         map1.repaint();
+         //map1.setVisible(false);
+         //map1.setVisible(true);
+         //GUI.removeAll();
+         //GUI.add(m);
+        JInternalFrame f = new JInternalFrame("GUI", true, false, true);
+        f.add(map1);
+        GUI = f;
+//        
+//        //m.setBounds(0, 0, 300, 300);
+        GUI.setBounds(300, 300, 400, 400);
+        GUI.setSize(d);
+        GUI.setLocation(p);
+        jDesktopPane2.add(GUI);
+        GUI.setVisible(true);
+        //GUI = f;
+        this.update();
+        map1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 51, 51), 1, true));
+        map1.setPreferredSize(map1.getDimension());
+        System.out.println("Map added");
+    }
 }

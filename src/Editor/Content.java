@@ -23,7 +23,7 @@ import javax.swing.JPanel;
  */
 public class Content<T extends Image> extends JPanel{
     HashMap<JLabel, T> content;
-    T selected;
+    public T selected;
     JLabel selectLabel;
     
     

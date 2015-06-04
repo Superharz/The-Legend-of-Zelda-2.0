@@ -46,7 +46,7 @@ public class FileTree extends JPanel {
       public void valueChanged(TreeSelectionEvent e) {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) e
             .getPath().getLastPathComponent();
-        System.out.println("You selected " + node);
+        System.out.println("You selected " + ((FileUtil)node.getUserObject()).path);
       }
     });
 
@@ -58,9 +58,10 @@ public class FileTree extends JPanel {
   
 
   /** Add nodes from under "dir" into curTop. Highly recursive. */
-  private DefaultMutableTreeNode addNodes(DefaultMutableTreeNode curTop, File dir) {
+  public DefaultMutableTreeNode addNodes(DefaultMutableTreeNode curTop, File dir) {
     String curPath = dir.getPath();
-    DefaultMutableTreeNode curDir = new DefaultMutableTreeNode(curPath);
+    FileUtil u = new FileUtil(dir);
+    DefaultMutableTreeNode curDir = new DefaultMutableTreeNode(u);
     if (curTop != null) { // should only be null at root
       curTop.add(curDir);
     }
@@ -70,7 +71,7 @@ public class FileTree extends JPanel {
       ol.addElement(tmp[i]);
     Collections.sort(ol, String.CASE_INSENSITIVE_ORDER);
     File f;
-    Vector files = new Vector();
+    Vector<String> files = new Vector<String>();
     // Make two passes, one for Dirs and one for Files. This is #1.
     for (int i = 0; i < ol.size(); i++) {
       String thisObject = (String) ol.elementAt(i);
@@ -82,11 +83,16 @@ public class FileTree extends JPanel {
       if ((f = new File(newPath)).isDirectory())
         addNodes(curDir, f);
       else
-        files.addElement(thisObject);
+          files.addElement(newPath);
+        //files.addElement(thisObject);
     }
     // Pass two: for files.
-    for (int fnum = 0; fnum < files.size(); fnum++)
-      curDir.add(new DefaultMutableTreeNode(files.elementAt(fnum)));
+    for (int fnum = 0; fnum < files.size(); fnum++) {
+        u = new FileUtil(new File(files.elementAt(fnum)));
+        curDir.add(new DefaultMutableTreeNode(u));
+      
+    }
+    //curDir.
     return curDir;
   }
 
@@ -107,7 +113,7 @@ public class FileTree extends JPanel {
     Container cp = frame.getContentPane();
 
     //if (av.length == 0) {
-      cp.add(new FileTree(new File(".")));
+      cp.add(new FileTree(new File("Games/Game5")));
 //    } else {
 //      cp.setLayout(new BoxLayout(cp, BoxLayout.X_AXIS));
 //      for (int i = 0; i < av.length; i++)
@@ -118,4 +124,16 @@ public class FileTree extends JPanel {
     frame.setVisible(true);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
+}
+class FileUtil{
+    public String name;
+    public File path;
+    public FileUtil(File f){
+       path = f;
+       name = f.getName();
+    }
+    @Override
+    public String toString() {
+        return name;
+    }
 }
