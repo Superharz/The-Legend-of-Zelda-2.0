@@ -4,7 +4,7 @@
  */
 package Menu;
 
-import Game.Tested;
+import Game.Engine;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Arrays;
@@ -15,17 +15,19 @@ import javax.swing.JOptionPane;
  * @author f.harz
  */
 public class Menu extends javax.swing.JFrame {
+
     Game[] games;
     Game selected;
     String player;
+
     /**
      * Creates new form Menu
      */
     public Menu() {
         initComponents();
         List.setListData(getData());
-        
-        
+
+
     }
 
     /**
@@ -255,31 +257,31 @@ public class Menu extends javax.swing.JFrame {
         Menu.setVisible(false);
         Games.setVisible(true);
         this.setSize(Games.getPreferredSize());
-        this.setSize(this.getWidth()+20, this.getHeight()+50);
-        
+        this.setSize(this.getWidth() + 20, this.getHeight() + 50);
+
 //        if (!List.isSelectionEmpty()) {
 //            selected = games[List.getSelectedIndex()];
 //            System.out.println(selected.gameName);
 //        }
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       System.exit(00);
+        System.exit(00);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         Games.setVisible(true);
         Players.setVisible(false);
         this.setSize(Games.getPreferredSize());
-        this.setSize(this.getWidth()+20, this.getHeight()+50);
+        this.setSize(this.getWidth() + 20, this.getHeight() + 50);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         Menu.setVisible(true);
         Games.setVisible(false);
         this.setSize(Menu.getPreferredSize());
-        this.setSize(this.getWidth()+20, this.getHeight()+50);
+        this.setSize(this.getWidth() + 20, this.getHeight() + 50);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -288,7 +290,7 @@ public class Menu extends javax.swing.JFrame {
             Games.setVisible(false);
             Players.setVisible(true);
             this.setSize(Players.getPreferredSize());
-            this.setSize(this.getWidth()+20, this.getHeight()+50);
+            this.setSize(this.getWidth() + 20, this.getHeight() + 50);
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
@@ -299,7 +301,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_ListValueChanged
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        if(player != null) {
+        if (player != null) {
             selected.delete(player);
             PlayerList.setListData(selected.players.keySet().toArray());
             System.out.println(Arrays.toString(selected.players.keySet().toArray()));
@@ -307,19 +309,21 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void PlayerListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_PlayerListValueChanged
-        player = (String)PlayerList.getSelectedValue();
+        player = (String) PlayerList.getSelectedValue();
     }//GEN-LAST:event_PlayerListValueChanged
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         String f = JOptionPane.showInputDialog("Player Name:");
-        if (f == null ||f.isEmpty()) return;
+        if (f == null || f.isEmpty()) {
+            return;
+        }
         selected.newPlayer(f);
-        
+
         PlayerList.setListData(selected.players.keySet().toArray());
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        Tested t =selected.startGame(player);
+        Engine t = selected.startGame(player);
         t.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 setVisible(true);
@@ -365,7 +369,7 @@ public class Menu extends javax.swing.JFrame {
                 new Menu().setVisible(true);
             }
         });
-        
+
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Games;
@@ -387,29 +391,30 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
+
     private Object[] getData() {
         File file = new File("Games/");
         File[] files = file.listFiles(new FilenameFilter() {
-        @Override
+            @Override
             public boolean accept(File current, String name) {
-            return new File(current, name).isDirectory();
-                }
-            });
-        if (files == null) return null;
-            //System.out.println(Arrays.toString(directories));
+                return new File(current, name).isDirectory();
+            }
+        });
+        if (files == null) {
+            return null;
+        }
+        //System.out.println(Arrays.toString(directories));
         //File f = new File("Games/");
         //File[] files = f.listFiles();
-        
+
         String[] names = new String[files.length];
         games = new Game[files.length];
         for (int i = 0; i < files.length; i++) {
             games[i] = new Game(files[i]);
             names[i] = games[i].gameName;
-            
-            
+
+
         }
         return names;
     }
-
-
 }

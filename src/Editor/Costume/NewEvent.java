@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
  * @author f.harz
  */
 public class NewEvent extends javax.swing.JDialog {
+
     Content<Items> items;
     Content<Enemie> enemies;
     private boolean limitation;
@@ -29,6 +30,7 @@ public class NewEvent extends javax.swing.JDialog {
     Items item;
     Enemie enemie;
     //ImageIcon img;
+
     /**
      * Creates new form NewSpot
      */
@@ -248,7 +250,7 @@ public class NewEvent extends javax.swing.JDialog {
     }//GEN-LAST:event_CountFocusLost
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-       this.dispose();
+        this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -256,11 +258,13 @@ public class NewEvent extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        if (type == jComboBox1.getSelectedIndex()) return;
+        if (type == jComboBox1.getSelectedIndex()) {
+            return;
+        }
         type = jComboBox1.getSelectedIndex();
         Image.setIcon(null);
         Info.setText("");
-        System.out.println("Type: "+type);
+        System.out.println("Type: " + type);
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -271,14 +275,15 @@ public class NewEvent extends javax.swing.JDialog {
         int x = -1, y = -1;
         int choosed;
         switch (type) {
-            case Event.TELEPORT     : 
+            case Event.TELEPORT:
                 str = "Set Coordinates (In spots): \nX: \nY: ";
-                
+
                 destiny = destination(str);
-                Info.setText("Teleport: \n  X: "+destiny.x+"\n  Y: "+destiny.y);
-                System.out.println(destiny); 
-                ;break;
-            case Event.MAPTELEPORT  : 
+                Info.setText("Teleport: \n  X: " + destiny.x + "\n  Y: " + destiny.y);
+                System.out.println(destiny);
+                ;
+                break;
+            case Event.MAPTELEPORT:
                 str = "Set Coordinates (In spots): \nX: \nY: \nSet MapName: \nMapName: ";
                 jTextArea1.setText(str);
                 JOptionPane.showMessageDialog(null, jTextArea1, "Parameters", JOptionPane.PLAIN_MESSAGE);
@@ -289,39 +294,47 @@ public class NewEvent extends javax.swing.JDialog {
                 for (int i = 1; i < 3; i++) {
                     line = lines[i].split(" ");
                     String l = line[1].trim();
-                    if(check(l)) {
-                        if (i == 1)
+                    if (check(l)) {
+                        if (i == 1) {
                             x = Integer.parseInt(l);
-                        else
+                        } else {
                             y = Integer.parseInt(l);
+                        }
                     }
                 }
                 destiny = new Point(x, y);
                 str = lines[4].replace("MapName: ", "");
                 mapName = str.trim();
-                Info.setText("Teleport: \n  X: "+destiny.x+"\n  Y: "+destiny.y
-                        +"\nMapName: \n  "+mapName);
-                System.out.println(destiny + " | "+ mapName);
-                ;break;
-            case Event.SPAWN        : 
+                Info.setText("Teleport: \n  X: " + destiny.x + "\n  Y: " + destiny.y
+                        + "\nMapName: \n  " + mapName);
+                System.out.println(destiny + " | " + mapName);
+                ;
+                break;
+            case Event.SPAWN:
                 choosed = JOptionPane.showConfirmDialog(null, enemies, "Choose an Enemie", JOptionPane.OK_CANCEL_OPTION);
-                if (choosed != 0) return;
+                if (choosed != 0) {
+                    return;
+                }
                 enemie = enemies.selected;
                 Image.setIcon(enemie.getImageIcon());
                 str = "Set Coordinates (In spots): \nX: \nY: ";
                 destiny = destination(str);
-                Info.setText("Spawn at: \n  X: "+destiny.x+"\n  Y: "+destiny.y);
-                ;break;
-            case Event.ITEM         : 
+                Info.setText("Spawn at: \n  X: " + destiny.x + "\n  Y: " + destiny.y);
+                ;
+                break;
+            case Event.ITEM:
                 choosed = JOptionPane.showConfirmDialog(null, items, "Choose an Item", JOptionPane.OK_CANCEL_OPTION);
-                if (choosed != 0) return;
+                if (choosed != 0) {
+                    return;
+                }
                 item = items.selected;
                 Image.setIcon(item.getImageIcon());
                 str = "Set Coordinates (In spots): \nX: \nY: ";
                 destiny = destination(str);
-                Info.setText("Spawn at: \n  X: "+destiny.x+"\n  Y: "+destiny.y);
-                ;break;
-            case Event.HEAL         : 
+                Info.setText("Spawn at: \n  X: " + destiny.x + "\n  Y: " + destiny.y);
+                ;
+                break;
+            case Event.HEAL:
                 str = "Set Heal Amount (Integer): \nAmount: ";
                 jTextArea1.setText(str);
                 JOptionPane.showMessageDialog(null, jTextArea1, "Parameters", JOptionPane.PLAIN_MESSAGE);
@@ -329,27 +342,28 @@ public class NewEvent extends javax.swing.JDialog {
                 lines = str.split("\n");
                 line = lines[1].split(" ");
                 String l = line[1].trim();
-                if(check(l)) {
+                if (check(l)) {
                     heal = Integer.parseInt(l);
                 }
-                Info.setText("Heal: \n  Heal Amount: "+heal);
+                Info.setText("Heal: \n  Heal Amount: " + heal);
                 System.out.println("Heal: " + heal);
-                ;break;
-            case Event.TEXT         : 
+                ;
+                break;
+            case Event.TEXT:
                 str = "Set Text: \n";
                 jTextArea1.setText(str);
                 JOptionPane.showMessageDialog(null, jTextArea1, "Parameters", JOptionPane.PLAIN_MESSAGE);
                 str = jTextArea1.getText();
                 text = str.replace("Set Text: \n", "");
-                Info.setText("Text: \n"+text  );
+                Info.setText("Text: \n" + text);
                 System.out.println(text);
-                ;break;
+                ;
+                break;
         }
-        
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTextArea1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea1FocusGained
-
     }//GEN-LAST:event_jTextArea1FocusGained
 
     private void jTextArea1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea1FocusLost
@@ -361,8 +375,7 @@ public class NewEvent extends javax.swing.JDialog {
         if (limitation) {
             Count.setVisible(true);
             CountLabel.setVisible(true);
-        }
-        else {
+        } else {
             Count.setVisible(false);
             CountLabel.setVisible(false);
         }
@@ -370,12 +383,13 @@ public class NewEvent extends javax.swing.JDialog {
 
     private void CountKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CountKeyReleased
         String number = Count.getText();
-        if (number.equals("")) return;
+        if (number.equals("")) {
+            return;
+        }
         if (check(number)) {
             count = Integer.parseInt(number);
-            System.out.println("Count: "+count);
-        }
-        else {
+            System.out.println("Count: " + count);
+        } else {
             Count.setText("");
         }
     }//GEN-LAST:event_CountKeyReleased
@@ -452,11 +466,12 @@ public class NewEvent extends javax.swing.JDialog {
 //        }
 //        
 //    }
+
     private Point destination(String description) {
-       String str;
-       String[] lines;
-       String[] line;
-       int x = -1, y = -1;
+        String str;
+        String[] lines;
+        String[] line;
+        int x = -1, y = -1;
         str = description;
         jTextArea1.setText(str);
         JOptionPane.showMessageDialog(null, jTextArea1, "Parameters", JOptionPane.PLAIN_MESSAGE);
@@ -468,22 +483,25 @@ public class NewEvent extends javax.swing.JDialog {
             line = lines[i].split(" ");
             String l = line[1].trim();
             System.out.println(l);
-            if(check(l)) {
-                if (i == 1)
+            if (check(l)) {
+                if (i == 1) {
                     x = Integer.parseInt(l);
-                else
+                } else {
                     y = Integer.parseInt(l);
+                }
             }
         }
         return new Point(x, y);
     }
+
     private boolean check(String t) {
-        if (t.equals("")) return false;
+        if (t.equals("")) {
+            return false;
+        }
         try {
             Integer.parseInt(t);
             return true;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return false;
         }
     }
@@ -508,26 +526,36 @@ public class NewEvent extends javax.swing.JDialog {
 
     private void createEvent() {
         switch (type) {
-            case Event.TELEPORT     : event = new Event(destiny); break;
-            case Event.MAPTELEPORT  : event = new Event(destiny, mapName);break;
-            case Event.SPAWN        : event = new Event(destiny, enemie);break;
-            case Event.ITEM         : event = new Event(destiny, item);break;
-            case Event.HEAL         : event = new Event(heal);break;
-            case Event.TEXT         : event = new Event(text);break;
-                    
+            case Event.TELEPORT:
+                event = new Event(destiny);
+                break;
+            case Event.MAPTELEPORT:
+                event = new Event(destiny, mapName);
+                break;
+            case Event.SPAWN:
+                event = new Event(destiny, enemie);
+                break;
+            case Event.ITEM:
+                event = new Event(destiny, item);
+                break;
+            case Event.HEAL:
+                event = new Event(heal);
+                break;
+            case Event.TEXT:
+                event = new Event(text);
+                break;
+
         }
-        if (limitation)
+        if (limitation) {
             event.addEventCount(count);
+        }
         items = null;
         enemies = null;
         this.setVisible(false);
-        
-    }
 
+    }
 
     public Event getEvent() {
         return event;
     }
-
-
 }

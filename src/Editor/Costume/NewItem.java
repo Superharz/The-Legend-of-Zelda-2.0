@@ -22,6 +22,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author f.harz
  */
 public class NewItem extends javax.swing.JDialog {
+
     private boolean useable;
     private String name, typeName, description;
     private int type, live, armor, damage, speed;
@@ -29,6 +30,7 @@ public class NewItem extends javax.swing.JDialog {
     Items item;
     ImageIcon img;
     File f;
+
     /**
      * Creates new form NewSpot
      */
@@ -408,7 +410,7 @@ public class NewItem extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-       useable = !useable;
+        useable = !useable;
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -424,11 +426,11 @@ public class NewItem extends javax.swing.JDialog {
     }//GEN-LAST:event_TextFocusGained
 
     private void TextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TextFocusLost
-            Text.setText("Name:   " + name);
+        Text.setText("Name:   " + name);
     }//GEN-LAST:event_TextFocusLost
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-       this.dispose();
+        this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -439,22 +441,23 @@ public class NewItem extends javax.swing.JDialog {
         JOptionPane.showMessageDialog(null, Stats);
         if (!jTextArea1.getText().equals("")) {
 
-        
+
             String text = Stats.getText();
             String[] lines = text.split("\n");
             stats = new LinkedList<String>();
             for (int i = 0; i < lines.length; i++) {
-                if (!lines[i].equals(""))
+                if (!lines[i].equals("")) {
                     stats.add(lines[i]);
+                }
             }
             for (int i = 0; i < stats.size(); i++) {
-                System.out.println(i+": "+stats.get(i));
+                System.out.println(i + ": " + stats.get(i));
             }
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-       typeName = jComboBox1.getSelectedItem().toString();
+        typeName = jComboBox1.getSelectedItem().toString();
         System.out.println(typeName);
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
@@ -510,45 +513,45 @@ public class NewItem extends javax.swing.JDialog {
         String t = jTextField1.getText();
         if (check(t)) {
             live = Integer.parseInt(t);
-        }
-        else
+        } else {
             jTextField1.setText("");
+        }
     }//GEN-LAST:event_jTextField1KeyReleased
 
     private void jTextField3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyReleased
         String t = jTextField3.getText();
         if (check(t)) {
             damage = Integer.parseInt(t);
-        }
-        else
+        } else {
             jTextField3.setText("");
-        
+        }
+
     }//GEN-LAST:event_jTextField3KeyReleased
 
     private void jTextField4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyReleased
         String t = jTextField4.getText();
         if (check(t)) {
             armor = Integer.parseInt(t);
-        }
-        else
+        } else {
             jTextField4.setText("");
+        }
     }//GEN-LAST:event_jTextField4KeyReleased
 
     private void jTextField5KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyReleased
         String t = jTextField5.getText();
         if (check(t)) {
             speed = Integer.parseInt(t);
-        }
-        else
+        } else {
             jTextField5.setText("");
+        }
     }//GEN-LAST:event_jTextField5KeyReleased
 
     private void TextKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextKeyReleased
-        if (Text.getText().equals("")) return;
-       
-        else {
+        if (Text.getText().equals("")) {
+            return;
+        } else {
             name = Text.getText();
-         
+
             System.out.println(name);
         }
     }//GEN-LAST:event_TextKeyReleased
@@ -625,55 +628,59 @@ public class NewItem extends javax.swing.JDialog {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
-    public void createImage(){
+
+    public void createImage() {
         ImageIcon img;
         try {
-            File f = getFile("Choose Texture", "PNG-File  .png" , "png");
-            if (f == null) return;
+            File f = getFile("Choose Texture", "PNG-File  .png", "png");
+            if (f == null) {
+                return;
+            }
             img = new ImageIcon(ImageIO.read(f));
             Image.setIcon(img);
             this.img = img;
         } catch (IOException ex) {
-            
         }
-        
+
     }
+
     private boolean check(String t) {
-        if (t.equals("")) return false;
+        if (t.equals("")) {
+            return false;
+        }
         try {
             Integer.parseInt(t);
             return true;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return false;
         }
     }
-    private File getFile(String selection,String description, String extension ) {
+
+    private File getFile(String selection, String description, String extension) {
         //Player player;
         //Map map;
         JFileChooser chooser;
         //Map map;
         if (f == null) {
             URL u = (this.getClass().getResource("/pictures"));
-        
+
             chooser = new JFileChooser(u.getPath());
-        }
-        else {
+        } else {
             chooser = new JFileChooser(f);
         }
         FileFilter filter;
         //if (textFile) {
-            filter = new FileNameExtensionFilter(description, extension);
+        filter = new FileNameExtensionFilter(description, extension);
         //}
 //        else {
 //            filter = new FileNameExtensionFilter("Game-File   .she", "she");
 //        }
         chooser.addChoosableFileFilter(filter);
-        
+
         int choosed = chooser.showDialog(null, selection);
         //if (chooser.getSelectedFile() != null)
         return chooser.getSelectedFile();
-        
+
     }
 
     private void createItem() {
@@ -681,24 +688,25 @@ public class NewItem extends javax.swing.JDialog {
         for (int i = 0; i < stats.size(); i++) {
             item.addStats(new JLabel(stats.get(i)));
         }
-        if (live != 0)
-        item.addStats(new JLabel("Live:  "+ live), Items.LIVE, live);
-        if (armor != 0)
-        item.addStats(new JLabel("Armor:  "+ armor), Items.ARMOR, armor);
-        if (damage != 0)
-        item.addStats(new JLabel("Damage:  "+ damage), Items.DAMAGE, damage);
-        if (speed != 0)
-        item.addStats(new JLabel("Speed:  "+ speed), Items.SPEED, speed);
+        if (live != 0) {
+            item.addStats(new JLabel("Live:  " + live), Items.LIVE, live);
+        }
+        if (armor != 0) {
+            item.addStats(new JLabel("Armor:  " + armor), Items.ARMOR, armor);
+        }
+        if (damage != 0) {
+            item.addStats(new JLabel("Damage:  " + damage), Items.DAMAGE, damage);
+        }
+        if (speed != 0) {
+            item.addStats(new JLabel("Speed:  " + speed), Items.SPEED, speed);
+        }
         item.setDescription(description);
         //Test j = new Test(null, true);
         this.setVisible(false);
-        
-    }
 
+    }
 
     public Items getItem() {
         return item;
     }
-
-
 }

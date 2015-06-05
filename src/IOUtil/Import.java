@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package IOUtil;
 
 import Events.Event;
@@ -31,10 +30,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  * @author f.harz
  */
-public class Import extends Serialize{
+public class Import extends Serialize {
+
     private final String COMMENT = "#", TEXTURE = "@", EVENT = "!", EVENTI = "/",
-            ENEMIE = "%",ENEMIEI = "~", SPOT = "$", ITEM = "^", ITEMI = "`", 
-            MAP = "?",SPOTI =  "*", PLAYER = "|PLAYER|";
+            ENEMIE = "%", ENEMIEI = "~", SPOT = "$", ITEM = "^", ITEMI = "`",
+            MAP = "?", SPOTI = "*", PLAYER = "|PLAYER|";
     HashMap<Integer, BufferedImage> textures;
     HashMap<Integer, Spot> spots;
     HashMap<Integer, Event> events;
@@ -43,14 +43,16 @@ public class Import extends Serialize{
     boolean defaultPlayer = true;
     Map map;
     Player player;
+
     public Import() {
         player = new Player();
         textures = new HashMap<Integer, BufferedImage>();
-        spots    = new HashMap<Integer,          Spot>();
-        events   = new HashMap<Integer,         Event>();
-        enemies  = new HashMap<Integer,        Enemie>();
-        items    = new HashMap<Integer,         Items>();
+        spots = new HashMap<Integer, Spot>();
+        events = new HashMap<Integer, Event>();
+        enemies = new HashMap<Integer, Enemie>();
+        items = new HashMap<Integer, Items>();
     }
+
     private File getFile(String selection, boolean textFile) {
         //Player player;
         //Map map;
@@ -58,17 +60,17 @@ public class Import extends Serialize{
         FileFilter filter;
         if (textFile) {
             filter = new FileNameExtensionFilter("Text-Files   .txt", "txt");
-        }
-        else {
+        } else {
             filter = new FileNameExtensionFilter("Game-File   .sh", "sh");
         }
         chooser.addChoosableFileFilter(filter);
-        
+
         int choosed = chooser.showDialog(null, selection);
         //if (chooser.getSelectedFile() != null)
         return chooser.getSelectedFile();
-        
+
     }
+
     private void buildEnemy(String line) {
         final String VALUE = "V", POSITION = "P", MOVETYPE = "M", PATH = "S";
         int value = -1, type = 0, x = 0, y = 0;
@@ -93,28 +95,21 @@ public class Import extends Serialize{
                 sub = info[i].split("=");
                 path = (sub[1]);
             }
-            //System.out.println(info[i]);
         }
         if (value != -1) {
             Enemie e = new Enemie(type);
 
-            if (!path.equals(""))
+            if (!path.equals("")) {
                 e = new Enemie(type, null);
-            map.addEnemy(e, new Point(x,y));
+            }
+            map.addEnemy(e, new Point(x, y));
 
-        }
-        
-        else{
+        } else {
             Enemie e = enemies.get(value);
-            map.addEnemy(e, new Point(x,y));
-            
+            map.addEnemy(e, new Point(x, y));
         }
-        
-        
-        
-        
-        
     }
+
     private void createEnemy(String line) {
         final String VALUE = "V", MOVETYPE = "M", PATH = "P";
         int value = -1, type = 0;
@@ -137,18 +132,20 @@ public class Import extends Serialize{
             //System.out.println(info[i]);
         }
         Enemie e = new Enemie(type);
-        
-        if (!path.equals(""))
+
+        if (!path.equals("")) {
             e = new Enemie(type, null);
+        }
         enemies.put(value, e);
-        
-        
- 
-        
-        
-        
-        
+
+
+
+
+
+
+
     }
+
     private void buildTexture(String line) {
         final String VALUE = "V", PATH = "P";
         int value = -1;
@@ -166,37 +163,38 @@ public class Import extends Serialize{
             }
             //System.out.println(info[i]);
         }
-        
+
         if (value != -1 && f != null) {
-            try{
+            try {
                 System.out.println(f);
-                BufferedImage img = ImageIO.read (this.getClass().
-                    getResource(f));
+                BufferedImage img = ImageIO.read(this.getClass().
+                        getResource(f));
                 textures.put(value, img);
                 JOptionPane.showMessageDialog(null, "Hi", "Ho", 1, new ImageIcon(img));
-            }
-            catch(Exception ex) {
+            } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
-            
-            
+
+
         }
         System.out.println(value);
-        
-        
-        
-       
-    }
-    public void buildPlayer() {
-            File f = getFile("Choose a Player", false);
-            player = new Player();
-            player = this.deSerialize(player.getClass(), f.getAbsolutePath());
-            this.defaultPlayer = false;
-        
-        
-        
+
+
+
 
     }
+
+    public void buildPlayer() {
+        File f = getFile("Choose a Player", false);
+        player = new Player();
+        player = this.deSerialize(player.getClass(), f.getAbsolutePath());
+        this.defaultPlayer = false;
+
+
+
+
+    }
+
     private void buildSpot(String line) {
         final String VALUE = "V", WALKABLE = "W", HEIGHT = "H", POSITION = "P", NUMBER = "N";
         int value = -1, layer = 0, number = -1, x = 0, y = 0;
@@ -227,17 +225,18 @@ public class Import extends Serialize{
             }
             //System.out.println(info[i]);
         }
-        
-        if (number == -1 ){
+
+        if (number == -1) {
             Spot s = new Spot(textures.get(value), layer);
-            if (!walkable)
+            if (!walkable) {
                 s = new Spot(textures.get(value), walkable);
+            }
             map.addSpot(s, x, y);
-        }
-        else{
+        } else {
             map.addSpot(spots.get(number).clone(), x, y);
-        }   
+        }
     }
+
     public void createSpot(String line) {
         final String VALUE = "V", WALKABLE = "W", HEIGHT = "H", NUMBER = "N";
         int value = -1, layer = 0, number = -1;
@@ -263,13 +262,15 @@ public class Import extends Serialize{
             }
             //System.out.println(info[i]);
         }
-        
+
 
         Spot s = new Spot(textures.get(value), layer);
-        if (!walkable)
+        if (!walkable) {
             s = new Spot(textures.get(value), walkable);
-        spots.put(number, s);         
+        }
+        spots.put(number, s);
     }
+
     private void buildEvent(String line) {
         final String VALUE = "V", TYPE = "T", POSITION = "P", TELEPORT = "B", NAME = "N", HEAL = "H", TEXT = "S", ENEMIE = "E", AMOUNT = "A", ITEM = "I";
         int value = -1, type = 0, x = -1, x2 = -1, y2 = -1, y = -1, heal = -1, objectValue = -1, amount = -1;
@@ -326,41 +327,43 @@ public class Import extends Serialize{
             //System.out.println(info[i]);
         }
         if (value == -1) {
-            Event evt = new Event( new Point(x2,y2));
+            Event evt = new Event(new Point(x2, y2));
             switch (type) {
                 case Event.TELEPORT:
-                    if(!text.equals(""))
-                        evt = new Event(new Point(x2,y2), text);
+                    if (!text.equals("")) {
+                        evt = new Event(new Point(x2, y2), text);
+                    }
                     break;
                 case Event.ITEM:
-                    evt = new Event(new Point(x2,y2), items.get(objectValue));
+                    evt = new Event(new Point(x2, y2), items.get(objectValue));
                     break;
-                case Event.SPAWN:       
-                    evt = new Event(new Point(x2,y2), enemies.get(objectValue));
+                case Event.SPAWN:
+                    evt = new Event(new Point(x2, y2), enemies.get(objectValue));
                     break;
-                case Event.HEAL:        
+                case Event.HEAL:
                     evt = new Event(heal);
                     break;
-                case Event.TEXT:        
+                case Event.TEXT:
                     evt = new Event(text);
                     break;
             }
-            if (amount != -1)
+            if (amount != -1) {
                 evt.addEventCount(amount);
+            }
 
             map.addEvent(x, y, evt);
-        
-        }
-        else{
+
+        } else {
             Event evt = events.get(value);
             map.addEvent(x, y, evt);
         }
         //events.put(value, evt);
-        
-        
-        
-        
+
+
+
+
     }
+
     private void createEvent(String line) {
         final String VALUE = "V", TYPE = "T", POSITION = "P", NAME = "N", HEAL = "H", TEXT = "S", ENEMIE = "E", AMOUNT = "A", ITEM = "I";
         int value = -1, type = 0, x = -1, y = -1, heal = -1, objectValue = -1, amount = -1;
@@ -411,36 +414,39 @@ public class Import extends Serialize{
             }
             //System.out.println(info[i]);
         }
-        Event evt = new Event( new Point(x,y));
+        Event evt = new Event(new Point(x, y));
         switch (type) {
             case Event.TELEPORT:
-                if(!text.equals(""))
-                    evt = new Event(new Point(x,y), text);
+                if (!text.equals("")) {
+                    evt = new Event(new Point(x, y), text);
+                }
                 break;
             case Event.ITEM:
-                evt = new Event(new Point(x,y), items.get(objectValue));
+                evt = new Event(new Point(x, y), items.get(objectValue));
                 break;
-            case Event.SPAWN:       
-                evt = new Event(new Point(x,y), enemies.get(objectValue));
+            case Event.SPAWN:
+                evt = new Event(new Point(x, y), enemies.get(objectValue));
                 break;
-            case Event.HEAL:        
+            case Event.HEAL:
                 evt = new Event(heal);
                 break;
-            case Event.TEXT:        
+            case Event.TEXT:
                 evt = new Event(text);
                 break;
         }
-        if (amount != -1)
+        if (amount != -1) {
             evt.addEventCount(amount);
+        }
         events.put(value, evt);
-        
-        
- 
-        
-        
-        
-        
+
+
+
+
+
+
+
     }
+
     private void buildItem(String line) {
         final String VALUE = "V", PATH = "S", POSITION = "P";
         int value = -1, x = -1, y = -1;
@@ -466,16 +472,16 @@ public class Import extends Serialize{
         Items item = new Items();
         if (value == -1) {
             item = this.deSerialize(item.getClass(), path);
-        }
-        else {
+        } else {
             item = items.get(value);
         }
         map.addItem(x, y, item);
-        
-        
-        
-       
+
+
+
+
     }
+
     private void createItem(String line) {
         final String VALUE = "V", PATH = "P";
         int value = -1;
@@ -495,25 +501,27 @@ public class Import extends Serialize{
         }
         Items item = new Items();
         item = this.deSerialize(item.getClass(), path);
-        
+
         items.put(value, item);
-        
-        
-        
-        
-        
-       
+
+
+
+
+
+
     }
+
     public Map buildMap() {
-        getText(getFile("Select a Map",true));
-        
-        
-        
+        getText(getFile("Select a Map", true));
+
+
+
         return map;
     }
+
     public void buildMap(String line) {
         final String VALUE = "V", SIZE = "S", WALKABLE = "W", HEIGHT = "H", PLAYER = "P", NUMBER = "N";
-        int value = -1, layer = 0, width = 0, height = 0,x = 0,y = 0, number = -1;
+        int value = -1, layer = 0, width = 0, height = 0, x = 0, y = 0, number = -1;
         boolean walkable = false;
         String[] sub;
         String[] info = line.split(" ");
@@ -546,25 +554,28 @@ public class Import extends Serialize{
             }
             //System.out.println(info[i]);
         }
-        if (defaultPlayer)
+        if (defaultPlayer) {
             map = new Map();
-        else
+        } else {
             map = new Map(player);
-        map.setUP(width, height, x, y);
-        if (number == -1 ){
-            Spot s = new Spot(textures.get(value), layer);
-            if (!walkable)
-                s = new Spot(textures.get(value), walkable);
-            map.setAllSpots(s);
         }
-        else{
+        map.setUP(width, height, x, y);
+        if (number == -1) {
+            Spot s = new Spot(textures.get(value), layer);
+            if (!walkable) {
+                s = new Spot(textures.get(value), walkable);
+            }
+            map.setAllSpots(s);
+        } else {
             map.setAllSpots(spots.get(number));
         }
         //map.build();
     }
-    
+
     private void getText(File f) {
-        if (f == null) return; 
+        if (f == null) {
+            return;
+        }
         ReadWriteTextFileWithEncoding reader = new ReadWriteTextFileWithEncoding(f.getAbsolutePath());
         try {
             LinkedList<String> text = reader.read();
@@ -573,80 +584,95 @@ public class Import extends Serialize{
             for (int i = 0; i < text.size(); i++) {
                 line = text.get(i);
                 System.out.println(text.get(i));
-                if (line.startsWith(COMMENT))
+                if (line.startsWith(COMMENT)) {
                     continue;
-                if (line.equals(PLAYER))
+                }
+                if (line.equals(PLAYER)) {
                     buildPlayer();
-                if (line.startsWith(MAP))
+                }
+                if (line.startsWith(MAP)) {
                     buildMap(line.substring(1));
-                if (line.startsWith(ENEMIE))
+                }
+                if (line.startsWith(ENEMIE)) {
                     buildEnemy(line.substring(1));
-                if (line.startsWith(ENEMIEI))
+                }
+                if (line.startsWith(ENEMIEI)) {
                     createEnemy(line.substring(1));
-                if (line.startsWith(EVENT))
+                }
+                if (line.startsWith(EVENT)) {
                     buildEvent(line.substring(1));
-                if (line.startsWith(EVENTI))
+                }
+                if (line.startsWith(EVENTI)) {
                     createEvent(line.substring(1));
-                if (line.startsWith(ITEM))
+                }
+                if (line.startsWith(ITEM)) {
                     buildItem(line.substring(1));
-                if (line.startsWith(ITEMI))
+                }
+                if (line.startsWith(ITEMI)) {
                     createItem(line.substring(1));
-                if (line.startsWith(SPOT))
+                }
+                if (line.startsWith(SPOT)) {
                     buildSpot(line.substring(1));
-                if (line.startsWith(SPOTI))
+                }
+                if (line.startsWith(SPOTI)) {
                     createSpot(line.substring(1));
-                if (line.startsWith(TEXTURE))
+                }
+                if (line.startsWith(TEXTURE)) {
                     buildTexture(line.substring(1));
-                
-                
-                
-                
-                
+                }
+
+
+
+
+
             }
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         } catch (IOException ex) {
             Logger.getLogger(Import.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        
-        
+
+
+
+
     }
 
     @Override
     public String toString() {
         return null;
     }
+
     public boolean equals(Import object) {
         return false;
     }
+
     @Override
     public void destroy() {
-
     }
+
     @Override
     public Import clone() {
         return null;
     }
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
 
-                new Import().buildMap();
+        new Import().buildMap();
 
     }
 }

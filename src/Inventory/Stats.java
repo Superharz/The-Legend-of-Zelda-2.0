@@ -100,8 +100,6 @@ public class Stats extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Armor;
     private javax.swing.JLabel Damage;
@@ -111,22 +109,24 @@ public class Stats extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
+
     public void setLive(int live) {
-        Live.setText("Live: "+live);
+        Live.setText("Live: " + live);
     }
+
     public void setLevel(int lvl) {
-        Level.setText("Level: "+lvl);
+        Level.setText("Level: " + lvl);
     }
+
     public void setDamage(int damage) {
-        Damage.setText("Damage: "+damage);
+        Damage.setText("Damage: " + damage);
     }
+
     public void setArmor(int armor) {
-        Armor.setText("Armor: "+armor);
+        Armor.setText("Armor: " + armor);
     }
+
     public void setSpeed(int speed) {
-        Speed.setText("speed: "+speed);
+        Speed.setText("speed: " + speed);
     }
-    
-
-
 }

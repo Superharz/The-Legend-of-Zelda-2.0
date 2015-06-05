@@ -4,24 +4,15 @@
  */
 package Editor.Costume;
 
-import Game.Spot;
-import Inventory.Items;
 import Moveable.Enemies.Enemie;
 import java.awt.Graphics;
-import java.awt.PopupMenu;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -31,10 +22,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author f.harz
  */
 public class NewEnemie extends javax.swing.JDialog {
+
     private int type, live, armor, damage, speed;
     ImageIcon[] img;
     File f;
     Enemie enemie;
+
     /**
      * Creates new form NewSpot
      */
@@ -323,7 +316,7 @@ public class NewEnemie extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-       this.dispose();
+        this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -331,7 +324,7 @@ public class NewEnemie extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-       type = jComboBox1.getSelectedIndex();
+        type = jComboBox1.getSelectedIndex();
         System.out.println("Type:" + type);
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
@@ -359,37 +352,37 @@ public class NewEnemie extends javax.swing.JDialog {
         String t = jTextField1.getText();
         if (check(t)) {
             live = Integer.parseInt(t);
-        }
-        else
+        } else {
             jTextField1.setText("");
+        }
     }//GEN-LAST:event_jTextField1KeyReleased
 
     private void jTextField3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyReleased
         String t = jTextField3.getText();
         if (check(t)) {
             damage = Integer.parseInt(t);
-        }
-        else
+        } else {
             jTextField3.setText("");
-        
+        }
+
     }//GEN-LAST:event_jTextField3KeyReleased
 
     private void jTextField4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyReleased
         String t = jTextField4.getText();
         if (check(t)) {
             armor = Integer.parseInt(t);
-        }
-        else
+        } else {
             jTextField4.setText("");
+        }
     }//GEN-LAST:event_jTextField4KeyReleased
 
     private void jTextField5KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyReleased
         String t = jTextField5.getText();
         if (check(t)) {
             speed = Integer.parseInt(t);
-        }
-        else
+        } else {
             jTextField5.setText("");
+        }
     }//GEN-LAST:event_jTextField5KeyReleased
 
     /**
@@ -457,23 +450,26 @@ public class NewEnemie extends javax.swing.JDialog {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
-    public void createImage(){
+
+    public void createImage() {
         for (int i = 0; i < img.length; i++) {
             try {
-            File f = getFile("Choose Texture", "PNG-File  .png" , "png");
-            if (f == null) return;
-            img[i] = new ImageIcon(ImageIO.read(f));
-            
-        } catch (IOException ex) {
-            
-        }
+                File f = getFile("Choose Texture", "PNG-File  .png", "png");
+                if (f == null) {
+                    return;
+                }
+                img[i] = new ImageIcon(ImageIO.read(f));
+
+            } catch (IOException ex) {
+            }
         }
         Image.setIcon(imagesToImage());
-        
-        
+
+
     }
+
     private ImageIcon imagesToImage() {
-        BufferedImage result = new BufferedImage(img[0].getIconWidth()*2,img[0].getIconHeight()*2,BufferedImage.TYPE_INT_ARGB);
+        BufferedImage result = new BufferedImage(img[0].getIconWidth() * 2, img[0].getIconHeight() * 2, BufferedImage.TYPE_INT_ARGB);
         Graphics g = result.getGraphics();
         img[0].paintIcon(null, g, 0, 0);
         img[1].paintIcon(null, g, img[0].getIconWidth(), 0);
@@ -481,43 +477,46 @@ public class NewEnemie extends javax.swing.JDialog {
         img[3].paintIcon(null, g, img[0].getIconWidth(), img[0].getIconHeight());
         return new ImageIcon(result);
     }
+
     private boolean check(String t) {
-        if (t.equals("")) return false;
+        if (t.equals("")) {
+            return false;
+        }
         try {
             Integer.parseInt(t);
             return true;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return false;
         }
     }
-    private File getFile(String selection,String description, String extension ) {
+
+    private File getFile(String selection, String description, String extension) {
         //Player player;
         JFileChooser chooser;
         //Map map;
         if (f == null) {
             URL u = (this.getClass().getResource("/pictures"));
-        
+
             chooser = new JFileChooser(u.getPath());
-        }
-        else {
+        } else {
             chooser = new JFileChooser(f);
         }
         FileFilter filter;
         //if (textFile) {
-            filter = new FileNameExtensionFilter(description, extension);
+        filter = new FileNameExtensionFilter(description, extension);
         //}
 //        else {
 //            filter = new FileNameExtensionFilter("Game-File   .she", "she");
 //        }
         chooser.addChoosableFileFilter(filter);
-        
+
         int choosed = chooser.showDialog(null, selection);
-        if (choosed != JFileChooser.CANCEL_OPTION)
-            f =chooser.getCurrentDirectory();
+        if (choosed != JFileChooser.CANCEL_OPTION) {
+            f = chooser.getCurrentDirectory();
+        }
         //if (chooser.getSelectedFile() != null)
         return chooser.getSelectedFile();
-        
+
     }
 
     private void createItem() {
@@ -525,13 +524,10 @@ public class NewEnemie extends javax.swing.JDialog {
         enemie.setStats(live, damage, speed, armor);
         //Test j = new Test(null, true);
         this.setVisible(false);
-        
-    }
 
+    }
 
     public Enemie getEnemie() {
         return enemie;
     }
-
-
 }

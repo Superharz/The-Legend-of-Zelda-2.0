@@ -2,16 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Editor;
 
 import Game.Image;
 import IOUtil.Serialize;
 import java.awt.Color;
 import java.io.File;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -21,100 +18,113 @@ import javax.swing.JPanel;
  *
  * @author f.harz
  */
-public class Content<T extends Image> extends JPanel{
+public class Content<T extends Image> extends JPanel {
+
     HashMap<JLabel, T> content;
     public T selected;
     JLabel selectLabel;
-    
-    
+
     public Content() {
         //super();
         content = new HashMap<JLabel, T>();
-        
+
     }
-    
+
     public void add(T data) {
         JLabel l = new JLabel(data.getImageIcon());
-                content.put(l,data);
-                
-                l.addMouseListener(new java.awt.event.MouseAdapter() {
-                    public void mousePressed(java.awt.event.MouseEvent evt) {
-                        ContentMousePressed(evt);
-                    }
-                    public void mouseEntered(java.awt.event.MouseEvent evt) {
-                        //ItemMouseEntered(evt);
-                        //p.show();
-                    }
-                    public void mouseExited(java.awt.event.MouseEvent evt) {
-                        //ItemMouseExited(evt);
-                        //p.show();
-                    }
-                });
+        content.put(l, data);
 
-                //table.put(l, item);
-                l.setSize(l.getIcon().getIconWidth(),l.getIcon().getIconHeight()) ;
+        l.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                ContentMousePressed(evt);
+            }
 
-                this.add(l);
-                update();
-                System.out.println("Worked");
-                l.setVisible(true);
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                //ItemMouseEntered(evt);
+                //p.show();
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                //ItemMouseExited(evt);
+                //p.show();
+            }
+        });
+
+        //table.put(l, item);
+        l.setSize(l.getIcon().getIconWidth(), l.getIcon().getIconHeight());
+
+        this.add(l);
+        update();
+        System.out.println("Worked");
+        l.setVisible(true);
     }
+
     private void update() {
         this.validate();
         this.repaint();
     }
+
     public void erase() {
-        if (selectLabel != null)
+        if (selectLabel != null) {
             selectLabel.setBorder(null);
+        }
         selected = null;
     }
-    public static void save(Object help,String gameName) {
+
+    public static void save(Object help, String gameName) {
         boolean again = false;
         do {
             String name = JOptionPane.showInputDialog("Name:");
-            File file = new File("Content/"+name+".she");
-            if (gameName != null)
-                file = new File("Games/"+gameName+"/Original/"+name+".she");
+            File file = new File("Content/" + name + ".she");
+            if (gameName != null) {
+                file = new File("Games/" + gameName + "/Original/" + name + ".she");
+            }
             if (file.exists()) {
-                int remove = JOptionPane.showConfirmDialog(null, name+" already exists! \n Remove?", "Collision detected!", JOptionPane.YES_NO_CANCEL_OPTION);
-                if (remove == 2) return;
-                if (remove == 0)
+                int remove = JOptionPane.showConfirmDialog(null, name + " already exists! \n Remove?", "Collision detected!", JOptionPane.YES_NO_CANCEL_OPTION);
+                if (remove == 2) {
+                    return;
+                }
+                if (remove == 0) {
                     again = false;
-                if (remove == 1)
+                }
+                if (remove == 1) {
                     again = true;
-            }   
-            if (!again)
+                }
+            }
+            if (!again) {
                 Serialize.xStreamOut(help, file.getAbsolutePath());
-        } while(again);
+            }
+        } while (again);
     }
+
     private void ContentMousePressed(java.awt.event.MouseEvent evt) {
-        JLabel l = (JLabel)evt.getComponent();
+        JLabel l = (JLabel) evt.getComponent();
         T help = content.get(l);
         if (evt.getButton() == 3) {
-            String[] options = {"Save","Cancel","Delete"};
+            String[] options = {"Save", "Cancel", "Delete"};
             int operation = JOptionPane.showOptionDialog(null, "Save or Delete", "Item Menu", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, 1);
             if (operation == 0) {
-                save(help,null);
+                save(help, null);
             }
             if (operation == 2) {
                 content.remove(l);
                 this.remove(l);
                 update();
-                System.out.println(l.getText()+" removed!");
+                System.out.println(l.getText() + " removed!");
             }
+        } else {
+            if (selected != null && selected != help) {
+
+                selectLabel.setBorder(null);
+            }
+            selected = content.get(l);
+            selectLabel = l;
+            l.setBorder(BorderFactory.createEtchedBorder(Color.lightGray, Color.yellow));
+            //System.out.println("HI");
         }
-        else {
-        if (selected != null && selected != help) {
-            
-            selectLabel.setBorder(null);
-        }
-        selected = content.get(l);
-        selectLabel = l;
-        l.setBorder(BorderFactory.createEtchedBorder(Color.lightGray, Color.yellow));
-        //System.out.println("HI");
-        }
-    //table.get(l).setVisible(true);
-}
+        //table.get(l).setVisible(true);
+    }
+
     public T getContent() {
         return selected;
     }
@@ -123,22 +133,26 @@ public class Content<T extends Image> extends JPanel{
     public String toString() {
         return null;
     }
+
     public boolean equals(Content object) {
         return false;
     }
-    public void destroy() {
 
+    public void destroy() {
     }
+
     @Override
     public Content clone() {
         Content c = new Content<T>();
-        if (content.isEmpty()) return c;
+        if (content.isEmpty()) {
+            return c;
+        }
         T[] values = null;
         values = content.values().toArray(values);
         for (int i = 0; i < values.length; i++) {
             c.add(values[i]);
         }
         return c;
-        
+
     }
 }

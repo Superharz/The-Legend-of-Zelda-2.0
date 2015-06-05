@@ -23,7 +23,8 @@ import javax.swing.JLabel;
  *
  * @author Flo
  */
-public class Event implements Serializable, Image{
+public class Event implements Serializable, Image {
+
     public final List<Events> listeners = new ArrayList<Events>();
     public static final int TELEPORT = 0, TEXT = 1, HEAL = 2, ITEM = 3, SPAWN = 4, MAPTELEPORT = 5;
     private final String EMPTY = "";
@@ -38,103 +39,130 @@ public class Event implements Serializable, Image{
     private int eventCount = NOCOUNT;
     private int count;
     JLabel label;
-    
+
     public Event(Point destiny) {
-        this(destiny,"");
-        
+        this(destiny, "");
+
     }
+
     public Event(Point destiny, String mapName) {
         this.destiny = destiny;
         this.mapName = mapName;
         eventType = TELEPORT;
     }
-    
+
     public Event(String text) {
         this.text = text;
         eventType = TEXT;
     }
+
     public Event(int healAmount) {
         this.healAmount = healAmount;
         eventType = HEAL;
     }
-    
+
     public Event(Point destiny, Enemie e) {
         this.destiny = destiny;
         this.e = e;
         eventType = SPAWN;
     }
+
     public Event(Point destiny, Items item) {
         this.destiny = destiny;
         this.item = item;
         eventType = ITEM;
     }
-    
+
     public void addEventCount(int eventCount) {
         this.eventCount = eventCount;
         count = 0;
     }
-    
+
     public void addListener(Events toAdd) {
         listeners.add(toAdd);
     }
+
     public void resetListener() {
         listeners.clear();
     }
+
     public int getEventType() {
         return eventType;
     }
+
     public void setJLabel(JLabel label) {
         this.label = label;
     }
+
     public JLabel getJLabel() {
         return label;
     }
+
     public boolean callEvent() {
         switch (eventType) {
-            case MAPTELEPORT: teleport(); break;
-            case TELEPORT   : teleport(); break;
-            case TEXT       : text(); break;
-            case HEAL       : heal(); break;
-            case SPAWN      : spawn(); break;
-            case ITEM       : item(); break;
-                
+            case MAPTELEPORT:
+                teleport();
+                break;
+            case TELEPORT:
+                teleport();
+                break;
+            case TEXT:
+                text();
+                break;
+            case HEAL:
+                heal();
+                break;
+            case SPAWN:
+                spawn();
+                break;
+            case ITEM:
+                item();
+                break;
+
         }
         if (eventCount != NOCOUNT) {
             count++;
-            if (count == eventCount)
+            if (count == eventCount) {
                 return false;
+            }
         }
         return true;
     }
-    
+
     private void teleport() {
         if (EMPTY.equals(mapName)) {
-            for (Events hl : listeners)
+            for (Events hl : listeners) {
                 hl.teleport(destiny);
-        }
-        else {
-            for (Events hl : listeners)
-                hl.teleport(destiny,mapName);
+            }
+        } else {
+            for (Events hl : listeners) {
+                hl.teleport(destiny, mapName);
+            }
         }
     }
+
     private void text() {
-        for (Events hl : listeners)
-                hl.text(text);
+        for (Events hl : listeners) {
+            hl.text(text);
+        }
     }
-    
+
     private void heal() {
-        for (Events hl : listeners)
-                hl.heal(healAmount);
+        for (Events hl : listeners) {
+            hl.heal(healAmount);
+        }
     }
- 
+
     private void spawn() {
-        for (Events hl : listeners)
-                hl.spawnEnemie(destiny, e);
+        for (Events hl : listeners) {
+            hl.spawnEnemie(destiny, e);
+        }
     }
 
     private void item() {
-        for (Events hl : listeners)
-                hl.spawnItem(destiny, item);
+        for (Events hl : listeners) {
+            hl.spawnItem(destiny, item);
+        }
     }
 
     @Override
@@ -146,16 +174,26 @@ public class Event implements Serializable, Image{
         g = img.getGraphics();
         g.setColor(Color.red);
         switch (eventType) {
-            case MAPTELEPORT: g.drawString("TELEPORT", 4, 16);break;
-            case TELEPORT: g.drawString("TELEPORT", 4, 16);break;
-            case HEAL: g.drawString("HEAL", 4, 16);break;
-            case SPAWN: g.drawString("SPAWN", 4, 16);break;
-            case ITEM: g.drawString("ITEM", 4, 16);break;
-            case TEXT: g.drawString("TEXT", 4, 16);break;
+            case MAPTELEPORT:
+                g.drawString("TELEPORT", 4, 16);
+                break;
+            case TELEPORT:
+                g.drawString("TELEPORT", 4, 16);
+                break;
+            case HEAL:
+                g.drawString("HEAL", 4, 16);
+                break;
+            case SPAWN:
+                g.drawString("SPAWN", 4, 16);
+                break;
+            case ITEM:
+                g.drawString("ITEM", 4, 16);
+                break;
+            case TEXT:
+                g.drawString("TEXT", 4, 16);
+                break;
         }
-        
+
         return new ImageIcon(img);
     }
-
-    
 }
