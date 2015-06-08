@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Moveable.Enemies;
 
 import Game.Image;
@@ -29,35 +24,23 @@ public class Enemie extends Mover implements Image {
     boolean pause = false;
     boolean defaultStats = true;
 
-    //private final List<PlayerEvent> listeners = new ArrayList<PlayerEvent>();
+    @Deprecated
     public Enemie(int moveMethod) {
-        //super(speed, live, damage, hotSpot, img);
         try {
             img = new ImageIcon[4];
-            //for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 4; j++) {
-
-
-
                 img[j] = new ImageIcon(ImageIO.read(this.getClass().
                         getResource("/Pictures/player1" + j + "0.png")));
             }
             this.moveMethod = moveMethod;
-            //this.randomMove();
         } catch (IOException ex) {
             Logger.getLogger(Enemie.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //}
     }
 
     public Enemie(int moveMethod, ImageIcon[] img) {
-        //super(speed, live, damage, hotSpot, img);
-
         this.img = img;
         this.moveMethod = moveMethod;
-        //this.randomMove();
-
-        //}
     }
 
     public void setStats(int live, int damage, int speed, int armor) {
@@ -79,10 +62,6 @@ public class Enemie extends Mover implements Image {
             this.setMover(speed, live, damage, new Point(img[0].getIconWidth() / 2, img[0].getIconHeight() / 2), img, spots, r);
         }
         System.out.println("LIVE: " + live);
-        //Rectangle r = new Rectangle(10, 10, 10, 10);
-
-        //this.setLocation(100,100);
-        //randomMove();
     }
 
     @Override
@@ -90,16 +69,12 @@ public class Enemie extends Mover implements Image {
         return this.img[0].getIconWidth();
     }
 
-//    public void addListener(Events toAdd) {
-//        listeners.add(toAdd);
-//    }
     @Override
     public void die() {
         stopMoving();
         for (Events hl : listeners) {
             hl.removeMover(this);
         }
-
     }
 
     public void play(boolean play) {
@@ -138,31 +113,21 @@ public class Enemie extends Mover implements Image {
             this.notify();
         }
     }
-//    public ImageIcon getIcon() {
-//        return img[0];
-//    }
 
     private void randomMove() {
         Thread t = new Thread() {
             @Override
             public void run() {
-                //synchronized(this) {
                 try {
-
                     move = true;
                     boolean work = true;
                     int direction = getRandom();
                     setIcon((img[direction]));
                     while (move) {
-                        //for (EnemieEvent hl : listeners) {
-                        //work = move(0);
-                        //}
-                        //setLocation(getX()-1, getY());
-                        //System.out.println(getX());
                         switch (direction) {
                             case 3:
                                 work = moveLEFT();
-                                break;//hl.moveLEFT(); break;
+                                break;
                             case 2:
                                 work = moveRIGHT();
                                 break;
@@ -176,7 +141,6 @@ public class Enemie extends Mover implements Image {
                         for (Events hl : listeners) {
                             hl.moved();
                         }
-                        //this.wait(1000);
                         if (!work) {
                             direction = getRandom();
                             setIcon((img[direction]));
@@ -191,21 +155,10 @@ public class Enemie extends Mover implements Image {
                             }
                         }
                         checkForPaused();
-//                        if (!work)
-//                            move = false;
-//                            d = getRandom();
-//                        j++;
-//                        if (j == 24) {
-//                            j = 0;
-//                            i = (i+1)%2;
-//                            setIcon(new ImageIcon(before[i+1][direction]));
-//                        }
                     }
-                    //setIcon(new ImageIcon(before[0][direction]));
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                //}
             }
         };
         t.start();
@@ -215,23 +168,16 @@ public class Enemie extends Mover implements Image {
         Thread t = new Thread() {
             @Override
             public void run() {
-                //synchronized(this) {
                 try {
                     move = true;
                     boolean work = true;
                     int direction = getRandom();
                     setIcon((img[direction]));
                     while (move) {
-                        //for (EnemieEvent hl : listeners) {
-                        //work = move(0);
-                        //}
-                        //setLocation(getX()-1, getY());
-                        //System.out.println(getX());
-
                         switch (direction) {
                             case LEFT:
                                 work = moveLEFT();
-                                break;//hl.moveLEFT(); break;
+                                break;
                             case RIGHT:
                                 work = moveRIGHT();
                                 break;
@@ -245,12 +191,11 @@ public class Enemie extends Mover implements Image {
                         for (Events hl : listeners) {
                             hl.moved();
                         }
-                        //this.wait(1000);
                         if (!work) {
                             switch (direction) {
                                 case LEFT:
                                     direction = DOWN;
-                                    break;//hl.moveLEFT(); break;
+                                    break;
                                 case RIGHT:
                                     direction = UP;
                                     break;
@@ -267,7 +212,6 @@ public class Enemie extends Mover implements Image {
                             if (direction == RIGHT) {
                                 Point p = getPosition();
                                 if (!movable(p.x - 1, p.y + 1) && collision(DOWN)) {
-
                                     direction = DOWN;
                                     setIcon((img[direction]));
                                 }
@@ -280,7 +224,6 @@ public class Enemie extends Mover implements Image {
                             } else if (direction == LEFT) {
                                 Point p = getPosition();
                                 if (!movable(p.x + 1, p.y - 1) && collision(UP)) {
-                                    //System.out.println(p);
                                     direction = UP;
                                     setIcon((img[direction]));
                                 }
@@ -294,25 +237,10 @@ public class Enemie extends Mover implements Image {
                         }
                         Thread.sleep(10);
                         checkForPaused();
-//                        if (getRandom(100)==50) {
-//                            direction = getRandom();
-//                            setIcon(new ImageIcon(img[direction]));
-//                        }
-//                        if (!work)
-//                            move = false;
-//                            d = getRandom();
-//                        j++;
-//                        if (j == 24) {
-//                            j = 0;
-//                            i = (i+1)%2;
-//                            setIcon(new ImageIcon(before[i+1][direction]));
-//                        }
                     }
-                    //setIcon(new ImageIcon(before[0][direction]));
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                //}
             }
         };
         t.start();
@@ -323,7 +251,6 @@ public class Enemie extends Mover implements Image {
         Enemie e = new Enemie(moveMethod, img);
         e.setStats(live, damage, speed, armor);
         return e;
-
     }
 
     private int getRandom() {
@@ -339,7 +266,6 @@ public class Enemie extends Mover implements Image {
 
     private int getRandom(int max) {
         int min = 0;
-        //int max = 3;
         double seed = Math.random();
         double L = (double) min;
         double H = (double) max;

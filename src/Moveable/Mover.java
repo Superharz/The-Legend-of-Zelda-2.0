@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Moveable;
 
 import Game.Image;
@@ -49,7 +44,6 @@ public abstract class Mover extends javax.swing.JLabel implements Image {
         this.hitBox = hitBox;
         this.img = img;
         this.setVisible(false);
-        //this.setIcon((Icon) img);
     }
 
     public Mover(int speed, int live, int damage, Point hotSpot, BufferedImage img, Rectangle hitBox, Spot[][] spots) {
@@ -73,33 +67,11 @@ public abstract class Mover extends javax.swing.JLabel implements Image {
         this.hotSpot = hotSpot;
         this.hitBox = hitBox;
         this.img = new ImageIcon[]{img, img, img, img};
-        //this.setVisible(false);
         this.spots = spots;
     }
-//    public Mover(int speed, int live, int damage, Point hotSpot, ImageIcon img, Rectangle hitBox,Spot[][] spots,int height) {
-//        super( (img));
-//        this.height = height;
-//        this.speed   = speed;
-//        this.live    = live;
-//        this.damage  = damage;
-//        this.hotSpot = hotSpot;
-//        this.hitBox  = hitBox;
-//        this.img = new ImageIcon[]{img, img, img, img};
-//        //this.setVisible(false);
-//        this.spots = spots;
-//    }
 
     public Mover() {
         super();
-//        super((Icon) img[0]);
-//        this.speed   = speed;
-//        this.live    = live;
-//        this.damage  = damage;
-//        this.hotSpot = hotSpot;
-//        this.hitBox  = hitBox;
-//        this.img     = img;
-        //this.setVisible(false);
-        //this.setIcon((Icon) img);
     }
 
     @Override
@@ -128,10 +100,7 @@ public abstract class Mover extends javax.swing.JLabel implements Image {
 
     @Override
     public ImageIcon getImageIcon() {
-        //JOptionPane.showMessageDialog(null, "HI", "HI", 1, super.getIcon());
         return img[0];
-
-        //return (ImageIcon)super.getIcon();
     }
 
     public void stopMoving() {
@@ -168,7 +137,6 @@ public abstract class Mover extends javax.swing.JLabel implements Image {
             live += stats[Items.LIVE];
             armor += stats[Items.ARMOR];
             speed += stats[Items.SPEED];
-
         } else {
             removeItem(item);
         }
@@ -182,7 +150,6 @@ public abstract class Mover extends javax.swing.JLabel implements Image {
             live -= stats[Items.LIVE];
             armor -= stats[Items.ARMOR];
             speed -= stats[Items.SPEED];
-
         }
         if (stuff.isEmpty()) {
             stuff = null;
@@ -233,29 +200,22 @@ public abstract class Mover extends javax.swing.JLabel implements Image {
             return true;
         }
         return false;
-
-        //System.out.println("MOVE");
-        //this.update(this.getGraphics());
     }
 
     public boolean moveLEFT() {
         lastDirection = LEFT;
-        //System.out.println(this.getLocation().x);
         if (collision(3)) {
-            //System.out.println("LEFT");
             setLocation(this.getX() - 1, this.getY());
             hitBox.setLocation(this.getLocation());
             updateHeight();
             return true;
         }
-        //System.out.println("Collision");
         return false;
     }
 
     public void updateHeight() {
         Point p = this.getHotSpot();
         height = spots[toSpots(p.y)][toSpots(p.x)].getHeight();
-        //System.out.println("Height: "+height);
     }
 
     public void stop() {
@@ -301,10 +261,6 @@ public abstract class Mover extends javax.swing.JLabel implements Image {
     }
 
     public abstract void die();
-//        stopMoving();
-//        for (Events hl : listeners)
-//            hl.remove(this);
-//        
 
     public Point getHotSpot() {
         return new Point(this.getLocation().x + hotSpot.x, this.getLocation().y + hotSpot.y);
@@ -312,9 +268,7 @@ public abstract class Mover extends javax.swing.JLabel implements Image {
 
     public Point getPosition() {
         Point p = this.getHotSpot();
-
         Point spot = new Point(toSpots(p.x), toSpots(p.y));
-        //return spot;
         return spot;
     }
 
@@ -360,19 +314,13 @@ public abstract class Mover extends javax.swing.JLabel implements Image {
         int h2 = spots[0][0].image().getHeight();
         int width = spots[0].length;
         int verticalHeight = spots.length;
-//        if (px-1 <= 0 || py - 1<= 0 || px + x +1 >=spots[0][0].image().getWidth()*width || py + y + 1 >= spots[0][0].image().getHeight()*height)
-//            return false;
         //Left
         if (direction == LEFT) {
             if (px - 1 < 0) {
                 return false;
             }
             Point[] points = {new Point(px - 1, py), new Point(px - 1, py + y / 2), new Point(px - 1, py + y - 1)};
-            //System.out.println(px-1);
-            //System.out.println(points[1].x/width + "    |   " + points[0].y/height);
             return checkPoints(points, w2, h2);
-
-
         }
         //Right
         if (direction == RIGHT) {
@@ -380,11 +328,7 @@ public abstract class Mover extends javax.swing.JLabel implements Image {
                 return false;
             }
             Point[] points = {new Point(px + 1 + x, py), new Point(px + 1 + x, py + y / 2), new Point(px + 1 + x, py + y - 1)};
-            //System.out.println(px-1);
-            //System.out.println(points[1].x/width + "    |   " + points[0].y/height);
             return checkPoints(points, w2, h2);
-
-
         }
         //Up
         if (direction == UP) {
@@ -392,31 +336,20 @@ public abstract class Mover extends javax.swing.JLabel implements Image {
                 return false;
             }
             Point[] points = {new Point(px + 1, py - 1), new Point(px + x / 2, py - 1), new Point(px + x - 1, py - 1)};
-            //System.out.println(px-1);
-            //System.out.println(points[1].x/width + "    |   " + points[0].y/height);
             return checkPoints(points, w2, h2);
-
-
         }
         //Down
         if (direction == DOWN) {
             if (py + y + 1 < h2 * verticalHeight) {
-                // return false;
                 Point[] points = {new Point(px + 1, py + y), new Point(px + x / 2, py + y), new Point(px + x - 1, py + y)};
-                //System.out.println(px-1);
-                //System.out.println(points[1].x/width + "    |   " + points[0].y/height);
                 return checkPoints(points, w2, h2);
             } else if (py + y + 1 > h2 * verticalHeight) {
                 return false;
             }
-
         }
         return true;
     }
 
-//    public int collideWith() {
-//        
-//    }
     private boolean checkPoints(Point[] points, int w2, int h2) {
         for (Point point : points) {
             Spot s = spots[point.y / h2][point.x / w2];
@@ -425,7 +358,6 @@ public abstract class Mover extends javax.swing.JLabel implements Image {
             }
         }
         Spot s = spots[points[1].y / h2][points[1].x / w2];
-        //System.out.println((points[1].y / h2)+"   |   "+(points[1].x / w2)+"    |   Height: " + s.getHeight()+"     |       My Height:  "+height);
         int h = s.getHeight();
         if (canChangeHeight) {
             if (s.getHeight() < 0) {
@@ -434,32 +366,22 @@ public abstract class Mover extends javax.swing.JLabel implements Image {
                     return true;
                 }
             }
-
             if (height < 0) {
                 if (h == -height || h == -height - 1) {
                     System.out.println("Player Special");
                     return true;
-
                 }
             }
         }
         if (s.getHeight() != height) {
-            //System.out.println("Other Height: "+s.getHeight());
             return false;
         }
         return true;
     }
 
     public boolean move(final int direction) {
-        //Thread t = new Thread() {
-        //public void run() {
-        //move = true;
-        //int j = 0, i = 0;
         boolean work = false;
         setIcon((img[direction]));
-        //try {
-        //while(move) {
-        //for (EnemieEvent hl : listeners) {
         switch (direction) {
             case 3:
                 work = moveLEFT();
@@ -474,24 +396,6 @@ public abstract class Mover extends javax.swing.JLabel implements Image {
                 work = moveDOWN();
                 break;
         }
-        //}
-
-        //Thread.sleep(speed);
-//                        j++;
-//                        if (j == 24) {
-//                            j = 0;
-//                            i = (i+1)%2;
-//                            setIcon(new ImageIcon(before[i+1][direction]));
-//                        }
-        //}
-        //setIcon(new ImageIcon(before[0][direction]));
-        //} catch (InterruptedException ex) {
-        //    Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-        //}
-
-        //}
-        //};
-        //t.start();
         return work;
     }
 }
