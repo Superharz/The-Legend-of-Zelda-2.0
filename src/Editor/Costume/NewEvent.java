@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Editor.Costume;
 
 import Editor.Content;
@@ -11,6 +7,7 @@ import Moveable.Enemies.Enemie;
 import java.awt.Point;
 import java.util.LinkedList;
 import java.util.Scanner;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -29,7 +26,7 @@ public class NewEvent extends javax.swing.JDialog {
     Event event;
     Items item;
     Enemie enemie;
-    //ImageIcon img;
+    ImageIcon img;
 
     /**
      * Creates new form NewSpot
@@ -80,14 +77,6 @@ public class NewEvent extends javax.swing.JDialog {
         jTextArea1.setRows(5);
         jTextArea1.setText("Description:");
         jTextArea1.setToolTipText("Description");
-        jTextArea1.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextArea1FocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jTextArea1FocusLost(evt);
-            }
-        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -268,7 +257,6 @@ public class NewEvent extends javax.swing.JDialog {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        Scanner s;
         String str;
         String[] lines;
         String[] line;
@@ -363,13 +351,6 @@ public class NewEvent extends javax.swing.JDialog {
 
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jTextArea1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea1FocusGained
-    }//GEN-LAST:event_jTextArea1FocusGained
-
-    private void jTextArea1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea1FocusLost
-        //jTextArea1.setText(description);
-    }//GEN-LAST:event_jTextArea1FocusLost
-
     private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
         limitation = !limitation;
         if (limitation) {
@@ -393,48 +374,6 @@ public class NewEvent extends javax.swing.JDialog {
             Count.setText("");
         }
     }//GEN-LAST:event_CountKeyReleased
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NewEvent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NewEvent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NewEvent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NewEvent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                NewEvent dialog = new NewEvent(new javax.swing.JFrame(), true, null, null);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField Count;
     private javax.swing.JLabel CountLabel;
@@ -453,19 +392,6 @@ public class NewEvent extends javax.swing.JDialog {
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
-//    public void createImage(){
-//        ImageIcon img;
-//        try {
-//            File f = getFile("Choose Texture", "PNG-File  .png" , "png");
-//            if (f == null) return;
-//            img = new ImageIcon(ImageIO.read(f));
-//            Image.setIcon(img);
-//            this.img = img;
-//        } catch (IOException ex) {
-//            
-//        }
-//        
-//    }
 
     private Point destination(String description) {
         String str;
@@ -477,7 +403,6 @@ public class NewEvent extends javax.swing.JDialog {
         JOptionPane.showMessageDialog(null, jTextArea1, "Parameters", JOptionPane.PLAIN_MESSAGE);
         str = jTextArea1.getText();
         lines = str.split("\n");
-
         for (int i = 1; i < 3; i++) {
             System.out.println(lines[i]);
             line = lines[i].split(" ");
@@ -505,24 +430,6 @@ public class NewEvent extends javax.swing.JDialog {
             return false;
         }
     }
-//    private File getFile(String selection,String description, String extension ) {
-//        //Player player;
-//        //Map map;
-//        JFileChooser chooser = new JFileChooser();
-//        FileFilter filter;
-//        //if (textFile) {
-//            filter = new FileNameExtensionFilter(description, extension);
-//        //}
-////        else {
-////            filter = new FileNameExtensionFilter("Game-File   .she", "she");
-////        }
-//        chooser.addChoosableFileFilter(filter);
-//        
-//        int choosed = chooser.showDialog(null, selection);
-//        //if (chooser.getSelectedFile() != null)
-//        return chooser.getSelectedFile();
-//        
-//    }
 
     private void createEvent() {
         switch (type) {
@@ -544,7 +451,6 @@ public class NewEvent extends javax.swing.JDialog {
             case Event.TEXT:
                 event = new Event(text);
                 break;
-
         }
         if (limitation) {
             event.addEventCount(count);
@@ -552,7 +458,6 @@ public class NewEvent extends javax.swing.JDialog {
         items = null;
         enemies = null;
         this.setVisible(false);
-
     }
 
     public Event getEvent() {

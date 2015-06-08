@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Game;
 
 import Inventory.Inventory;
@@ -45,25 +40,21 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
     String mapName = "Map1";
     transient Thread t;
     private int startX, startY;
-    //private final Object obj = new Object();
     private boolean protection = false;
 
     /**
      * Creates new form Map
      */
     public Map() {
-        //this(new Player());
         this.player = new Player();
         initComponents();
         player.addListener(this);
-
         enemies = new LinkedList();
         arrows = new LinkedList<Arrow>();
     }
 
     public Map(Player player) {
         this.player = player;
-
         initComponents();
         player.addListener(this);
         startX = toSpots(player.getLocation().x);
@@ -82,11 +73,12 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
 
     public void setPlayer(Player player, Point location) {
         this.remove(this.player);
-
         this.player = player;
         this.add(this.player);
         player.addListener(this);
-        player.setBounds(toPixel(location.x), toPixel(location.y), player.getIcon().getIconWidth(), player.getIcon().getIconHeight());
+        player.setBounds(toPixel(location.x), toPixel(location.y),
+                player.getIcon().getIconWidth(),
+                player.getIcon().getIconHeight());
         startX = location.x;
         startY = location.y;
         if (spots != null) {
@@ -138,7 +130,6 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
 //        );
     }// </editor-fold>                        
     // Variables declaration - do not modify                     
-    //private Moveable.Enemies.Enemie enemie1;
     private Moveable.Player.Player player;
     // End of variables declaration                   
 
@@ -149,15 +140,8 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
             startX = playerX;
             startY = playerY;
         }
-        //System.out.println("Pixel: "+toPixel(5));
         player.setSize(player.getWidth(), player.getWidth());
-        //player.setBounds(50, 100, player.getWidth(), player.getWidth());
-        //player.setBounds(toPixel(playerX), toPixel(playerY), player.getWidth(), player.getWidth());
-        //player.setLocation(toPixel(playerX), toPixel(playerY));
-        //player.setText("Try");
-        //player.setLocation(50,50);
         spots = new Spot[heights][width];
-        //updatePlayerPosition();
     }
 
     public Point getPlayerPosition() {
@@ -173,9 +157,6 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
             first = false;
         }
         player.setUP(spots);
-        //System.out.println("Seted up");
-
-        //enemie1.setUP(spots);
     }
 
     public void setAllSpots(Spot s) {
@@ -189,7 +170,6 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
     private boolean updatePlayerPosition() {
         Point oldPosition = playerPosition;
         playerPosition = new Point(toSpots(player.getHotSpot().x), toSpots(player.getHotSpot().y));
-        //System.out.println(playerPosition);
         return !oldPosition.equals(playerPosition);
     }
 
@@ -230,124 +210,11 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
             g.drawLine(i * x, 0, i * x, y * height);
         }
         setBackground(img);
-
-    }
-
-    public void moveUP() {
-//        if (move(1))
-//        player.setLocation(player.getX(), player.getY()-1);
-    }
-//
-
-    public void moveDOWN() {
-//        if (move(0))
-//         player.setLocation(player.getX(), player.getY()+1);
-    }
-//
-
-    public void moveRIGHT() {
-//        if (move(2))
-//         player.setLocation(player.getX()+1, player.getY());
-//        
-//        //System.out.println("MOVE");
-//        //this.update(this.getGraphics());
-    }
-//    
-
-    static {
-//    public boolean move(int direction) {
-//        int x = player.getWidth();
-//        int y = player.getHeight();
-//        int px = player.getLocation().x;
-//        int py = player.getLocation().y;
-//        int w2 = spots[0][0].image().getWidth();
-//        int h2 = spots[0][0].image().getHeight();
-////        if (px-1 <= 0 || py - 1<= 0 || px + x +1 >=spots[0][0].image().getWidth()*width || py + y + 1 >= spots[0][0].image().getHeight()*height)
-////            return false;
-//        //Left
-//        if (direction == 3) {
-//            if (px-1 < 0)
-//                return false;
-//            Point[] points  = {new Point(px-1,py),new Point(px-1,py + y/2),new Point(px-1,py + y-1)};
-//            //System.out.println(px-1);
-//            //System.out.println(points[1].x/width + "    |   " + points[0].y/height);
-//            for (Point point : points) {
-//                
-//                if (!spots[point.y / h2][point.x / w2].walk()) {
-//                    return false;
-//                }
-//            }
-//            
-//            
-//        }
-//        //Right
-//        if (direction == 2) {
-//            if (px + x +1 >=w2*width)
-//                return false;
-//            Point[] points  = {new Point(px+1+x,py),new Point(px+1+x,py + y/2),new Point(px+1+x,py + y-1)};
-//            //System.out.println(px-1);
-//            //System.out.println(points[1].x/width + "    |   " + points[0].y/height);
-//            for (Point point : points) {
-//                
-//                if (!spots[point.y / h2][point.x / w2].walk()) {
-//                    return false;
-//                }
-//            }
-//            
-//            
-//        }
-//        //Up
-//        if (direction == 1) {
-//            if (py-1 < -1)
-//                return false;
-//            Point[] points  = {new Point(px+1,py-1),new Point(px+x/2,py-1),new Point(px + x-1,py-1)};
-//            //System.out.println(px-1);
-//            //System.out.println(points[1].x/width + "    |   " + points[0].y/height);
-//            for (Point point : points) {
-//                
-//                if (!spots[point.y / h2][point.x / w2].walk()) {
-//                    return false;
-//                }
-//            }
-//            
-//            
-//        }
-//        //Down
-//        if (direction == 0) {
-//            if (py + y + 1 < h2*height) {
-//               // return false;
-//            Point[] points  = {new Point(px+1,py + y+1),new Point(px+x/2,py + y+1),new Point(px + x-1,py + y+1)};
-//            //System.out.println(px-1);
-//            //System.out.println(points[1].x/width + "    |   " + points[0].y/height);
-//            for (Point point : points) {
-//                
-//                if (!spots[point.y / h2][point.x / w2].walk()) {
-//                    return false;
-//                }
-//            }
-//            }
-//            else if (py + y + 1 > h2*height)
-//                return false;
-//            
-//        }
-//        return true;
-//    }
-    }
-
-    public void moveLEFT() {
-//        //System.out.println(player.getLocation().x);
-//        if (move(3))
-//        //System.out.println("LEFT");
-//        player.setLocation(player.getX()-1, player.getY());
     }
 
     @Override
     public void attacke(Rectangle r) {
         playerAttack(r);
-        //Graphics g = img.getGraphics();
-        //g.drawRect(r.x, r.y, r.width, r.height);
-        //this.setImage(img);
-
     }
 
     public Player getplayer() {
@@ -361,20 +228,15 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
      * @param x
      * @param y
      */
-    public void addEnemy(Enemie e, int x, int y) {
-        //this.addEnemy(e, new Point(x,y));
+    public Enemie addEnemy(Enemie e, int x, int y) {
+        e = e.clone();
         enemies.add(e);
         this.add(e);
         e.addListener(this);
         e.setBounds(x, y, e.getWidth(), e.getWidth());
-        //e.setLocation(x, y);
-
         e.setUP(spots);
         e.startMove();
-        //System.out.println("Set up");
-        //player.setLocation(50,50);
-        //e.randomMove();
-
+        return e;
     }
 
     /**
@@ -383,20 +245,8 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
      * @param e
      * @param p
      */
-    public void addEnemy(Enemie e, Point p) {
-        e = e.clone();
-        enemies.add(e);
-        this.add(e);
-        e.addListener(this);
-        e.setBounds(toPixel(p.x), toPixel(p.y), e.getWidth(), e.getWidth());
-        //e.setLocation(x, y);
-
-        e.setUP(spots);
-        e.startMove();
-        //System.out.println("Set up");
-        //player.setLocation(50,50);
-        //e.randomMove();
-
+    public Enemie addEnemy(Enemie e, Point p) {
+        return addEnemy(e, toPixel(p.x), toPixel(p.y));
     }
 
     /**
@@ -406,21 +256,10 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
      * @param p
      */
     public void addEnemy(Enemie e, Point p, boolean start) {
-        e = e.clone();
-        enemies.add(e);
-        this.add(e);
-        e.addListener(this);
-        e.setBounds(toPixel(p.x), toPixel(p.y), e.getWidth(), e.getWidth());
-        //e.setLocation(x, y);
-
-        e.setUP(spots);
+        e = addEnemy(e, p);
         if (start) {
             e.startMove();
         }
-        //System.out.println("Set up");
-        //player.setLocation(50,50);
-        //e.randomMove();
-
     }
 
     public void addEvent(int x, int y, Event evt) {
@@ -433,12 +272,10 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
         this.add(item);
         item.setBounds(toPixel(x), toPixel(y), item.getIcon().getIconWidth(), item.getIcon().getIconHeight());
         System.out.println("Item added!");
-
     }
 
     public Items removeItem(int x, int y) {
         Items j, f = null;
-
         if (spots[y][x].hasItem()) {
             for (int i = 0; i < spots[y][x].itemLength(); i++) {
                 if (i == 0) {
@@ -453,7 +290,6 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
                 }
             }
         }
-        //item.setBounds(toPixel(x), toPixel(y), item.getIcon().getIconWidth(), item.getIcon().getIconHeight());
         System.out.println("Item removed!");
         return f;
     }
@@ -467,8 +303,6 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
         }
         events = null;
         System.gc();
-
-        //item.setBounds(toPixel(x), toPixel(y), item.getIcon().getIconWidth(), item.getIcon().getIconHeight());
         System.out.println("Event removed!");
         return evt;
     }
@@ -488,8 +322,6 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
             }
         }
         System.gc();
-
-        //item.setBounds(toPixel(x), toPixel(y), item.getIcon().getIconWidth(), item.getIcon().getIconHeight());
         System.out.println("Enemie removed!");
         return f;
     }
@@ -506,21 +338,15 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
             for (Enemie enemie : enemies) {
                 enemieBox = enemie.getHitBox();
                 if (enemieBox == null) {
-                    System.out.println("Null-enemie");
-
+                    System.out.println("Null-enemie");//Shouldn't happen
                 } else if (playerBox == null) {
-                    System.out.println("Null-playerBox");
-
+                    System.out.println("Null-playerBox");//Shouldn't happen
                 } else if (playerBox.intersects(enemieBox)) {
-
                     System.out.println("Got Damage, Live left: " + player.getHealth());
                     player.takeDamage(enemie.getStrength());
                     protection = true;
                     protect();
-                    //enemies.get(i).takeDamage(enemies.get(i).getStrength());
-
                     return;
-
                 }
             }
         }
@@ -532,7 +358,7 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
             public void run() {
                 synchronized (this) {
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(5000);//How long the player is protected
                         protection = false;
                     } catch (Exception ex) {
                         Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
@@ -544,54 +370,21 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
     }
 
     public synchronized boolean playerAttack(Rectangle r) {
-        Rectangle enemieBox;
-        boolean killed = false;
-        //Rectangle playerBox = player.getHitBox();
-        for (int i = 0; i < enemies.size(); i++) {
-            if (enemies.get(i).getLayer() == player.getLayer()) {
-                enemieBox = enemies.get(i).getHitBox();
-
-                if (r.intersects(enemieBox)) {
-                    killed = true;
-                    enemies.get(i).takeDamage(player.getStrength());
-                    //if (!enemies.get(i).isAlive()) {
-                    //this.remove(enemies.get(i));
-                    //enemies.get(i).stopMoving();
-                    //enemies.remove(enemies.get(i));
-                    //}
-
-
-                }
-            }
-        }
-        return killed;
+        return playerAttack(r, true, player.getStrength());
     }
 
     private synchronized boolean playerAttack(Rectangle r, boolean friendly, int strength) {
         Rectangle enemieBox;
         boolean killed = false;
-        //Rectangle playerBox = player.getHitBox();
         if (friendly) {
             for (int i = 0; i < enemies.size(); i++) {
                 if (enemies.get(i).getLayer() == player.getLayer()) {
                     enemieBox = enemies.get(i).getHitBox();
-
                     if (r.intersects(enemieBox)) {
                         killed = true;
                         enemies.get(i).takeDamage(strength);
-                        //if (!enemies.get(i).isAlive()) {
-                        //this.remove(enemies.get(i));
-                        //enemies.get(i).stopMoving();
-                        //enemies.remove(enemies.get(i));
-                        //}
                         return killed;
-
                     }
-                    //                if (r.intersects(player.getHitBox())) {
-                    //                killed = true;
-                    //                player.takeDamage(strength);
-                    //            }
-                    //            return killed;
                 }
             }
             return killed;
@@ -602,48 +395,38 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
             }
             return killed;
         }
-        //return killed;
     }
 
     public void move() {
-        //lastDirection = direction;
-
-
         t = new Thread("Arrow") {
             @Override
             public void run() {
-                //synchronized(this) {
                 boolean move = true;
-
-
                 try {
                     while (move) {
-                        Thread.sleep(10);
+                        Thread.sleep(10);//Time between each move
                         for (int i = 0; i < arrows.size() - 1; i++) {
+                            /**
+                             * -1, because through the Multi-Thread Sometimes,
+                             * the loop tries to access an Arrow which was
+                             * removed by an other thread
+                             */
                             if (i >= arrows.size()) {
                                 System.out.println("TOO big!!!");
                             } else if (!arrows.get(i).move() || playerAttack(arrows.get(i).getHitBox(), arrows.get(i).isFriendly(), arrows.get(i).getDamage())) {
                                 removeMover(arrows.get(i));
-//                                remove(arrows.get(i));
-//                                arrows.remove(i);
-
                                 if (arrows.size() <= 0) {
                                     move = false;
                                     break;
                                 }
-
-
                             }
-                            checkForPaused();
-
+                            checkForPaused();//To pause the loop if needed
                         }
                     }
-
                 } catch (Exception ex) {
                     Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            //}
         };
         t.start();
     }
@@ -654,6 +437,7 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
                 try {
                     this.wait();
                 } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
             }
         }
@@ -696,28 +480,22 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
     public void spawnArrow(boolean friendly, int x, int y, int direction, int damage) {
         try {
             BufferedImage arrow = null;
-
-
             arrow = ImageIO.read(this.getClass().
                     getResource("/Pictures/Arrow" + direction + ".png"));
-
-
             Arrow a = new Arrow(x, y, direction, damage, arrow, spots, player.getLayer());
             a.setFrienfly(friendly);
             arrows.addFirst(a);
             this.add(a);
-            //e.addListener(this);
             a.setBounds(x, y, arrow.getWidth(), arrow.getHeight());
             this.repaint();
             if (arrows.size() > 1 && !t.isAlive() || arrows.size() >= 50) {
                 this.removeArrows(arrows);
-                //arrows.clear();
-                arrows.addFirst(a);
+                arrows.addFirst(a); //Tries to avoid the crash of the
+                //Arrow Thread
             }
-            if (arrows.size() == 1) {
-                move();
+            if (arrows.size() == 1) {//If the Thread is empty it stops it self
+                move();//Restarts the Arrow Thread
             }
-
         } catch (IOException ex) {
             Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -734,28 +512,20 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
             arrows.remove(m);
         }
         repaint();
-        //System.gc();
     }
 
     public void removeArrows(LinkedList<Arrow> m) {
-
-
         for (int i = 0; i < m.size(); i++) {
             this.remove(m.get(i));
-
         }
-
-
         arrows.clear();
         repaint();
-        //System.gc();
     }
 
     @Override
     public void heal(int amount) {
         player.heal(amount);
         System.out.println("Got Healed, Live left: " + player.getHealth());
-
     }
 
     @Override
@@ -811,32 +581,16 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
 
     @Override
     public void playerMoved() {
-        boolean moved = updatePlayerPosition();
-        //System.out.println(moved);
+        boolean moved = updatePlayerPosition();//True, if the Player's spot changed
         if (moved) {
-
             while (spots[playerPosition.y][playerPosition.x].hasItem()) {
-
                 Items item = spots[playerPosition.y][playerPosition.x].pickUp();
                 player.addItem(item);
                 this.remove(item);
                 repaint();
-                //System.gc();
-
-
-
-
-
-
                 System.out.println("Item picked UP!");
             }
-            //System.out.println("Moved");
-            //System.out.println("Player:  " + playerPosition);
-            //boolean evt = spots[playerPosition.x][playerPosition.y].hasEvent();
-            //System.out.println("Event:  " + evt);
             spots[playerPosition.y][playerPosition.x].callEvents();
-
-
         }
     }
 
@@ -860,17 +614,10 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
         build();
         requestFocus();
         this.play(true);
-        //System.out.println(arrows);
-//        for (int i = 0;arrows != null && i < arrows.size(); i++) {
-//            removeMover(arrows.get(i));
-//        }
-
         getplayer().getInventory().addEvent();
         for (int i = 0; i < enemies.size(); i++) {
             enemies.get(i).startMove();
         }
         move();
-
-
     }
 }

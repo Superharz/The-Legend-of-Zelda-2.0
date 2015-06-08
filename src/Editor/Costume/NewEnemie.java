@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Editor.Costume;
 
 import Moveable.Enemies.Enemie;
@@ -384,48 +380,6 @@ public class NewEnemie extends javax.swing.JDialog {
             jTextField5.setText("");
         }
     }//GEN-LAST:event_jTextField5KeyReleased
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NewEnemie.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NewEnemie.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NewEnemie.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NewEnemie.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                NewEnemie dialog = new NewEnemie(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Armor;
     private javax.swing.JLabel Damage;
@@ -464,8 +418,6 @@ public class NewEnemie extends javax.swing.JDialog {
             }
         }
         Image.setIcon(imagesToImage());
-
-
     }
 
     private ImageIcon imagesToImage() {
@@ -491,40 +443,27 @@ public class NewEnemie extends javax.swing.JDialog {
     }
 
     private File getFile(String selection, String description, String extension) {
-        //Player player;
         JFileChooser chooser;
-        //Map map;
         if (f == null) {
             URL u = (this.getClass().getResource("/pictures"));
-
             chooser = new JFileChooser(u.getPath());
         } else {
             chooser = new JFileChooser(f);
         }
         FileFilter filter;
-        //if (textFile) {
         filter = new FileNameExtensionFilter(description, extension);
-        //}
-//        else {
-//            filter = new FileNameExtensionFilter("Game-File   .she", "she");
-//        }
         chooser.addChoosableFileFilter(filter);
-
         int choosed = chooser.showDialog(null, selection);
         if (choosed != JFileChooser.CANCEL_OPTION) {
             f = chooser.getCurrentDirectory();
         }
-        //if (chooser.getSelectedFile() != null)
         return chooser.getSelectedFile();
-
     }
 
     private void createItem() {
         enemie = new Enemie(type, img);
         enemie.setStats(live, damage, speed, armor);
-        //Test j = new Test(null, true);
         this.setVisible(false);
-
     }
 
     public Enemie getEnemie() {

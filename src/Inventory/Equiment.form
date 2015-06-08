@@ -49,10 +49,6 @@
       </Properties>
     </Component>
     <Container class="javax.swing.JPanel" name="Equiment">
-      <Events>
-        <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="EquimentMouseEntered"/>
-        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="EquimentMousePressed"/>
-      </Events>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
     </Container>

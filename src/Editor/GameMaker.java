@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Editor;
 
 import Editor.Costume.NewEvent;
@@ -41,28 +36,15 @@ import javax.swing.tree.DefaultTreeModel;
  * @author Flo
  */
 public class GameMaker extends javax.swing.JFrame {
-    //Spot spot;
-    //Event evt;
-    //Enemie e;
-    //Items item;
-
     public static final int EVENTS = 1, ENEMIES = 2, ITEMS = 3, SPOTS = 0;
     int selection = SPOTS;
     String gameName = "My_Game";
-    //HashMap<JLabel, Spot> spots;
-    //HashMap<JLabel, Event> events;
-    //HashMap<JLabel, Enemie> enemies;
-    //LinkedList<Items> items;
 
     /**
      * Creates new form GameMaker
      */
     public GameMaker() {
         initComponents();
-        //spots = new HashMap<JLabel, Spot>();
-        // events = new HashMap<JLabel, Event>();
-        //enemies = new HashMap<JLabel, Enemie>();
-        //items = new LinkedList<Items>();
         setUP();
     }
 
@@ -445,13 +427,11 @@ public class GameMaker extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void map1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_map1MouseClicked
-        //map1.click(evt,spot);
         System.out.println("Worked");
         mapCklicked(evt);
     }//GEN-LAST:event_map1MouseClicked
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
         String[] options = {"Create new Object", "Choose File"};
         int option = JOptionPane.showOptionDialog(null, "How to create the Object?", "Choose Object", 0, JOptionPane.QUESTION_MESSAGE, null, options, 0);
         if (option != JOptionPane.CLOSED_OPTION) {
@@ -482,7 +462,6 @@ public class GameMaker extends javax.swing.JFrame {
     }//GEN-LAST:event_TabStateChanged
 
     private void map1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_map1MousePressed
-        // map1MouseClicked(evt);
     }//GEN-LAST:event_map1MousePressed
 
     private void LaunchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LaunchActionPerformed
@@ -672,11 +651,6 @@ public class GameMaker extends javax.swing.JFrame {
     private void jInternalFrame2ComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jInternalFrame2ComponentHidden
         jCheckBoxMenuItem3.setState(false);
     }//GEN-LAST:event_jInternalFrame2ComponentHidden
-    private void mapMouseClicked(java.awt.event.MouseEvent evt, MapEditor m) {
-        //map1.click(evt,spot);
-        System.out.println("Worked");
-        mapCklicked(evt);
-    }
 
     /**
      * @param args the command line arguments
@@ -769,30 +743,18 @@ public class GameMaker extends javax.swing.JFrame {
     }
 
     private File getFile(String selection, boolean map) {
-        //Player player;
-        //Map map;
         JFileChooser chooser;
-        //Map map;
         File f = new File("Content/");
         if (map) {
             f = new File("Games/" + gameName + "/Original");
         }
-        //URL u = new URL(f.getAbsolutePath());
-        //URL u = (this.getClass().getResource("/pictures"));
-
         chooser = new JFileChooser(f);
 
         FileFilter filter;
-        //if (textFile) {
-        //filter = new FileNameExtensionFilter(description, extension);
-        //}
-//        else {
         filter = new FileNameExtensionFilter("Game-File   .she", "she");
-//        }
         chooser.addChoosableFileFilter(filter);
 
         int choosed = chooser.showDialog(null, selection);
-        //if (chooser.getSelectedFile() != null)
         return chooser.getSelectedFile();
 
     }
@@ -834,24 +796,6 @@ public class GameMaker extends javax.swing.JFrame {
                 break;
             case SPOTS:
                 map1.click(evt, Spots.getContent(), SPOTS);
-                break;
-        }
-        update();
-    }
-
-    private void mapCklicked(MouseEvent evt, MapEditor map) {
-        switch (selection) {
-            case EVENTS:
-                map.click(evt, Events.getContent(), EVENTS);
-                break;
-            case ENEMIES:
-                map.click(evt, Enemies.getContent(), ENEMIES);
-                break;
-            case ITEMS:
-                map.click(evt, Items.getContent(), ITEMS);
-                break;
-            case SPOTS:
-                map.click(evt, Spots.getContent(), SPOTS);
                 break;
         }
         update();

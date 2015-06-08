@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Editor;
 
 import Game.Image;
@@ -25,9 +21,7 @@ public class Content<T extends Image> extends JPanel {
     JLabel selectLabel;
 
     public Content() {
-        //super();
         content = new HashMap<JLabel, T>();
-
     }
 
     public void add(T data) {
@@ -38,19 +32,7 @@ public class Content<T extends Image> extends JPanel {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 ContentMousePressed(evt);
             }
-
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                //ItemMouseEntered(evt);
-                //p.show();
-            }
-
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                //ItemMouseExited(evt);
-                //p.show();
-            }
         });
-
-        //table.put(l, item);
         l.setSize(l.getIcon().getIconWidth(), l.getIcon().getIconHeight());
 
         this.add(l);
@@ -114,15 +96,12 @@ public class Content<T extends Image> extends JPanel {
             }
         } else {
             if (selected != null && selected != help) {
-
                 selectLabel.setBorder(null);
             }
             selected = content.get(l);
             selectLabel = l;
             l.setBorder(BorderFactory.createEtchedBorder(Color.lightGray, Color.yellow));
-            //System.out.println("HI");
         }
-        //table.get(l).setVisible(true);
     }
 
     public T getContent() {

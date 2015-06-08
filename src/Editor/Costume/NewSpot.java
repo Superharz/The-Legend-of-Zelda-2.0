@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Editor.Costume;
 
 import Editor.GameMaker;
@@ -254,48 +250,6 @@ public class NewSpot extends javax.swing.JDialog {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         createSpot();
     }//GEN-LAST:event_jButton2ActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NewSpot.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NewSpot.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NewSpot.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NewSpot.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                NewSpot dialog = new NewSpot(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Image;
     private javax.swing.JTextField Text;
@@ -325,34 +279,21 @@ public class NewSpot extends javax.swing.JDialog {
         } catch (IOException ex) {
             Logger.getLogger(GameMaker.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
     private File getFile(String selection, String description, String extension) {
-        //Player player;
-        //Map map;
         JFileChooser chooser;
-        //Map map;
         if (f == null) {
             URL u = (this.getClass().getResource("/pictures"));
-
             chooser = new JFileChooser(u.getPath());
         } else {
             chooser = new JFileChooser(f);
         }
         FileFilter filter;
-        //if (textFile) {
         filter = new FileNameExtensionFilter(description, extension);
-        //}
-//        else {
-//            filter = new FileNameExtensionFilter("Game-File   .she", "she");
-//        }
         chooser.addChoosableFileFilter(filter);
-
         int choosed = chooser.showDialog(null, selection);
-        //if (chooser.getSelectedFile() != null)
         return chooser.getSelectedFile();
-
     }
 
     private boolean check() {
@@ -369,15 +310,12 @@ public class NewSpot extends javax.swing.JDialog {
     }
 
     private void createSpot() {
-
         if (!walkable || height == 0) {
             s = new Spot(img, walkable);
         } else {
             s = new Spot(img, height);
         }
-
         this.setVisible(false);
-
     }
 
     public Spot getSpot() {

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Game;
 
 import Inventory.Inventory;
@@ -45,39 +40,8 @@ public class Engine extends javax.swing.JFrame implements MapChange {
      * Creates new form Engine
      */
     public Engine() {
-        //this("C:\\Users\\f.harz\\Desktop\\player.sh");
-//        Map temp = Serialize.xStreamIn(Map.class, "C:\\Users\\f.harz\\Desktop\\player.sh");
-//        map1 = temp;
-//        map1.reUpdate();
-//        
-//        Serialize.xStreamOut(map1.getSpot(1, 0), "C:\\Users\\f.harz\\Desktop\\spot1.she");
-//        Serialize.xStreamOut(map1.getSpot(0, 0), "C:\\Users\\f.harz\\Desktop\\spot2.she");
-        //map1.getplayer().getInventory().addEvent();
-//        map1 = new Map();
-//        //map1.setUP(10, 10, 5, 5);
-//        map1.setUP(temp.width, temp.width, temp.getPlayerPosition().x, temp.getPlayerPosition().y);
-//        //LinkedList<Enemie> e = temp.getEnemies();
-//        for (int j = 0; j < temp.spots.length; j++) { //row
-//            for (int k = 0; k < temp.spots[0].length; k++) {//colum
-//                LinkedList<Event> evt = temp.getSpot(k, j).removeEvents();
-//                map1.addSpot(temp.getSpot(k,j), k, j);
-//                if (evt != null) {
-//                    for (int l = 0; l < evt.size(); l++) {
-//                        evt.get(l).resetListener();
-//                        map1.addEvent(k, j, evt.get(l));
-//                    }
-//                }
-//            }
-//        }
-//        for (int j = 0; j < e.size(); j++) {
-//            map1.addEnemy(e.get(j), e.get(j).getLocation().x, e.get(j).getLocation().y);
-//        }
-//        Import m = new Import();
-//        map1 = m.buildMap();
         map1 = new Game.Map();
         initComponents();
-        //test();
-
         try {
             BufferedImage before = ImageIO.read(this.getClass().
                     getResource("/Pictures/tile1.png"));
@@ -132,30 +96,15 @@ public class Engine extends javax.swing.JFrame implements MapChange {
             evt4.addEventCount(1);
             map1.addEvent(0, 9, evt4);
             Enemie e = new Enemie(Enemie.RANDOMMOVE);
-            Serialize.xStreamOut(e, "Content\\enemie1.she");
-            //JOptionPane.showMessageDialog(null, "HI", "HI", 1, e.getImageIcon());
             map1.build();
             for (int i = 0; i < 5; i++) {
                 e = new Enemie(Enemie.RANDOMMOVE);
                 map1.addEnemy(e, 50 + i * 50, 50 + i * 50);
             }
-
-            //Enemie e = new Enemie(1000/240, 100, 100, new Point(0,0),map1.getSpots());
-            //map1.addEnemy(e, 100, 100);
-//            Player p = new Player();
-//            map1.add(p);
-
         } catch (IOException ex) {
             Logger.getLogger(Engine.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        // map1.build();
         map1.requestFocus();
-//        this.validate();
-//        this.repaint();
-//        this.update(this.getGraphics());
-//        this.setVisible(false);
-//        this.setVisible(true);
     }
 
     public Engine(Map map1) {
@@ -174,7 +123,6 @@ public class Engine extends javax.swing.JFrame implements MapChange {
     public Engine(Player p, File original, File save) {
         this.original = original;
         this.save = save;
-        //this.map1 = map1;
         String name = p.getMapName();
         currentMap = name;
         File f = new File(save.getPath() + "/" + name + ".she");
@@ -184,17 +132,13 @@ public class Engine extends javax.swing.JFrame implements MapChange {
         map1 = Serialize.xStreamIn(Map.class, f);
         map1.addListener(this);
         map1.reUpdate();
-
         initComponents();
-
         map1.build();
         map1.requestFocus();
         map1.setPreferredSize(map1.getDimension());
         this.setSize(map1.getDimension().width + 30, map1.getDimension().height + 100);
         HUT.setSize(map1.getDimension());
         HUT.setPreferredSize(map1.getDimension());
-
-
     }
 
     public Engine(String file) {
@@ -202,17 +146,13 @@ public class Engine extends javax.swing.JFrame implements MapChange {
         map1 = temp;
         map1.addListener(this);
         map1.reUpdate();
-
         initComponents();
-
         map1.build();
         map1.requestFocus();
         map1.setPreferredSize(map1.getDimension());
         this.setSize(map1.getDimension().width + 30, map1.getDimension().height + 100);
         HUT.setSize(map1.getDimension());
         HUT.setPreferredSize(map1.getDimension());
-        //HUT.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 51, 51), 1, true));
-
     }
 
     /**
@@ -223,10 +163,7 @@ public class Engine extends javax.swing.JFrame implements MapChange {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
-
-        //map1 = new Game.Map();
         HUT = new javax.swing.JPanel();
-
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(true);
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -235,10 +172,6 @@ public class Engine extends javax.swing.JFrame implements MapChange {
             }
         });
         map1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                formKeyPressed(evt);
-            }
-
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 formKeyReleased(evt);
             }
@@ -281,33 +214,28 @@ public class Engine extends javax.swing.JFrame implements MapChange {
     }// </editor-fold>                        
 
     private void formKeyTyped(java.awt.event.KeyEvent evt) {
-
         if (!move) {
-            //System.out.println("FORM");
             move = true;
-            //System.out.println("Work");
             switch (evt.getKeyChar()) {
-                case 'a':
+                case 'a'://Left
                     map1.getplayer().move(3);
                     break;
-                case 'd':
+                case 'd'://Right
                     map1.getplayer().move(2);
                     break;
-                case 'w':
+                case 'w'://Up
                     map1.getplayer().move(1);
                     break;
-                case 's':
+                case 's'://Down
                     map1.getplayer().move(0);
                     break;
                 case 'z':
                     break;
-                case 'x':
+                case 'x'://Save Game
                     save();
-
                     break;
-                case KeyEvent.VK_SPACE:
+                case KeyEvent.VK_SPACE://Pause Game
                     map1.play(false);
-                    ;
                     break;
             }
         }
@@ -333,12 +261,8 @@ public class Engine extends javax.swing.JFrame implements MapChange {
     }
 
     private void formKeyReleased(java.awt.event.KeyEvent evt) {
-        //System.out.println("RIGHT");
         map1.getplayer().stop();
         move = false;
-    }
-
-    private void formKeyPressed(java.awt.event.KeyEvent evt) {
     }
 
     private void map1MousePressed(java.awt.event.MouseEvent evt) {
@@ -376,32 +300,10 @@ public class Engine extends javax.swing.JFrame implements MapChange {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                //Tested t = Serialize.xStreamIn(Engine.class, "C:\\Users\\f.harz\\Desktop\\player.sh");
-                //t.setVisible(true);
                 new Engine().setVisible(true);
 
             }
         });
-    }
-
-    public void test() {
-        Thread t = new Thread() {
-            @Override
-            public void run() {
-                synchronized (this) {
-                    try {
-                        while (true) {
-                            int t = java.lang.Thread.activeCount();
-                            Thread.sleep(1000);
-                            //System.out.println(t);
-                        }
-                    } catch (Exception ex) {
-                        Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-        };
-        t.start();
     }
     // Variables declaration - do not modify                     
     private Game.Map map1;
@@ -417,7 +319,6 @@ public class Engine extends javax.swing.JFrame implements MapChange {
             i.setBorder(BorderFactory.createEtchedBorder());
             i.requestFocus();
         }
-
         System.out.println("Menu");
         if (!menu) {
             map1.play(false);
@@ -432,28 +333,11 @@ public class Engine extends javax.swing.JFrame implements MapChange {
             map1.requestFocus();
             map1.play(true);
         }
-        //map1.setVisible(false);
-
-
-        //i.setVisible(true);
     }
 
     @Override
     public void mapChange(Point destination, String newMap) {
-//        map1.play(false);
-//                map1.releaseEvents();
-//                Serialize.xStreamOut(map1, "Save\\MAP.she");
-//                map1.play(true);
-//        map1.play(false);
-//        //map1.removeAll();
-//        map1.releaseEvents();
-        //Serialize.xStreamOut(map1, "Content\\HI.she");
-//        System.out.println("Saved!");
-//        //map1.play(true);
-
         Player p = map1.getplayer();
-//        //p.setLocation(destination.x, destination.y);
-//        map1.removeAll();
         HUT.remove(map1);
         map1.destroy();
         System.gc();
@@ -471,74 +355,14 @@ public class Engine extends javax.swing.JFrame implements MapChange {
         map1.addListener(this);
         map1.reUpdate();
         secondaryInit();
-
         map1.build();
         map1.requestFocus();
-
         formComponentResized(null);
         currentMap = newMap;
-        //pack();
-//        System.out.println("Loaded!");
-//        this.map1 = temp;
-//        map1.setPlayer(p,destination);
-//        map1.addListener(this);
-//        map1.reUpdate();
-//
-//        //initComponents();
-//        secondaryInit();
-//        map1.build();
-//        map1.requestFocus();
-//        System.gc();
-        //HUT.validate();
-        //HUT.repaint();
-        //map1.repaint();
-        //new Engine(temp).setVisible(true);
-//        return;
-//        map1 = temp;
-//        map1.addKeyListener(new java.awt.event.KeyAdapter() {
-//            public void keyPressed(java.awt.event.KeyEvent evt) {
-//                formKeyPressed(evt);
-//            }
-//            public void keyReleased(java.awt.event.KeyEvent evt) {
-//                formKeyReleased(evt);
-//            }
-//            public void keyTyped(java.awt.event.KeyEvent evt) {
-//                formKeyTyped(evt);
-//            }
-//        });
-//        map1.addMouseListener(new java.awt.event.MouseAdapter() {
-//            public void mousePressed(java.awt.event.MouseEvent evt) {
-//                map1MousePressed(evt);
-//            }
-//        });
-//        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(HUT);
-//        HUT.setLayout(layout);
-//        layout.setHorizontalGroup(
-//            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-//            .addComponent(map1, javax.swing.GroupLayout.PREFERRED_SIZE, 623, javax.swing.GroupLayout.PREFERRED_SIZE)
-//        );
-//        layout.setVerticalGroup(
-//            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-//            .addComponent(map1, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE)
-//        );
-//
-//        map1.addListener(this);
-//        //map1.setPlayer(p);
-//        map1.reUpdate();
-//        
-//        //initComponents();
-//
-//        map1.build();
-//        map1.requestFocus();
-
     }
 
     public void secondaryInit() {
         map1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                formKeyPressed(evt);
-            }
-
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 formKeyReleased(evt);
             }

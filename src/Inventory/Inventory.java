@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Inventory;
 
 import java.util.Hashtable;
@@ -188,27 +184,12 @@ public class Inventory extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void MenuStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_MenuStateChanged
-
         Info.removeAll();
-        //Info.setBackground(Color.red) ;
-        //JLabel l = new JLabel("Stuff");
-        //l.setSize(100, 100);
-        //Info.add(l);
-        //Info.revalidate();
-        ///Info.repaint();
-        //Info.validate();
         int value = Menu.getValue();
         if (stuff[value] != null) {
             System.out.println("Works");
             stuff[value].setSize(Info.getWidth(), Info.getHeight());
             Info.add(stuff[value]);
-            //Info.getLayout().addLayoutComponent("stuff", stuff[value]);
-            //Info.
-            //Info.addComponent(stuff[value], javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE);
-            //System.out.println(stuff[value].isVisible());
-            //this.repaint();
-            //this.validate();
-
         }
         Info.revalidate();
         Info.repaint();
@@ -256,7 +237,6 @@ public class Inventory extends javax.swing.JPanel {
     }
 
     public void addListener(Events toAdd) {
-        //listeners.add(toAdd);
         ((Equiment) stuff[INVENTORY]).addListener(toAdd);
     }
 

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Game;
 
 import Events.Event;
@@ -20,14 +15,12 @@ public class Spot implements java.io.Serializable, Image {
 
     LinkedList<Event> events;
     LinkedList<Items> items;
-    //private BufferedImage img;
     private ImageIcon img;
     private boolean walkable;
     private int height;
 
     public Spot(BufferedImage img, boolean walkable) {
         this(new ImageIcon(img), walkable);
-
     }
 
     public Spot(BufferedImage img, int height) {
@@ -36,14 +29,12 @@ public class Spot implements java.io.Serializable, Image {
 
     public Spot(ImageIcon img, boolean walkable) {
         this.img = img;
-        //this.img = img;
         this.height = 0;
         this.walkable = walkable;
     }
 
     public Spot(ImageIcon img, int height) {
         this.img = img;
-        //this.img = img;
         this.walkable = true;
         this.height = height;
     }
@@ -74,13 +65,10 @@ public class Spot implements java.io.Serializable, Image {
         } else {
             items.add(item);
         }
-
         System.out.println("Item added");
     }
 
     public BufferedImage image() {
-        //JOptionPane.showMessageDialog(null, "HI", "Test", 1, img);
-
         return toBufferedImage(img);
     }
 
@@ -90,10 +78,9 @@ public class Spot implements java.io.Serializable, Image {
                 icon.getIconHeight(),
                 BufferedImage.TYPE_INT_RGB);
         Graphics g = bi.createGraphics();
-        // paint the Icon to the BufferedImage.
         icon.paintIcon(null, g, 0, 0);
         g.dispose();
-        return bi;
+        return bi;//Sometimes, bi is null, bug through Serilazation?
     }
 
     public boolean hasEvent() {
@@ -133,7 +120,6 @@ public class Spot implements java.io.Serializable, Image {
     public void callEvents() {
         if (events != null) {
             boolean alive;
-
             for (int i = 0; i < events.size(); i++) {
                 alive = events.get(i).callEvent();
                 if (!alive) {
@@ -141,7 +127,6 @@ public class Spot implements java.io.Serializable, Image {
                     System.out.println("Event removed!");
                 }
             }
-
             if (events.isEmpty()) {
                 events = null;
                 System.gc();
@@ -150,7 +135,6 @@ public class Spot implements java.io.Serializable, Image {
     }
 
     public Items pickUp() {
-
         if (items.size() == 1) {
             Items item = items.remove();
             items = null;
@@ -184,6 +168,7 @@ public class Spot implements java.io.Serializable, Image {
         return img;
     }
 
+    @Override
     public ImageIcon getImageIcon() {
         return img;
     }

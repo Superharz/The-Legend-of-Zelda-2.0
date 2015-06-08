@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Menu;
 
 import Game.Engine;
@@ -26,8 +22,6 @@ public class Menu extends javax.swing.JFrame {
     public Menu() {
         initComponents();
         List.setListData(getData());
-
-
     }
 
     /**
@@ -258,12 +252,6 @@ public class Menu extends javax.swing.JFrame {
         Games.setVisible(true);
         this.setSize(Games.getPreferredSize());
         this.setSize(this.getWidth() + 20, this.getHeight() + 50);
-
-//        if (!List.isSelectionEmpty()) {
-//            selected = games[List.getSelectedIndex()];
-//            System.out.println(selected.gameName);
-//        }
-
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -318,7 +306,6 @@ public class Menu extends javax.swing.JFrame {
             return;
         }
         selected.newPlayer(f);
-
         PlayerList.setListData(selected.players.keySet().toArray());
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -333,7 +320,11 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(null, "Thank you for using:"
+                + "/nThe Legend of Zelda 2.0"
+                + "/nMade by SuperHarz"
+                + "/nPublished by SuperHarz Ent."
+                + "Not just do it, make it AWESOME!");
     }//GEN-LAST:event_formWindowClosing
 
     /**
@@ -403,17 +394,11 @@ public class Menu extends javax.swing.JFrame {
         if (files == null) {
             return null;
         }
-        //System.out.println(Arrays.toString(directories));
-        //File f = new File("Games/");
-        //File[] files = f.listFiles();
-
         String[] names = new String[files.length];
         games = new Game[files.length];
         for (int i = 0; i < files.length; i++) {
             games[i] = new Game(files[i]);
             names[i] = games[i].gameName;
-
-
         }
         return names;
     }

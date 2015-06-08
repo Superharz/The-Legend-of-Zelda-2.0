@@ -9,10 +9,6 @@
         <Property name="text" type="java.lang.String" value="Description:"/>
         <Property name="toolTipText" type="java.lang.String" value="Description"/>
       </Properties>
-      <Events>
-        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jTextArea1FocusGained"/>
-        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jTextArea1FocusLost"/>
-      </Events>
     </Component>
   </NonVisualComponents>
   <Properties>

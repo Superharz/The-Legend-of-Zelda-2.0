@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Editor;
 
 import static Editor.GameMaker.ENEMIES;
@@ -62,12 +58,10 @@ public class MapEditor extends Game.Map {
             return null;
         }
         ObjectHelp help = new ObjectHelp(s, type, null);
-        //ObjectHelp help = new ObjectHelp(s, type, null);
         switch (type) {
             case SPOTS:
                 System.out.println("Spots");
                 Spot spot = (Spot) obj;
-                //object = this.getSpot(s.x, s.y);
                 help = new ObjectHelp(s, type, this.getSpot(s.x, s.y));
                 this.addSpot(spot, s.x, s.y);
                 this.build();
@@ -89,24 +83,11 @@ public class MapEditor extends Game.Map {
                 System.out.println("Event");
                 if (obj == null) {
                     Event e = this.removeEvent(s.x, s.y);
-                    //if (e!=null)
-                    //this.remove(e.getJLabel());
                     return new ObjectHelp(s, type, e);
                 }
                 Event event = (Event) obj;
                 this.addEvent(s.x, s.y, event);
-//                ImageIcon i = event.getImageIcon();
-
                 this.build();
-//                BufferedImage img = this.getImage();
-//                Graphics g = img.getGraphics();
-//                g.drawImage(img, toPixel(s.x), toPixel(s.y), null);
-//                //JLabel l = new JLabel(i);
-//                //l.setBounds(toPixel(s.x), toPixel(s.y), i.getIconWidth(), i.getIconHeight());
-//                //this.add(l);
-//                //event.setJLabel(l);
-//                this.validate();
-//                this.repaint();
                 ;
                 break;
             case ENEMIES:
@@ -122,8 +103,6 @@ public class MapEditor extends Game.Map {
                 break;
         }
         return help;
-        //unre.addRedo(help);
-
     }
 
     public void undo() {

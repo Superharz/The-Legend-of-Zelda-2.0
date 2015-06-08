@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Inventory;
 
 import Game.Image;
@@ -41,7 +37,6 @@ public class Items extends JLabel implements Image {
     public Items() {
     }
 
-    // Variables declaration - do not modify                     
     public JLabel getStat(int index) {
         if (index >= 0 && index < stats.size()) {
             return stats.get(index);
@@ -63,11 +58,8 @@ public class Items extends JLabel implements Image {
     }
 
     public void setUp(int type, String name, Icon icon, boolean useable) {
-        this.useable = useable;
         this.typeInt = type;
-        this.setName(name);
-        this.setIcon(icon);
-        update();
+        setUp(type, name, icon, useable);
     }
 
     public void addStats(JLabel stat, int type, int value) {

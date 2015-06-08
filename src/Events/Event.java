@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Events;
 
 import Game.Image;
@@ -42,7 +37,6 @@ public class Event implements Serializable, Image {
 
     public Event(Point destiny) {
         this(destiny, "");
-
     }
 
     public Event(Point destiny, String mapName) {
@@ -118,7 +112,6 @@ public class Event implements Serializable, Image {
             case ITEM:
                 item();
                 break;
-
         }
         if (eventCount != NOCOUNT) {
             count++;
@@ -193,7 +186,6 @@ public class Event implements Serializable, Image {
                 g.drawString("TEXT", 4, 16);
                 break;
         }
-
         return new ImageIcon(img);
     }
 }

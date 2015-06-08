@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Editor.Costume;
 
 import Inventory.Items;
@@ -89,9 +85,6 @@ public class NewItem extends javax.swing.JDialog {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 StatsFocusGained(evt);
             }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                StatsFocusLost(evt);
-            }
         });
 
         jTextArea1.setColumns(20);
@@ -101,9 +94,6 @@ public class NewItem extends javax.swing.JDialog {
         jTextArea1.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 jTextArea1FocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jTextArea1FocusLost(evt);
             }
         });
 
@@ -403,7 +393,7 @@ public class NewItem extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 299, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
         );
 
         pack();
@@ -440,8 +430,6 @@ public class NewItem extends javax.swing.JDialog {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         JOptionPane.showMessageDialog(null, Stats);
         if (!jTextArea1.getText().equals("")) {
-
-
             String text = Stats.getText();
             String[] lines = text.split("\n");
             stats = new LinkedList<String>();
@@ -473,10 +461,6 @@ public class NewItem extends javax.swing.JDialog {
         jTextArea1.setText(description);
     }//GEN-LAST:event_jTextArea1FocusGained
 
-    private void jTextArea1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea1FocusLost
-        //jTextArea1.setText(description);
-    }//GEN-LAST:event_jTextArea1FocusLost
-
     private void StatsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_StatsFocusGained
         String text = "";
         for (int i = 0; i < stats.size(); i++) {
@@ -484,10 +468,6 @@ public class NewItem extends javax.swing.JDialog {
         }
         Stats.setText(text);
     }//GEN-LAST:event_StatsFocusGained
-
-    private void StatsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_StatsFocusLost
-        // TODO add your handling code here:
-    }//GEN-LAST:event_StatsFocusLost
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         JOptionPane.showMessageDialog(null, jPanel2);
@@ -525,7 +505,6 @@ public class NewItem extends javax.swing.JDialog {
         } else {
             jTextField3.setText("");
         }
-
     }//GEN-LAST:event_jTextField3KeyReleased
 
     private void jTextField4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyReleased
@@ -551,52 +530,9 @@ public class NewItem extends javax.swing.JDialog {
             return;
         } else {
             name = Text.getText();
-
             System.out.println(name);
         }
     }//GEN-LAST:event_TextKeyReleased
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NewItem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NewItem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NewItem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NewItem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                NewItem dialog = new NewItem(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Armor;
     private javax.swing.JLabel Damage;
@@ -641,7 +577,6 @@ public class NewItem extends javax.swing.JDialog {
             this.img = img;
         } catch (IOException ex) {
         }
-
     }
 
     private boolean check(String t) {
@@ -657,30 +592,18 @@ public class NewItem extends javax.swing.JDialog {
     }
 
     private File getFile(String selection, String description, String extension) {
-        //Player player;
-        //Map map;
         JFileChooser chooser;
-        //Map map;
         if (f == null) {
             URL u = (this.getClass().getResource("/pictures"));
-
             chooser = new JFileChooser(u.getPath());
         } else {
             chooser = new JFileChooser(f);
         }
         FileFilter filter;
-        //if (textFile) {
         filter = new FileNameExtensionFilter(description, extension);
-        //}
-//        else {
-//            filter = new FileNameExtensionFilter("Game-File   .she", "she");
-//        }
         chooser.addChoosableFileFilter(filter);
-
         int choosed = chooser.showDialog(null, selection);
-        //if (chooser.getSelectedFile() != null)
         return chooser.getSelectedFile();
-
     }
 
     private void createItem() {
@@ -701,9 +624,7 @@ public class NewItem extends javax.swing.JDialog {
             item.addStats(new JLabel("Speed:  " + speed), Items.SPEED, speed);
         }
         item.setDescription(description);
-        //Test j = new Test(null, true);
         this.setVisible(false);
-
     }
 
     public Items getItem() {

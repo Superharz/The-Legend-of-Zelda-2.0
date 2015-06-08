@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Menu;
 
 import Game.Engine;
@@ -38,20 +34,7 @@ public class Game {
             gameName = lines[0];
             mainMap = lines[1];
             String f = ini.getParent();
-//            //mainMap = Serialize.xStreamIn(Map.class, new File(f+"/Original/"+lines[1]));
             playerFile = new File(f + "/Players/");
-            //setPlayers(file);
-            //System.out.println(file);
-//            File[] files = file.listFiles();
-//            if (files != null){
-//                for (int i = 0; i < files.length; i++) {
-//                    players.put(files[i].getName(), files[i]);
-//                    //System.out.println(files[i].getName());
-//
-//
-//                }
-//            }
-            //ini.listFiles();
         } catch (IOException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -67,7 +50,6 @@ public class Game {
         if (files != null) {
             for (int i = 0; i < files.length; i++) {
                 players.put(files[i].getName(), files[i]);
-                //System.out.println(files[i].getName());
             }
 
         }
@@ -139,8 +121,6 @@ public class Game {
             p = new Player();
             p.setMapName(mainMap);
             Serialize.xStreamOut(p, player);
-
-
         } else {
             p = Serialize.xStreamIn(Player.class, player);
         }
@@ -148,7 +128,6 @@ public class Game {
             File original = new File(directory.getPath() + "/Original");
             File save = new File(f.getPath() + "/Save");
             Engine t = new Engine(p, original, save);
-
             t.setVisible(true);
             return t;
         }

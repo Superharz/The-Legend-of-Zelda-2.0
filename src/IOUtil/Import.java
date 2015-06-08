@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package IOUtil;
 
 import Events.Event;
@@ -54,8 +50,6 @@ public class Import extends Serialize {
     }
 
     private File getFile(String selection, boolean textFile) {
-        //Player player;
-        //Map map;
         JFileChooser chooser = new JFileChooser();
         FileFilter filter;
         if (textFile) {
@@ -187,7 +181,7 @@ public class Import extends Serialize {
     public void buildPlayer() {
         File f = getFile("Choose a Player", false);
         player = new Player();
-        player = this.deSerialize(player.getClass(), f.getAbsolutePath());
+        //player = this.deSerialize(player.getClass(), f.getAbsolutePath());
         this.defaultPlayer = false;
 
 
@@ -471,7 +465,7 @@ public class Import extends Serialize {
         }
         Items item = new Items();
         if (value == -1) {
-            item = this.deSerialize(item.getClass(), path);
+            //item = this.deSerialize(item.getClass(), path);
         } else {
             item = items.get(value);
         }
@@ -500,7 +494,7 @@ public class Import extends Serialize {
             //System.out.println(info[i]);
         }
         Items item = new Items();
-        item = this.deSerialize(item.getClass(), path);
+        //item = this.deSerialize(item.getClass(), path);
 
         items.put(value, item);
 

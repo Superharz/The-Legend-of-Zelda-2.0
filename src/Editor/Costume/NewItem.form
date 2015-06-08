@@ -9,7 +9,6 @@
       </Properties>
       <Events>
         <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="StatsFocusGained"/>
-        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="StatsFocusLost"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextArea" name="jTextArea1">
@@ -21,7 +20,6 @@
       </Properties>
       <Events>
         <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jTextArea1FocusGained"/>
-        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jTextArea1FocusLost"/>
       </Events>
     </Component>
     <Container class="javax.swing.JPanel" name="jPanel2">

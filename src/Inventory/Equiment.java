@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Inventory;
 
 import Moveable.Events;
@@ -27,7 +23,6 @@ public class Equiment extends Tools.ImagePanel {
     public final List<Events> listeners = new ArrayList<Events>();
     LinkedList<Items> items = new LinkedList<Items>();
     Items selection;
-    ///Hashtable<JLabel, Items> table = new Hashtable<JLabel,Items >();
 
     /**
      * Creates new form Equiment
@@ -43,7 +38,6 @@ public class Equiment extends Tools.ImagePanel {
             i.addStats(new JLabel("Damage:  50      "));
             i.addStats(new JLabel("Damage:  20      "));
             i.addStats(new JLabel("Damage:  10      "));
-
             this.add(i);
         } catch (IOException ex) {
             Logger.getLogger(Equiment.class.getName()).log(Level.SEVERE, null, ex);
@@ -69,14 +63,6 @@ public class Equiment extends Tools.ImagePanel {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel1.setText("                                  Equiment");
 
-        Equiment.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                EquimentMouseEntered(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                EquimentMousePressed(evt);
-            }
-        });
         Equiment.setLayout(new javax.swing.BoxLayout(Equiment, javax.swing.BoxLayout.LINE_AXIS));
 
         Name.setText("Name:");
@@ -133,14 +119,6 @@ public class Equiment extends Tools.ImagePanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void EquimentMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EquimentMousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_EquimentMousePressed
-
-    private void EquimentMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EquimentMouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_EquimentMouseEntered
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Equiment;
     private javax.swing.JLabel Image;
@@ -153,28 +131,8 @@ public class Equiment extends Tools.ImagePanel {
     public void add(Items item) {
         if (!items.contains(item)) {
             items.add(item);
-            //JLabel l = new JLabel(item.getIcon());
-
-            //l.add(p) ;
-            item.addMouseListener(new java.awt.event.MouseAdapter() {
-                public void mousePressed(java.awt.event.MouseEvent evt) {
-                    ItemMousePressed(evt);
-                }
-
-                public void mouseEntered(java.awt.event.MouseEvent evt) {
-                    ItemMouseEntered(evt);
-                    //p.show();
-                }
-
-                public void mouseExited(java.awt.event.MouseEvent evt) {
-                    ItemMouseExited(evt);
-                    //p.show();
-                }
-            });
-
-            //table.put(l, item);
+            addMouse(item);
             item.setSize(item.getIcon().getIconWidth(), item.getIcon().getIconHeight());
-
             Equiment.add(item);
             update();
             System.out.println("Worked");
@@ -182,28 +140,30 @@ public class Equiment extends Tools.ImagePanel {
         }
     }
 
+    private void addMouse(Items item) {
+        item.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                ItemMousePressed(evt);
+            }
+
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ItemMouseEntered(evt);
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ItemMouseExited(evt);
+            }
+        });
+    }
+
     public void updateEvents() {
         Items item;
         for (int i = 0; i < items.size(); i++) {
             item = items.get(i);
-            item.addMouseListener(new java.awt.event.MouseAdapter() {
-                @Override
-                public void mousePressed(java.awt.event.MouseEvent evt) {
-                    ItemMousePressed(evt);
-                }
-
-                @Override
-                public void mouseEntered(java.awt.event.MouseEvent evt) {
-                    ItemMouseEntered(evt);
-                    //p.show();
-                }
-
-                @Override
-                public void mouseExited(java.awt.event.MouseEvent evt) {
-                    ItemMouseExited(evt);
-                    //p.show();
-                }
-            });
+            addMouse(item);
         }
     }
 
@@ -218,13 +178,11 @@ public class Equiment extends Tools.ImagePanel {
     private void ItemMouseExited(java.awt.event.MouseEvent evt) {
         Items l = (Items) evt.getComponent();
         if (!l.equals(selection)) {
-
             reset();
             if (selection != null) {
                 showInfo(selection);
             }
         }
-        //table.get(l).setVisible(true);
     }
 
     private void ItemMousePressed(java.awt.event.MouseEvent evt) {
@@ -239,21 +197,16 @@ public class Equiment extends Tools.ImagePanel {
             System.out.println("selected");
             for (Events hl : listeners) {
                 hl.use(l);
-
             }
         }
-
-        //table.get(l).setVisible(true);
     }
 
     private void showInfo(Items l) {
-        //Items l = (Items)evt.getComponent();
         Image.setIcon(l.getIcon());
         Name.setText("Name: " + l.getName());
         JLabel stat;
         for (int i = 0; i < l.getLength(); i++) {
             stat = l.getStat(i);
-            //stat.setBounds(0, -20, 100, 100);
             Info.setBackground(Color.red);
             Info.add(stat);
         }
@@ -266,7 +219,6 @@ public class Equiment extends Tools.ImagePanel {
     }
 
     public void addListener(Events toAdd) {
-        //listeners.add(toAdd);
         listeners.add(toAdd);
     }
 
@@ -285,12 +237,5 @@ public class Equiment extends Tools.ImagePanel {
             item.setBorder(null);
             item.setSelection(false);
         }
-        //        BufferedImage img = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
-//        Graphics g = img.getGraphics();
-//        g.setColor(Color.red);
-//        g.fillRect(item.getLocation().x-10, item.getLocation().y-10, item.getIcon().getIconWidth()+20, item.getIcon().getIconHeight()+20); 
-//        g.drawLine(0, 0, this.getWidth(), this.getHeight());
-//        this.setImage(img);
-//        update();
     }
 }
