@@ -10,7 +10,7 @@ import java.io.File;
 /**
  * This is a JPanel which shows a costume picture on it
  *
- * @author Flo
+ * @author Florian Harz
  */
 public class ImagePanel extends JPanel {
 

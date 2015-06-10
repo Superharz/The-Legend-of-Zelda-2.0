@@ -15,8 +15,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 /**
- *
- * @author f.harz
+ * This is an Inventory-Class that contains the players equipment 
+ * It lets you select Items and displays it stats 
+ * @author Florian Harz
  */
 public class Equiment extends Tools.ImagePanel {
 

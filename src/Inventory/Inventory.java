@@ -6,8 +6,9 @@ import Moveable.Events;
 import javax.swing.JPanel;
 
 /**
- *
- * @author f.harz
+ * This is an Inventory for the player
+ * It contains many control panels 
+ * @author Florian Harzrian Harz
  */
 public class Inventory extends javax.swing.JPanel {
 

@@ -10,14 +10,15 @@ import com.thoughtworks.xstream.io.xml.StaxDriver;
 import java.io.PrintWriter;
 
 /**
+ * This is the new Serialize-Class It uses a costume Serialization method from
+ * an extern Library (XStream)
  *
- * @author f.harz
+ * @author Florian Harz
  */
 public class Serialize {
 
     public static void xStreamOut(Object obj, String file) {
         xStreamOut(obj, new File(file));
-
     }
 
     public static void xStreamOut(Object obj, File file) {
@@ -47,22 +48,5 @@ public class Serialize {
         XStream x = new XStream(new StaxDriver());
         clazz = data.cast(x.fromXML(file));
         return clazz;
-    }
-
-    @Override
-    public String toString() {
-        return null;
-    }
-
-    public boolean equals(Serialize object) {
-        return false;
-    }
-
-    public void destroy() {
-    }
-
-    @Override
-    public Serialize clone() {
-        return null;
     }
 }

@@ -23,8 +23,10 @@ import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author Flo
+ * This is the Map-Class which is contained by the Engine
+ * The Map keeps track of everything, Spots, Arrows, Enemies, Events 
+ * and the Player 
+ * @author Florian Harz
  */
 public class Map extends ImagePanel implements Moveable.Events, java.io.Serializable {
 

@@ -14,8 +14,9 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
+ * This is the Dialog to create a Costume-Item
  *
- * @author f.harz
+ * @author Florian Harz
  */
 public class NewItem extends javax.swing.JDialog {
 

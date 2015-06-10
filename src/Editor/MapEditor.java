@@ -12,8 +12,10 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 
 /**
+ * This is an extension from an Map It adds the click() method for modifying the
+ * Map
  *
- * @author f.harz
+ * @author Florian Harz
  */
 public class MapEditor extends Game.Map {
 

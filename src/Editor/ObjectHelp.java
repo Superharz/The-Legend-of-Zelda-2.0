@@ -3,8 +3,11 @@ package Editor;
 import java.awt.Point;
 
 /**
+ * This class is used by the Undo/Redo-Class It saves the Object that is
+ * supposed to be overwritten with its location so that it can be restored
+ * probably if needed
  *
- * @author f.harz
+ * @author Florian Harz
  */
 public class ObjectHelp {
 

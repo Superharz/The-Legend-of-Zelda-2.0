@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author f.harz
+ * @author Florian Harzrian Harz
  */
 public class Menu extends javax.swing.JFrame {
 

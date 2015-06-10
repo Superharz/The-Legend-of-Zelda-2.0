@@ -11,8 +11,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author f.harz
+ * This is the Dialog to create a Costume-Event
+ * @author Florian Harzrian Harz
  */
 public class NewEvent extends javax.swing.JDialog {
 

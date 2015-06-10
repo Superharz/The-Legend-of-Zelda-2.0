@@ -1,13 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Moveable.Weapons;
 
 /**
- *
- * @author Flo
+ * Will be the sup-class for meele weapons, not made yet
+ * @author Florian Harz
+ * @deprecated 
  */
 public class Sword extends Moveable.Mover {
 
@@ -17,7 +13,6 @@ public class Sword extends Moveable.Mover {
 //    }
     @Override
     public void die() {
-
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

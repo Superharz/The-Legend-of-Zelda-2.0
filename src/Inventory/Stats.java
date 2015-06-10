@@ -1,8 +1,8 @@
 package Inventory;
 
 /**
- *
- * @author Flo
+ * This is an Inventory-Class for displaying the players stats
+ * @author Florian Harz
  */
 public class Stats extends javax.swing.JPanel {
 

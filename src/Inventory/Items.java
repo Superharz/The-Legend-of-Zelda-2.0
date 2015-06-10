@@ -7,8 +7,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 /**
- *
- * @author f.harz
+ * This is the main Item-Class 
+ * @author Florian Harzrian Harz
  */
 public class Items extends JLabel implements Image {
 

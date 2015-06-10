@@ -7,7 +7,7 @@ import java.awt.Rectangle;
 
 /**
  *
- * @author Flo
+ * @author Florian Harz
  */
 public interface Events {
 

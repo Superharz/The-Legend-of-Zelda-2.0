@@ -6,8 +6,8 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 /**
- *
- * @author f.harz
+ * This is an Arrow which can be shoot
+ * @author Florian Harz
  */
 public class Arrow extends Moveable.Mover {
 

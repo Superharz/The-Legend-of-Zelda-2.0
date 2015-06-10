@@ -13,7 +13,7 @@ import javax.swing.ImageIcon;
 
 /**
  *
- * @author Flo
+ * @author Florian Harz
  */
 public abstract class Mover extends javax.swing.JLabel implements Image {
 

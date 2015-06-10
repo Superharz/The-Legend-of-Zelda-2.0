@@ -14,8 +14,11 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 /**
- *
- * @author Flo
+ * This is the main Enemy Class
+ * It supports two move methods:
+ * Random-Move, Enemy moves randomly
+ * Wall-Move, Enemy sticks to the walls
+ * @author Florian Harz
  */
 public class Enemie extends Mover implements Image {
 

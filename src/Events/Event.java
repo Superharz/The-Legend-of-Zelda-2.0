@@ -15,8 +15,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 /**
+ * This is the Event-Class An Event is something that will be activated when the
+ * Player passes by it
  *
- * @author Flo
+ * @author Florian Harz
  */
 public class Event implements Serializable, Image {
 

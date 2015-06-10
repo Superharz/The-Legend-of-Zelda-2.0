@@ -8,8 +8,10 @@ import java.util.LinkedList;
 import javax.swing.ImageIcon;
 
 /**
- *
- * @author Flo
+ * This is the Spot-Class which is contained by a Map
+ * It has it own Events and Items and can have different heights or can be a 
+ * wall
+ * @author Florian Harz
  */
 public class Spot implements java.io.Serializable, Image {
 

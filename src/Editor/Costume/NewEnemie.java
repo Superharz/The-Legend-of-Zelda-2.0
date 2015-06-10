@@ -14,8 +14,9 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
+ * This is the Dialog to create a Costume-Enemy
  *
- * @author f.harz
+ * @author Florian Harz
  */
 public class NewEnemie extends javax.swing.JDialog {
 

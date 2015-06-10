@@ -10,7 +10,6 @@ import Game.Engine;
 import IOUtil.Serialize;
 import Inventory.Items;
 import Moveable.Enemies.Enemie;
-import Moveable.Player.Player;
 import Tools.ReadWriteTextFileWithEncoding;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -32,16 +31,19 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 /**
+ * This is the main Game-Editor Class which contains the whole GUI and all its
+ * functions
  *
- * @author Flo
+ * @author Florian Harz
  */
 public class GameMaker extends javax.swing.JFrame {
+
     public static final int EVENTS = 1, ENEMIES = 2, ITEMS = 3, SPOTS = 0;
     int selection = SPOTS;
     String gameName = "My_Game";
 
     /**
-     * Creates new form GameMaker
+     * Creates new form GameMaker Sets up the default Map
      */
     public GameMaker() {
         initComponents();
@@ -75,9 +77,9 @@ public class GameMaker extends javax.swing.JFrame {
         Items = new Editor.Content<Items>();
         jButton7 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jInternalFrame2 = new javax.swing.JInternalFrame();
+        TreeTab = new javax.swing.JInternalFrame();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTree1 = new javax.swing.JTree();
+        Tree = new javax.swing.JTree();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -121,11 +123,6 @@ public class GameMaker extends javax.swing.JFrame {
         Launch.setText("!LAUNCH!");
         Launch.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         Launch.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
-        Launch.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentHidden(java.awt.event.ComponentEvent evt) {
-                LaunchComponentHidden(evt);
-            }
-        });
         Launch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 LaunchActionPerformed(evt);
@@ -267,34 +264,34 @@ public class GameMaker extends javax.swing.JFrame {
         Content.setBounds(170, 170, 170, 258);
         jDesktopPane2.add(Content, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jInternalFrame2.setClosable(true);
-        jInternalFrame2.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
-        jInternalFrame2.setMaximizable(true);
-        jInternalFrame2.setResizable(true);
-        jInternalFrame2.setTitle("Files");
-        jInternalFrame2.setVisible(true);
-        jInternalFrame2.addComponentListener(new java.awt.event.ComponentAdapter() {
+        TreeTab.setClosable(true);
+        TreeTab.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        TreeTab.setMaximizable(true);
+        TreeTab.setResizable(true);
+        TreeTab.setTitle("Files");
+        TreeTab.setVisible(true);
+        TreeTab.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentHidden(java.awt.event.ComponentEvent evt) {
-                jInternalFrame2ComponentHidden(evt);
+                TreeTabComponentHidden(evt);
             }
         });
 
-        jTree1.setModel(null);
-        jScrollPane1.setViewportView(jTree1);
+        Tree.setModel(null);
+        jScrollPane1.setViewportView(Tree);
 
-        javax.swing.GroupLayout jInternalFrame2Layout = new javax.swing.GroupLayout(jInternalFrame2.getContentPane());
-        jInternalFrame2.getContentPane().setLayout(jInternalFrame2Layout);
-        jInternalFrame2Layout.setHorizontalGroup(
-            jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout TreeTabLayout = new javax.swing.GroupLayout(TreeTab.getContentPane());
+        TreeTab.getContentPane().setLayout(TreeTabLayout);
+        TreeTabLayout.setHorizontalGroup(
+            TreeTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
         );
-        jInternalFrame2Layout.setVerticalGroup(
-            jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        TreeTabLayout.setVerticalGroup(
+            TreeTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
         );
 
-        jInternalFrame2.setBounds(10, 190, 187, 310);
-        jDesktopPane2.add(jInternalFrame2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        TreeTab.setBounds(10, 190, 187, 310);
+        jDesktopPane2.add(TreeTab, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jMenu1.setText("File");
 
@@ -420,23 +417,36 @@ public class GameMaker extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * This method takes the Game Name as input for the Game that should be
+     * opened it than updates the title and the Tree-Viewer
+     *
+     * @param evt
+     */
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        gameName = JOptionPane.showInputDialog("Map Name:");
+        gameName = JOptionPane.showInputDialog("Game Name:");
         this.setTitle(gameName);
         updateTree();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
-
+    /**
+     * This event calls the mapClicked() method to add an Object to the Map
+     *
+     * @param evt
+     */
     private void map1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_map1MouseClicked
         System.out.println("Worked");
         mapCklicked(evt);
     }//GEN-LAST:event_map1MouseClicked
-
+    /**
+     * This event let's you create or load a new Spot and adds it to the Content
+     *
+     * @param evt
+     */
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         String[] options = {"Create new Object", "Choose File"};
         int option = JOptionPane.showOptionDialog(null, "How to create the Object?", "Choose Object", 0, JOptionPane.QUESTION_MESSAGE, null, options, 0);
         if (option != JOptionPane.CLOSED_OPTION) {
             if (option == 0) {
-                Spot spot = null;
                 final NewSpot s = new NewSpot(null, true);
                 s.setVisible(true);
                 s.addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -455,29 +465,43 @@ public class GameMaker extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jButton5ActionPerformed
-
+    /**
+     * This event updates the selected Tab of the Content-Viewer
+     * @param evt 
+     */
     private void TabStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_TabStateChanged
         selection = Tab.getSelectedIndex();
         System.out.println(selection);
     }//GEN-LAST:event_TabStateChanged
-
-    private void map1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_map1MousePressed
+    /**
+     * Editor doesn't like me...
+     */
+    {//GEN-FIRST:event_map1MousePressed
     }//GEN-LAST:event_map1MousePressed
-
+    /**
+     * This event "launches" the Map which is opened for testing
+     * @param evt 
+     */
     private void LaunchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LaunchActionPerformed
         launch();
     }//GEN-LAST:event_LaunchActionPerformed
-
+    /**
+     * This event calls the close() method when you try to shut me down :=(
+     * @param evt 
+     */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         close();
     }//GEN-LAST:event_formWindowClosing
-
+    /**
+     * This event let's you create or load a new Event and adds it to the Content
+     *
+     * @param evt
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String[] options = {"Create new Object", "Choose File"};
         int option = JOptionPane.showOptionDialog(null, "How to create the Object?", "Choose Object", 0, JOptionPane.QUESTION_MESSAGE, null, options, 0);
         if (option != JOptionPane.CLOSED_OPTION) {
             if (option == 0) {
-                Event event = null;
                 final NewEvent i = new NewEvent(null, true, Items, Enemies);
                 i.setVisible(true);
                 i.addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -487,7 +511,6 @@ public class GameMaker extends javax.swing.JFrame {
                         i.dispose();
                     }
                 });
-
                 Tab.add(Items, "Items", ITEMS);
                 Tab.add(Enemies, "Enemies", ENEMIES);
             } else {
@@ -499,13 +522,16 @@ public class GameMaker extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    /**
+     * This event let's you create or load a new Item and adds it to the Content
+     *
+     * @param evt
+     */
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         String[] options = {"Create new Object", "Choose File"};
         int option = JOptionPane.showOptionDialog(null, "How to create the Object?", "Choose Object", 0, JOptionPane.QUESTION_MESSAGE, null, options, 0);
         if (option != JOptionPane.CLOSED_OPTION) {
             if (option == 0) {
-                Items item = null;
                 final NewItem i = new NewItem(null, true);
                 i.setVisible(true);
                 i.addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -524,13 +550,16 @@ public class GameMaker extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jButton7ActionPerformed
-
+    /**
+     * This event let's you create or load a new Enemy and adds it to the Content
+     *
+     * @param evt
+     */
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         String[] options = {"Create new Object", "Choose File"};
         int option = JOptionPane.showOptionDialog(null, "How to create the Object?", "Choose Object", 0, JOptionPane.QUESTION_MESSAGE, null, options, 0);
         if (option != JOptionPane.CLOSED_OPTION) {
             if (option == 0) {
-                Enemie enemie = null;
                 final NewEnemie i = new NewEnemie(null, true);
                 i.setVisible(true);
                 i.addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -549,22 +578,31 @@ public class GameMaker extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jButton6ActionPerformed
-
+    /**
+     * Sets the Map to erase the next Enemy that you click on it
+     * @param evt 
+     */
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         Enemies.erase();
     }//GEN-LAST:event_jButton4ActionPerformed
-
+    /**
+     * Sets the Map to erase the next Item that you click on it
+     * @param evt 
+     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         Items.erase();
     }//GEN-LAST:event_jButton3ActionPerformed
-
+    /**
+     * Sets the Map to erase the next Event that you click on it
+     * @param evt 
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         Events.erase();
     }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void LaunchComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_LaunchComponentHidden
-    }//GEN-LAST:event_LaunchComponentHidden
-
+    /**
+     * This method lets you select an already existing Map to load
+     * @param evt 
+     */
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         final MapEditor m = getObject(MapEditor.class, "Load Map", true);
         if (m == null) {
@@ -572,40 +610,55 @@ public class GameMaker extends javax.swing.JFrame {
         }
         loadMap(m);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
-
+    /**
+     * This method lets you save the actual Map
+     * @param evt 
+     */
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
         Editor.Content.save(map1, gameName);
-
         updateTree();
     }//GEN-LAST:event_jMenuItem8ActionPerformed
-
+    /**
+     * Toggles the Visibility of the Launch Tab
+     * @param evt 
+     */
     private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
         LaunchTab.setVisible(!LaunchTab.isVisible());
     }//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
-
+    /**
+     * Toggles the Visibility of the Content Tab
+     * @param evt 
+     */
     private void jCheckBoxMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem2ActionPerformed
         Content.setVisible(!Content.isVisible());
     }//GEN-LAST:event_jCheckBoxMenuItem2ActionPerformed
-
+    /**
+     * Undo the last object that was added to the Map
+     * @param evt 
+     */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         map1.undo();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
-
+    /**
+     * Redo the last object that was added to the Map
+     * @param evt 
+     */
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
         map1.redo();
     }//GEN-LAST:event_jMenuItem7ActionPerformed
-
+    /**
+     * Lets you save the actual Map and creates a new Map
+     * @param evt 
+     */
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        int option = JOptionPane.showConfirmDialog(null, "Would you like to save the map?", "Save?", JOptionPane.YES_NO_CANCEL_OPTION);
-        if (option == 2) {
-            return;
-        }
-        if (option == 0) {
-            Editor.Content.save(map1, gameName);
-        }
+        saveMap();
         setUP();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
-
+    /**
+     * Creates a new Game with all the folders
+     * Sets the GameName and updates the Title and the Tree
+     * @param evt 
+     */
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         String name = JOptionPane.showInputDialog("Game Name:");
         File f = new File("Games/" + name + "/Original");
@@ -615,16 +668,19 @@ public class GameMaker extends javax.swing.JFrame {
         gameName = name;
         this.setTitle(name);
         updateTree();
-
     }//GEN-LAST:event_jMenuItem4ActionPerformed
-
+    /**
+     * "Compiles" - Makes the Game ready to run
+     * Lets you select a Main-Map and writes it together with the GameName 
+     * to an ".ini" file in the Game folder
+     * @param evt 
+     */
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
         try {
             String mainMap = JOptionPane.showInputDialog("Main Map:");
             if (mainMap.isEmpty()) {
                 return;
             }
-            Player p = new Player();
             File f = new File("Games/" + gameName + "/game.ini");
             ReadWriteTextFileWithEncoding r = new ReadWriteTextFileWithEncoding(f.getAbsolutePath());
             String[] s = {gameName, mainMap};
@@ -633,26 +689,38 @@ public class GameMaker extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(GameMaker.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }//GEN-LAST:event_jMenuItem9ActionPerformed
-
+    /**
+     * Toggles the Visibility of the Tree Tab
+     * @param evt 
+     */
     private void jCheckBoxMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem3ActionPerformed
-        jInternalFrame2.setVisible(!jInternalFrame2.isVisible());
+        TreeTab.setVisible(!TreeTab.isVisible());
     }//GEN-LAST:event_jCheckBoxMenuItem3ActionPerformed
-
+    /**
+     * Un-checks the check-Box for the Launch Menu-Entry 
+     * @param evt 
+     */
     private void LaunchTabComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_LaunchTabComponentHidden
         jCheckBoxMenuItem1.setState(false);
     }//GEN-LAST:event_LaunchTabComponentHidden
-
+    /**
+     * Un-checks the check-Box for the Content Menu-Entry 
+     * @param evt 
+     */
     private void ContentComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_ContentComponentHidden
         jCheckBoxMenuItem2.setState(false);
     }//GEN-LAST:event_ContentComponentHidden
-
-    private void jInternalFrame2ComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jInternalFrame2ComponentHidden
+    /**
+     * Un-checks the check-Box for the Files Menu-Entry 
+     * @param evt 
+     */
+    private void TreeTabComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_TreeTabComponentHidden
         jCheckBoxMenuItem3.setState(false);
-    }//GEN-LAST:event_jInternalFrame2ComponentHidden
+    }//GEN-LAST:event_TreeTabComponentHidden
 
     /**
+     * Starts the Editor
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -697,6 +765,8 @@ public class GameMaker extends javax.swing.JFrame {
     private javax.swing.JInternalFrame LaunchTab;
     private Editor.Content<Spot> Spots;
     private javax.swing.JTabbedPane Tab;
+    private javax.swing.JTree Tree;
+    private javax.swing.JInternalFrame TreeTab;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -708,7 +778,6 @@ public class GameMaker extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem3;
     private javax.swing.JDesktopPane jDesktopPane2;
-    private javax.swing.JInternalFrame jInternalFrame2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -723,14 +792,14 @@ public class GameMaker extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTree jTree1;
     private Editor.MapEditor map1;
     // End of variables declaration//GEN-END:variables
-
+    /**
+     * Creates a default Map
+     */
     public final void setUP() {
         try {
             map1.setUP(20, 20, 5, 5);
-
             BufferedImage before = ImageIO.read(this.getClass().
                     getResource("/Pictures/tile1.png"));
             Spot s = new Spot(before, true);
@@ -741,7 +810,12 @@ public class GameMaker extends javax.swing.JFrame {
             Logger.getLogger(GameMaker.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    /**
+     * Shows a JFileChooser to let the user choose a Game-Object
+     * @param selection The Text to be displayed on the JFileChooser
+     * @param map True, if the Game-Object will be a Map
+     * @return The File to the chosen Object, null if nothing was selected
+     */
     private File getFile(String selection, boolean map) {
         JFileChooser chooser;
         File f = new File("Content/");
@@ -749,16 +823,22 @@ public class GameMaker extends javax.swing.JFrame {
             f = new File("Games/" + gameName + "/Original");
         }
         chooser = new JFileChooser(f);
-
         FileFilter filter;
         filter = new FileNameExtensionFilter("Game-File   .she", "she");
         chooser.addChoosableFileFilter(filter);
-
-        int choosed = chooser.showDialog(null, selection);
+        chooser.showDialog(null, selection);
         return chooser.getSelectedFile();
-
     }
-
+    /**
+     * A generic method to deSerialize a Game-Object which will be chosen by the
+     * user
+     * @param <T> The Class-Type of the Game-Object
+     * @param data An Instant of the Class-Type Game-Object
+     * @param file The message which will be displayed to the user
+     * @param map True, it the Game-Object will be a Map
+     * @return The selected and deSerialized Game-Object of type T, null if 
+     * nothings has been selected
+     */
     public <T> T getObject(Class<T> data, String file, boolean map) {
         T clazz;
         File f = getFile(file, map);
@@ -768,7 +848,10 @@ public class GameMaker extends javax.swing.JFrame {
         clazz = Serialize.xStreamIn(data, f);
         return clazz;
     }
-
+    /**
+     * Updates all the Graphics
+     * Most of it may be redundant but I don't know which parts aren't D;
+     */
     private void update() {
         Spots.validate();
         Spots.repaint();
@@ -781,7 +864,11 @@ public class GameMaker extends javax.swing.JFrame {
         GUI.validate();
         GUI.repaint();
     }
-
+    /**
+     * Adds an Game-Object to the Map depending on the Tab selected in the 
+     * Content-Object, removes an Object if erase has been selected
+     * @param evt The MouseCklic Event which contains the Position
+     */
     private void mapCklicked(MouseEvent evt) {
         System.out.println("Selection: " + selection);
         switch (selection) {
@@ -800,62 +887,87 @@ public class GameMaker extends javax.swing.JFrame {
         }
         update();
     }
-
+    /**
+     * "Launches" the actual Map to you test it
+     * The temp File will be removed when you shut me down :=(
+     */
     private void launch() {
-
         Serialize.xStreamOut(map1, "Save\\temp.she");
         File file = new File("Save\\temp.she");
         Engine test = new Engine("Save\\temp.she");
         file.deleteOnExit();
         test.setVisible(true);
         test.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
     }
-
+    /**
+     * Saves the actual Map after asking the user to do so
+     * Updates the Tree after it
+     */
+    private void saveMap() {
+        int option = JOptionPane.showConfirmDialog(null,
+                "Would you like to save the map?", "Save?",
+                JOptionPane.YES_NO_CANCEL_OPTION);
+        if (option == 2) {
+            return;
+        }
+        if (option == 0) {
+            Editor.Content.save(map1, gameName);
+            updateTree();
+        }
+    }
+    /**
+     * Asks the user to save his map when he shuts me down :=(
+     */
     private void close() {
-//        try{
-// 
-//    		File file = new File("Save\\temp.she");
-//                ImageIO.write(ImageIO.read(new File("C:\\Users\\f.harz\\Desktop\\The-Legend-of-Zelda-2.0\\src\\Pictures\\tile1.png")), ".she", file);
-//    		if(file.delete()){
-//    			System.out.println(file.getName() + " is deleted!");
-//    		}else{
-//    			System.out.println("Delete operation is failed.");
-//    		}
-// 
-//    	}catch(Exception e){
-//            System.out.println(e.getMessage());
-//    	}
+        try {
+            saveMap();
+        } finally {
+            this.dispose();
+        }
     }
-
+    /**
+     * Updates the File-Tree and adds the Mouse-Events to it
+     */
     private void updateTree() {
         FileTree tree = new FileTree();
-        jTree1.setModel(new DefaultTreeModel(tree.addNodes(null, new File("Games/" + gameName))));
-//        jTree1.addTreeSelectionListener(new TreeSelectionListener() {
-//            public void valueChanged(TreeSelectionEvent e) {
-//                DefaultMutableTreeNode node = (DefaultMutableTreeNode) e
-//                    .getPath().getLastPathComponent();
-//                System.out.println("You selected " + ((FileUtil)node.getUserObject()).path);
-//            }
-//        });
-        jTree1.addMouseListener(new MouseAdapter() {
+        Tree.setModel(new DefaultTreeModel(tree.addNodes(null, new File("Games/" + gameName))));
+        Tree.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent evt) {
-                //JList list = (JList)evt.getSource();
                 if (evt.getClickCount() == 2) {
-                    DefaultMutableTreeNode t = ((DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent());
-                    FileUtil f = (FileUtil) t.getUserObject();
-                    File file = f.path;
-                    if (file.isDirectory()) {
-                        return;
-                    }
-                    loadMap(Serialize.xStreamIn(MapEditor.class, file));
-
-                    System.out.println("You selected " + f.path);
+                    treeLoad();
                 }
             }
         });
     }
-
+    /**
+     * Gets called when the user double-Clicks a File in the File-Tree
+     * Takes care that the File is a valid Game-Object
+     * Tries to load the Map
+     */
+    private void treeLoad() {
+        DefaultMutableTreeNode t = ((DefaultMutableTreeNode) Tree.getLastSelectedPathComponent());
+        FileUtil f = (FileUtil) t.getUserObject();
+        File file = f.path;
+        if (file.isDirectory()) {
+            return;
+        }
+        int i = file.getPath().lastIndexOf('.');
+        String extension = "";
+        if (i > 0) {
+            extension = file.getPath().substring(i + 1);
+        }
+        if (!extension.equals("she")) {
+            return;
+        }
+        loadMap(Serialize.xStreamIn(MapEditor.class, file));
+        System.out.println("You selected " + f.path);
+    }
+    /**
+     * Loads the given Map and adds it to the GUI
+     * Removes the old Map
+     * @param m The new Map to be added to the GUI
+     */
     private void loadMap(MapEditor m) {
         m.play(false);
         m.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -870,25 +982,15 @@ public class GameMaker extends javax.swing.JFrame {
         map1.build();
         map1 = m;
         map1.build();
-        //GUI.remove(map1);
-        //GUI.removeAll();
-        //GUI.add(map1);
         map1.repaint();
-        //map1.setVisible(false);
-        //map1.setVisible(true);
-        //GUI.removeAll();
-        //GUI.add(m);
         JInternalFrame f = new JInternalFrame("GUI", true, false, true);
         f.add(map1);
         GUI = f;
-//        
-//        //m.setBounds(0, 0, 300, 300);
         GUI.setBounds(300, 300, 400, 400);
         GUI.setSize(d);
         GUI.setLocation(p);
         jDesktopPane2.add(GUI);
         GUI.setVisible(true);
-        //GUI = f;
         this.update();
         map1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 51, 51), 1, true));
         map1.setPreferredSize(map1.getDimension());

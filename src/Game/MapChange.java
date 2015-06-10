@@ -3,8 +3,9 @@ package Game;
 import java.awt.Point;
 
 /**
- *
- * @author f.harz
+ * This is the Interface for the mapChange() event which lets the Player
+ * switch to an other Map
+ * @author Florian Harzrian Harz
  */
 public interface MapChange {
 

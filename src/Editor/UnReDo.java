@@ -3,8 +3,10 @@ package Editor;
 import java.util.Stack;
 
 /**
+ * This is an Undo/Redo Class which let's you Undo and Redo the last 30 changes
+ * that you made at the Map
  *
- * @author f.harz
+ * @author Florian Harz
  */
 public class UnReDo {
 

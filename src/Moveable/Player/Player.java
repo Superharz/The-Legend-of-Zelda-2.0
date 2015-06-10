@@ -15,8 +15,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author Flo
+ * This is the main player class
+ * It also takes care of his movement
+ * @author Florian Harz
  */
 public class Player extends Mover {
 

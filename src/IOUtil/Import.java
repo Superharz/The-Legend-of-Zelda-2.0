@@ -23,8 +23,11 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
+ * This was supposed to be the Serialize-Class Its idea was to Serialize the
+ * Game-Objects after pattern which can be seen in the Contract file
  *
- * @author f.harz
+ * @author Florian Harz
+ * @deprecated
  */
 public class Import extends Serialize {
 
@@ -58,11 +61,8 @@ public class Import extends Serialize {
             filter = new FileNameExtensionFilter("Game-File   .sh", "sh");
         }
         chooser.addChoosableFileFilter(filter);
-
         int choosed = chooser.showDialog(null, selection);
-        //if (chooser.getSelectedFile() != null)
         return chooser.getSelectedFile();
-
     }
 
     private void buildEnemy(String line) {
@@ -92,12 +92,10 @@ public class Import extends Serialize {
         }
         if (value != -1) {
             Enemie e = new Enemie(type);
-
             if (!path.equals("")) {
                 e = new Enemie(type, null);
             }
             map.addEnemy(e, new Point(x, y));
-
         } else {
             Enemie e = enemies.get(value);
             map.addEnemy(e, new Point(x, y));
@@ -123,21 +121,12 @@ public class Import extends Serialize {
                 sub = info[i].split("=");
                 path = (sub[1]);
             }
-            //System.out.println(info[i]);
         }
         Enemie e = new Enemie(type);
-
         if (!path.equals("")) {
             e = new Enemie(type, null);
         }
         enemies.put(value, e);
-
-
-
-
-
-
-
     }
 
     private void buildTexture(String line) {
@@ -155,7 +144,6 @@ public class Import extends Serialize {
                 sub = info[i].split("=");
                 f = sub[1];
             }
-            //System.out.println(info[i]);
         }
 
         if (value != -1 && f != null) {
@@ -168,25 +156,14 @@ public class Import extends Serialize {
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
-
-
         }
         System.out.println(value);
-
-
-
-
     }
 
     public void buildPlayer() {
         File f = getFile("Choose a Player", false);
         player = new Player();
-        //player = this.deSerialize(player.getClass(), f.getAbsolutePath());
         this.defaultPlayer = false;
-
-
-
-
     }
 
     private void buildSpot(String line) {
@@ -217,7 +194,6 @@ public class Import extends Serialize {
                 sub = info[i].split(":");
                 walkable = (Integer.parseInt(sub[1]) != 0);
             }
-            //System.out.println(info[i]);
         }
 
         if (number == -1) {
@@ -254,10 +230,7 @@ public class Import extends Serialize {
                 sub = info[i].split(":");
                 walkable = (Integer.parseInt(sub[1]) != 0);
             }
-            //System.out.println(info[i]);
         }
-
-
         Spot s = new Spot(textures.get(value), layer);
         if (!walkable) {
             s = new Spot(textures.get(value), walkable);
@@ -318,7 +291,6 @@ public class Import extends Serialize {
                 sub = info[i].split(":");
                 amount = Integer.parseInt(sub[1]);
             }
-            //System.out.println(info[i]);
         }
         if (value == -1) {
             Event evt = new Event(new Point(x2, y2));
@@ -351,11 +323,6 @@ public class Import extends Serialize {
             Event evt = events.get(value);
             map.addEvent(x, y, evt);
         }
-        //events.put(value, evt);
-
-
-
-
     }
 
     private void createEvent(String line) {
@@ -406,7 +373,6 @@ public class Import extends Serialize {
                 sub = info[i].split(":");
                 amount = Integer.parseInt(sub[1]);
             }
-            //System.out.println(info[i]);
         }
         Event evt = new Event(new Point(x, y));
         switch (type) {
@@ -432,13 +398,6 @@ public class Import extends Serialize {
             evt.addEventCount(amount);
         }
         events.put(value, evt);
-
-
-
-
-
-
-
     }
 
     private void buildItem(String line) {
@@ -461,19 +420,13 @@ public class Import extends Serialize {
                 sub = info[i].split("=");
                 path = (sub[1]);
             }
-            //System.out.println(info[i]);
         }
         Items item = new Items();
         if (value == -1) {
-            //item = this.deSerialize(item.getClass(), path);
         } else {
             item = items.get(value);
         }
         map.addItem(x, y, item);
-
-
-
-
     }
 
     private void createItem(String line) {
@@ -491,25 +444,13 @@ public class Import extends Serialize {
                 sub = info[i].split("=");
                 path = (sub[1]);
             }
-            //System.out.println(info[i]);
         }
         Items item = new Items();
-        //item = this.deSerialize(item.getClass(), path);
-
         items.put(value, item);
-
-
-
-
-
-
     }
 
     public Map buildMap() {
         getText(getFile("Select a Map", true));
-
-
-
         return map;
     }
 
@@ -546,7 +487,6 @@ public class Import extends Serialize {
                 width = Integer.parseInt(sub[1]);
                 height = Integer.parseInt(sub[2]);
             }
-            //System.out.println(info[i]);
         }
         if (defaultPlayer) {
             map = new Map();
@@ -563,7 +503,6 @@ public class Import extends Serialize {
         } else {
             map.setAllSpots(spots.get(number));
         }
-        //map.build();
     }
 
     private void getText(File f) {
@@ -574,7 +513,6 @@ public class Import extends Serialize {
         try {
             LinkedList<String> text = reader.read();
             String line;
-            //String info;
             for (int i = 0; i < text.size(); i++) {
                 line = text.get(i);
                 System.out.println(text.get(i));
@@ -614,59 +552,9 @@ public class Import extends Serialize {
                 if (line.startsWith(TEXTURE)) {
                     buildTexture(line.substring(1));
                 }
-
-
-
-
-
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         } catch (IOException ex) {
             Logger.getLogger(Import.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
-
-
-    }
-
-    @Override
-    public String toString() {
-        return null;
-    }
-
-    public boolean equals(Import object) {
-        return false;
-    }
-
-    @Override
-    public void destroy() {
-    }
-
-    @Override
-    public Import clone() {
-        return null;
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-
-        new Import().buildMap();
-
     }
 }

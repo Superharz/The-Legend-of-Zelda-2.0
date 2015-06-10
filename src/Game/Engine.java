@@ -25,8 +25,10 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 /**
+ * This is the main Engine It contains the actual Map and the Inventory of the
+ * PLayer It is responsible for all Key-Inputs and for the Save/Load of Maps
  *
- * @author Flo
+ * @author Florian Harz
  */
 public class Engine extends javax.swing.JFrame implements MapChange {
 
