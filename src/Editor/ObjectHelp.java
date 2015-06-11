@@ -14,27 +14,15 @@ public class ObjectHelp {
     public Point location;
     public int type;
     public Object obj;
-
+    /**
+     * Creates a Helper-Object with a Game-Object and it's Location on the Map
+     * @param location The Point of the Game-Object
+     * @param type The Type of the Game-Object
+     * @param obj The Game-Object
+     */
     public ObjectHelp(Point location, int type, Object obj) {
         this.location = location;
         this.type = type;
         this.obj = obj;
-    }
-
-    @Override
-    public String toString() {
-        return null;
-    }
-
-    public boolean equals(ObjectHelp object) {
-        return false;
-    }
-
-    public void destroy() {
-    }
-
-    @Override
-    public ObjectHelp clone() {
-        return null;
     }
 }

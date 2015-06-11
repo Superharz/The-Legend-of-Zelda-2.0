@@ -20,25 +20,18 @@ import java.awt.event.MouseEvent;
 public class MapEditor extends Game.Map {
 
     UnReDo unre;
-
+    /**
+     * Creates a new Map-Editor
+     */
     public MapEditor() {
         unre = new UnReDo();
     }
-
-    @Override
-    public String toString() {
-        return null;
-    }
-
-    public boolean equals(MapEditor object) {
-        return false;
-    }
-
-    @Override
-    public MapEditor clone() {
-        return null;
-    }
-
+    /**
+     * Takes a Game-Object and adds it to a given Point
+     * @param evt The Event containing the Mouse-Position
+     * @param obj The Game-Object to add to the Map
+     * @param type The type of the Game-Object
+     */
     public void click(MouseEvent evt, Object obj, int type) {
         ObjectHelp help = click(evt, obj, type, null);
         unre.clearRedo();
@@ -47,15 +40,21 @@ public class MapEditor extends Game.Map {
         }
 
     }
-
-    ObjectHelp click(MouseEvent evt, Object obj, int type, Point p) {
+    /**
+     * Adds the given Game-Object to the map at a given Point
+     * @param evt The Mouse-Event for the Point
+     * @param obj The Game-Object to add to the Map
+     * @param type The type of the Game-Object
+     * @param p The point for the Game-Object if the Undo/Redo function was used
+     * @return A Helper-Object that contains the previous Game-Object or null
+     */
+    private ObjectHelp click(MouseEvent evt, Object obj, int type, Point p) {
         Point s;
         if (p != null) {
             s = p;
         } else {
             s = getPoint(evt);
         }
-
         if (s == null) {
             return null;
         }
@@ -106,7 +105,9 @@ public class MapEditor extends Game.Map {
         }
         return help;
     }
-
+    /**
+     * Undo the last operation on the Map
+     */
     public void undo() {
         ObjectHelp help = unre.undo();
         if (help == null) {
@@ -119,6 +120,9 @@ public class MapEditor extends Game.Map {
         this.build();
     }
 
+    /**
+     * Redo the last operation on the Map
+     */
     public void redo() {
         ObjectHelp help = unre.redo();
         if (help == null) {
@@ -130,7 +134,11 @@ public class MapEditor extends Game.Map {
         }
         this.build();
     }
-
+    /**
+     * Converts the Mouse-Event into a valid Map-Spot location
+     * @param evt The Mouse-Event that contains the Point
+     * @return The Mouse-Point converted to Spots or null if it's Out-Of-Range
+     */
     private Point getPoint(MouseEvent evt) {
         Point p = evt.getPoint();
         int X = p.x, Y = p.y;
