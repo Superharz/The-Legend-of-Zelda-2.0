@@ -1,6 +1,7 @@
 package Editor.Costume;
 
 import Moveable.Enemies.Enemie;
+import Tools.Utils;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -26,7 +27,7 @@ public class NewEnemie extends javax.swing.JDialog {
     Enemie enemie;
 
     /**
-     * Creates new form NewSpot
+     * Creates a new NewSpot-Dialog
      */
     public NewEnemie(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -307,75 +308,122 @@ public class NewEnemie extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Lets you choose the Textures for an Enemy
+     * @param evt 
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         createImage();
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    /**
+     * Disposes this Dialog to cancel the Enemy-Creation
+     * @param evt 
+     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
-
+    /**
+     * Creates a new Enemy with the Information entered on this Dialog
+     * @param evt 
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        createItem();
+        createEnemie();
     }//GEN-LAST:event_jButton2ActionPerformed
-
+    /**
+     * Gets the Type of Move-Method selected by the user
+     * @param evt 
+     */
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         type = jComboBox1.getSelectedIndex();
         System.out.println("Type:" + type);
     }//GEN-LAST:event_jComboBox1ActionPerformed
-
+    /**
+     * Shows a JOptionPane which lets the user set the Basic-Stats of the Enemy
+     * @param evt 
+     */
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         JOptionPane.showMessageDialog(null, jPanel2);
     }//GEN-LAST:event_jButton5ActionPerformed
-
+    /**
+     * Clears the Text-Field when the user Focuses it
+     * @param evt 
+     */
     private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusGained
         jTextField1.setText("");
     }//GEN-LAST:event_jTextField1FocusGained
-
+    /**
+     * Clears the Text-Field when the user Focuses it
+     * @param evt 
+     */
     private void jTextField3FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField3FocusGained
         jTextField3.setText("");
     }//GEN-LAST:event_jTextField3FocusGained
-
+    /**
+     * Clears the Text-Field when the user Focuses it
+     * @param evt 
+     */
     private void jTextField4FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField4FocusGained
         jTextField4.setText("");
     }//GEN-LAST:event_jTextField4FocusGained
-
+    /**
+     * Clears the Text-Field when the user Focuses it
+     * @param evt 
+     */
     private void jTextField5FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField5FocusGained
         jTextField5.setText("");
     }//GEN-LAST:event_jTextField5FocusGained
-
+    /**
+     * Validates the Information written in this Text-Field
+     * Saves it as an Integer if it's valid
+     * Empties the Text-Field otherwise
+     * @param evt 
+     */
     private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
         String t = jTextField1.getText();
-        if (check(t)) {
+        if (Utils.check(t)) {
             live = Integer.parseInt(t);
         } else {
             jTextField1.setText("");
         }
     }//GEN-LAST:event_jTextField1KeyReleased
-
+    /**
+     * Validates the Information written in this Text-Field
+     * Saves it as an Integer if it's valid
+     * Empties the Text-Field otherwise
+     * @param evt 
+     */
     private void jTextField3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyReleased
         String t = jTextField3.getText();
-        if (check(t)) {
+        if (Utils.check(t)) {
             damage = Integer.parseInt(t);
         } else {
             jTextField3.setText("");
         }
 
     }//GEN-LAST:event_jTextField3KeyReleased
-
+    /**
+     * Validates the Information written in this Text-Field
+     * Saves it as an Integer if it's valid
+     * Empties the Text-Field otherwise
+     * @param evt 
+     */
     private void jTextField4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyReleased
         String t = jTextField4.getText();
-        if (check(t)) {
+        if (Utils.check(t)) {
             armor = Integer.parseInt(t);
         } else {
             jTextField4.setText("");
         }
     }//GEN-LAST:event_jTextField4KeyReleased
-
+    /**
+     * Validates the Information written in this Text-Field
+     * Saves it as an Integer if it's valid
+     * Empties the Text-Field otherwise
+     * @param evt 
+     */
     private void jTextField5KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyReleased
         String t = jTextField5.getText();
-        if (check(t)) {
+        if (Utils.check(t)) {
             speed = Integer.parseInt(t);
         } else {
             jTextField5.setText("");
@@ -405,22 +453,29 @@ public class NewEnemie extends javax.swing.JDialog {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
-
+    /**
+     * Lets the user select 4 Image-Files for the Enemy
+     * Creates one Image out of the 4 smaller Images for the Enemy
+     * Sets it as the Icon for the Image-Label
+     */
     public void createImage() {
         for (int i = 0; i < img.length; i++) {
             try {
-                File f = getFile("Choose Texture", "PNG-File  .png", "png");
-                if (f == null) {
+                File file = new Utils().getFile("Choose Texture", "PNG-File  .png", "png", f);
+                if (file == null) {
                     return;
                 }
-                img[i] = new ImageIcon(ImageIO.read(f));
+                img[i] = new ImageIcon(ImageIO.read(file));
 
             } catch (IOException ex) {
             }
         }
         Image.setIcon(imagesToImage());
     }
-
+    /**
+     * Converts 4 Images to one big one
+     * @return The big Image made out of 4 small ones
+     */
     private ImageIcon imagesToImage() {
         BufferedImage result = new BufferedImage(img[0].getIconWidth() * 2, img[0].getIconHeight() * 2, BufferedImage.TYPE_INT_ARGB);
         Graphics g = result.getGraphics();
@@ -431,42 +486,19 @@ public class NewEnemie extends javax.swing.JDialog {
         return new ImageIcon(result);
     }
 
-    private boolean check(String t) {
-        if (t.equals("")) {
-            return false;
-        }
-        try {
-            Integer.parseInt(t);
-            return true;
-        } catch (Exception ex) {
-            return false;
-        }
-    }
-
-    private File getFile(String selection, String description, String extension) {
-        JFileChooser chooser;
-        if (f == null) {
-            URL u = (this.getClass().getResource("/pictures"));
-            chooser = new JFileChooser(u.getPath());
-        } else {
-            chooser = new JFileChooser(f);
-        }
-        FileFilter filter;
-        filter = new FileNameExtensionFilter(description, extension);
-        chooser.addChoosableFileFilter(filter);
-        int choosed = chooser.showDialog(null, selection);
-        if (choosed != JFileChooser.CANCEL_OPTION) {
-            f = chooser.getCurrentDirectory();
-        }
-        return chooser.getSelectedFile();
-    }
-
-    private void createItem() {
+    /**
+     * Creates the Enemy with all the Information entered by the User
+     * Makes the Form invisible to signal the completion of the Enemy
+     */
+    private void createEnemie() {
         enemie = new Enemie(type, img);
         enemie.setStats(live, damage, speed, armor);
         this.setVisible(false);
     }
-
+    /**
+     * Returns the created Enemy
+     * @return The Enemy made by this Dialog
+     */
     public Enemie getEnemie() {
         return enemie;
     }

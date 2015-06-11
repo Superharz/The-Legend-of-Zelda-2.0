@@ -1,17 +1,9 @@
 package Editor.Costume;
 
-import Editor.GameMaker;
 import Game.Spot;
+import Tools.Utils;
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * This is the Dialog to create a Costume-Spot
@@ -82,8 +74,8 @@ public class NewSpot extends javax.swing.JDialog {
             }
         });
         Text.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                TextKeyPressed(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TextKeyReleased(evt);
             }
         });
 
@@ -199,7 +191,7 @@ public class NewSpot extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 299, Short.MAX_VALUE)
         );
 
         pack();
@@ -210,7 +202,11 @@ public class NewSpot extends javax.swing.JDialog {
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        createImage();
+        ImageIcon i = new Utils().createImage(f);
+        if (i != null) {
+            Image.setIcon(i);
+            this.img = i;
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
@@ -220,21 +216,6 @@ public class NewSpot extends javax.swing.JDialog {
     private void TextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TextMouseClicked
         Text.setText("");
     }//GEN-LAST:event_TextMouseClicked
-
-    private void TextKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextKeyPressed
-        if (Text.getText().equals("")) {
-            return;
-        }
-        if (!check()) {
-            Text.setText("");
-        } else {
-            height = Integer.parseInt(Text.getText());
-            if (stairs) {
-                height *= -1;
-            }
-            System.out.println(height);
-        }
-    }//GEN-LAST:event_TextKeyPressed
 
     private void TextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TextFocusGained
         Text.setText("");
@@ -251,6 +232,22 @@ public class NewSpot extends javax.swing.JDialog {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         createSpot();
     }//GEN-LAST:event_jButton2ActionPerformed
+    
+    private void TextKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextKeyReleased
+        if (Text.getText().equals("")) {
+            return;
+        }
+        if (!Utils.check(Text.getText())) {
+            Text.setText("");
+        } else {
+            height = Integer.parseInt(Text.getText());
+            if (stairs) {
+                height *= -1;
+            }
+            System.out.println(height);
+        }
+    }//GEN-LAST:event_TextKeyReleased
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Image;
     private javax.swing.JTextField Text;
@@ -267,49 +264,10 @@ public class NewSpot extends javax.swing.JDialog {
     private javax.swing.JSeparator jSeparator3;
     // End of variables declaration//GEN-END:variables
 
-    public void createImage() {
-        ImageIcon img;
-        try {
-            File f = getFile("Choose Texture", "PNG-File  .png", "png");
-            if (f == null) {
-                return;
-            }
-            img = new ImageIcon(ImageIO.read(f));
-            Image.setIcon(img);
-            this.img = img;
-        } catch (IOException ex) {
-            Logger.getLogger(GameMaker.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    private File getFile(String selection, String description, String extension) {
-        JFileChooser chooser;
-        if (f == null) {
-            URL u = (this.getClass().getResource("/pictures"));
-            chooser = new JFileChooser(u.getPath());
-        } else {
-            chooser = new JFileChooser(f);
-        }
-        FileFilter filter;
-        filter = new FileNameExtensionFilter(description, extension);
-        chooser.addChoosableFileFilter(filter);
-        int choosed = chooser.showDialog(null, selection);
-        return chooser.getSelectedFile();
-    }
-
-    private boolean check() {
-        String t = Text.getText();
-        if (t.equals("")) {
-            return true;
-        }
-        try {
-            Integer.parseInt(t);
-            return true;
-        } catch (Exception ex) {
-            return false;
-        }
-    }
-
+    /**
+     * Creates the Spot with all the Information entered by the User
+     * Makes the Form invisible to signal the completion of the Spot
+     */
     private void createSpot() {
         if (!walkable || height == 0) {
             s = new Spot(img, walkable);
@@ -318,7 +276,10 @@ public class NewSpot extends javax.swing.JDialog {
         }
         this.setVisible(false);
     }
-
+    /**
+     * Returns the created Spot
+     * @return The Spot made by this Dialog
+     */
     public Spot getSpot() {
         return s;
     }

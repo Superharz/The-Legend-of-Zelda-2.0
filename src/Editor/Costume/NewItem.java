@@ -1,6 +1,7 @@
 package Editor.Costume;
 
 import Inventory.Items;
+import Tools.Utils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -399,31 +400,56 @@ public class NewItem extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Toggles whether you can use the item 
+     * @param evt 
+     */
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
         useable = !useable;
     }//GEN-LAST:event_jCheckBox1ActionPerformed
-
+    /**
+     * Lest the user chose an Image for the Item
+     * @param evt 
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        createImage();
+        ImageIcon i = new Utils().createImage(f);
+        if (i != null) {
+            Image.setIcon(i);
+            this.img = i;
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    /**
+     * Empties this Text-Box on button click
+     * @param evt 
+     */
     private void TextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TextMouseClicked
         Text.setText("");
     }//GEN-LAST:event_TextMouseClicked
-
+    /**
+     * Empties this Text-Box on focus gaining
+     * @param evt 
+     */
     private void TextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TextFocusGained
         Text.setText("");
     }//GEN-LAST:event_TextFocusGained
-
+    /**
+     * Updates this Text-Box on focus lost
+     * @param evt 
+     */
     private void TextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TextFocusLost
         Text.setText("Name:   " + name);
     }//GEN-LAST:event_TextFocusLost
-
+    /**
+     * Closes the Dialog to cancel the Item-Creation
+     * @param evt 
+     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
-
+    /**
+     * Creates the Item with
+     * @param evt 
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         createItem();
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -489,43 +515,63 @@ public class NewItem extends javax.swing.JDialog {
     private void jTextField5FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField5FocusGained
         jTextField5.setText("");
     }//GEN-LAST:event_jTextField5FocusGained
-
+    /**
+     * Validates the Information written in this Text-Field
+     * Saves it as an Integer if it's valid
+     * Empties the Text-Field otherwise
+     * @param evt 
+     */
     private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
         String t = jTextField1.getText();
-        if (check(t)) {
+        if (Utils.check(t)) {
             live = Integer.parseInt(t);
         } else {
             jTextField1.setText("");
         }
     }//GEN-LAST:event_jTextField1KeyReleased
-
+    /**
+     * Validates the Information written in this Text-Field
+     * Saves it as an Integer if it's valid
+     * Empties the Text-Field otherwise
+     * @param evt 
+     */
     private void jTextField3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyReleased
         String t = jTextField3.getText();
-        if (check(t)) {
+        if (Utils.check(t)) {
             damage = Integer.parseInt(t);
         } else {
             jTextField3.setText("");
         }
     }//GEN-LAST:event_jTextField3KeyReleased
-
+    /**
+     * Validates the Information written in this Text-Field
+     * Saves it as an Integer if it's valid
+     * Empties the Text-Field otherwise
+     * @param evt 
+     */
     private void jTextField4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyReleased
         String t = jTextField4.getText();
-        if (check(t)) {
+        if (Utils.check(t)) {
             armor = Integer.parseInt(t);
         } else {
             jTextField4.setText("");
         }
     }//GEN-LAST:event_jTextField4KeyReleased
-
+    /**
+     * Validates the Information written in this Text-Field
+     * Saves it as an Integer if it's valid
+     * Empties the Text-Field otherwise
+     * @param evt 
+     */
     private void jTextField5KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyReleased
         String t = jTextField5.getText();
-        if (check(t)) {
+        if (Utils.check(t)) {
             speed = Integer.parseInt(t);
         } else {
             jTextField5.setText("");
         }
     }//GEN-LAST:event_jTextField5KeyReleased
-
+    
     private void TextKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextKeyReleased
         if (Text.getText().equals("")) {
             return;
@@ -566,47 +612,10 @@ public class NewItem extends javax.swing.JDialog {
     private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
 
-    public void createImage() {
-        ImageIcon img;
-        try {
-            File f = getFile("Choose Texture", "PNG-File  .png", "png");
-            if (f == null) {
-                return;
-            }
-            img = new ImageIcon(ImageIO.read(f));
-            Image.setIcon(img);
-            this.img = img;
-        } catch (IOException ex) {
-        }
-    }
-
-    private boolean check(String t) {
-        if (t.equals("")) {
-            return false;
-        }
-        try {
-            Integer.parseInt(t);
-            return true;
-        } catch (Exception ex) {
-            return false;
-        }
-    }
-
-    private File getFile(String selection, String description, String extension) {
-        JFileChooser chooser;
-        if (f == null) {
-            URL u = (this.getClass().getResource("/pictures"));
-            chooser = new JFileChooser(u.getPath());
-        } else {
-            chooser = new JFileChooser(f);
-        }
-        FileFilter filter;
-        filter = new FileNameExtensionFilter(description, extension);
-        chooser.addChoosableFileFilter(filter);
-        int choosed = chooser.showDialog(null, selection);
-        return chooser.getSelectedFile();
-    }
-
+    /**
+     * Creates the Event with all the Information entered by the User
+     * Makes the Form invisible to signal the completion of the Event
+     */
     private void createItem() {
         item = new Items(typeName, name, img, useable);
         for (int i = 0; i < stats.size(); i++) {
@@ -627,7 +636,10 @@ public class NewItem extends javax.swing.JDialog {
         item.setDescription(description);
         this.setVisible(false);
     }
-
+    /**
+     * Returns the created Event
+     * @return The Event made by this Dialog
+     */
     public Items getItem() {
         return item;
     }

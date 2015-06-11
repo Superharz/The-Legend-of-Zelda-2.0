@@ -4,9 +4,9 @@ import Editor.Content;
 import Events.Event;
 import Inventory.Items;
 import Moveable.Enemies.Enemie;
+import Tools.Utils;
 import java.awt.Point;
 import java.util.LinkedList;
-import java.util.Scanner;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -29,7 +29,7 @@ public class NewEvent extends javax.swing.JDialog {
     ImageIcon img;
 
     /**
-     * Creates new form NewSpot
+     * Creates a NewSpot Dialog
      */
     public NewEvent(java.awt.Frame parent, boolean modal, Content<Items> items, Content<Enemie> enemies) {
         super(parent, modal);
@@ -229,23 +229,40 @@ public class NewEvent extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Empties this TextBox's Input on the gain of its Focus
+     * @param evt 
+     */
     private void CountFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_CountFocusGained
         Count.setText("");
     }//GEN-LAST:event_CountFocusGained
-
+    /**
+     * Updates the Count-TextBox on the lost of its focus with the Information
+     * that the User put into it
+     * @param evt 
+     */
     private void CountFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_CountFocusLost
         Count.setText("Count:   " + count);
     }//GEN-LAST:event_CountFocusLost
-
+    /**
+     * Disposes this Dialog to cancel the creation of a nEvent
+     * @param evt 
+     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
-
+    /**
+     * Creates the Event with the Information provided by the User
+     * @param evt 
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         createEvent();
     }//GEN-LAST:event_jButton2ActionPerformed
-
+    /**
+     * Updates the Type of Event selected by the User
+     * Clears the Info-pane
+     * @param evt 
+     */
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         if (type == jComboBox1.getSelectedIndex()) {
             return;
@@ -255,17 +272,23 @@ public class NewEvent extends javax.swing.JDialog {
         Info.setText("");
         System.out.println("Type: " + type);
     }//GEN-LAST:event_jComboBox1ActionPerformed
-
+    /**
+     * Displays the User a JOptionPane with a Message depending on what kind of
+     * Event he wants to create
+     * Lets the user input the Information specified by the Message
+     * Validates the Input and saves it in the appropriate field
+     * Displays the Information in the Info-Pane
+     * @param evt 
+     */
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         String str;
         String[] lines;
         String[] line;
-        int x = -1, y = -1;
+        int x, y;
         int choosed;
         switch (type) {
             case Event.TELEPORT:
                 str = "Set Coordinates (In spots): \nX: \nY: ";
-
                 destiny = destination(str);
                 Info.setText("Teleport: \n  X: " + destiny.x + "\n  Y: " + destiny.y);
                 System.out.println(destiny);
@@ -282,7 +305,7 @@ public class NewEvent extends javax.swing.JDialog {
                 for (int i = 1; i < 3; i++) {
                     line = lines[i].split(" ");
                     String l = line[1].trim();
-                    if (check(l)) {
+                    if (Utils.check(l)) {
                         if (i == 1) {
                             x = Integer.parseInt(l);
                         } else {
@@ -330,7 +353,7 @@ public class NewEvent extends javax.swing.JDialog {
                 lines = str.split("\n");
                 line = lines[1].split(" ");
                 String l = line[1].trim();
-                if (check(l)) {
+                if (Utils.check(l)) {
                     heal = Integer.parseInt(l);
                 }
                 Info.setText("Heal: \n  Heal Amount: " + heal);
@@ -350,7 +373,10 @@ public class NewEvent extends javax.swing.JDialog {
         }
 
     }//GEN-LAST:event_jButton4ActionPerformed
-
+    /**
+     * Toggles the visibility of the Count and CountLabel
+     * @param evt 
+     */
     private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
         limitation = !limitation;
         if (limitation) {
@@ -361,13 +387,18 @@ public class NewEvent extends javax.swing.JDialog {
             CountLabel.setVisible(false);
         }
     }//GEN-LAST:event_jCheckBox2ActionPerformed
-
+    /**
+     * Validates the Information written in this Text-Field
+     * Saves it as an Integer if it's valid
+     * Empties the Text-Field otherwise
+     * @param evt 
+     */
     private void CountKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CountKeyReleased
         String number = Count.getText();
         if (number.equals("")) {
             return;
         }
-        if (check(number)) {
+        if (Utils.check(number)) {
             count = Integer.parseInt(number);
             System.out.println("Count: " + count);
         } else {
@@ -392,7 +423,13 @@ public class NewEvent extends javax.swing.JDialog {
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
-
+    /**
+     * Takes a String for the text that will be displayed to the User
+     * Lets the user chose the X and Y Coordinates for the Destination
+     * Converts it to a Point and return these
+     * @param description The String for the Message to the User
+     * @return A Point with the X and Y Coordinates
+     */
     private Point destination(String description) {
         String str;
         String[] lines;
@@ -408,7 +445,7 @@ public class NewEvent extends javax.swing.JDialog {
             line = lines[i].split(" ");
             String l = line[1].trim();
             System.out.println(l);
-            if (check(l)) {
+            if (Utils.check(l)) {
                 if (i == 1) {
                     x = Integer.parseInt(l);
                 } else {
@@ -419,18 +456,10 @@ public class NewEvent extends javax.swing.JDialog {
         return new Point(x, y);
     }
 
-    private boolean check(String t) {
-        if (t.equals("")) {
-            return false;
-        }
-        try {
-            Integer.parseInt(t);
-            return true;
-        } catch (Exception ex) {
-            return false;
-        }
-    }
-
+    /**
+     * Creates the Event with all the Information entered by the User
+     * Makes the Form invisible to signal the completion of the Event
+     */
     private void createEvent() {
         switch (type) {
             case Event.TELEPORT:
@@ -459,7 +488,10 @@ public class NewEvent extends javax.swing.JDialog {
         enemies = null;
         this.setVisible(false);
     }
-
+    /**
+     * Returns the created Event
+     * @return The Event made by this Dialog
+     */
     public Event getEvent() {
         return event;
     }
