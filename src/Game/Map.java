@@ -54,7 +54,7 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
         enemies = new LinkedList();
         arrows = new LinkedList<Arrow>();
     }
-
+    @Deprecated
     public Map(Player player) {
         this.player = player;
         initComponents();
@@ -230,16 +230,20 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
      * @param x
      * @param y
      */
-    public Enemie addEnemy(Enemie e, int x, int y) {
+    public Enemie addEnemy(Enemie e, int x, int y, boolean start) {
         e = e.clone();
         enemies.add(e);
         this.add(e);
         e.addListener(this);
         e.setBounds(x, y, e.getWidth(), e.getWidth());
         e.setUP(spots);
-        e.startMove();
+        if (start)
+            e.startMove();
         return e;
     }
+     public Enemie addEnemy(Enemie e, int x, int y){
+         return addEnemy(e, x, y, true);
+     }
 
     /**
      * Point in spots
@@ -258,10 +262,7 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
      * @param p
      */
     public void addEnemy(Enemie e, Point p, boolean start) {
-        e = addEnemy(e, p);
-        if (start) {
-            e.startMove();
-        }
+        e = addEnemy(e, toPixel(p.x), toPixel(p.y),start);
     }
 
     public void addEvent(int x, int y, Event evt) {

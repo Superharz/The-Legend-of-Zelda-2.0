@@ -9,6 +9,9 @@ import javax.swing.ImageIcon;
  * @author Florian Harz
  */
 public interface Image {
-
+    /**
+     * Method to get an ImageIcon for a Game-Object
+     * @return The ImageIcon of the Game-Object
+     */
     public ImageIcon getImageIcon();
 }

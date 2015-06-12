@@ -19,7 +19,7 @@ public class NewSpot extends javax.swing.JDialog {
     File f;
 
     /**
-     * Creates new form NewSpot
+     * Creates a new Costume-Spot Dialog
      */
     public NewSpot(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -196,11 +196,17 @@ public class NewSpot extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Toggles whether you can walk on this Spot
+     * @param evt 
+     */
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
         walkable = !walkable;
     }//GEN-LAST:event_jCheckBox1ActionPerformed
-
+    /**
+     * Lets the user chose an image for this Spot
+     * @param evt 
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         ImageIcon i = new Utils().createImage(f);
         if (i != null) {
@@ -208,31 +214,53 @@ public class NewSpot extends javax.swing.JDialog {
             this.img = i;
         }
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    /**
+     * Toggles whether this Spot is a Stair
+     * @param evt 
+     */
     private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
         stairs = !stairs;
     }//GEN-LAST:event_jCheckBox2ActionPerformed
-
+    /**
+     * Empties this Text-Box on Mouse-Click
+     * @param evt 
+     */
     private void TextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TextMouseClicked
         Text.setText("");
     }//GEN-LAST:event_TextMouseClicked
-
+    /**
+     * Empties this Text-Box when it gains the Focus
+     * @param evt 
+     */
     private void TextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TextFocusGained
         Text.setText("");
     }//GEN-LAST:event_TextFocusGained
-
+    /**
+     * Updates this Text-Box when it gains the Focus
+     * @param evt 
+     */
     private void TextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TextFocusLost
         Text.setText("Height:   " + height);
     }//GEN-LAST:event_TextFocusLost
-
+    /**
+     * Closes this Dialog to cancel the Spot-Creation
+     * @param evt 
+     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
-
+    /**
+     * Creates the Spot wit hall the Information provided by the User
+     * @param evt 
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         createSpot();
     }//GEN-LAST:event_jButton2ActionPerformed
-    
+        /**
+         * Lets the user set the Height of this Spot
+         * Empties it on False-Input
+         * @param evt 
+         */
     private void TextKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextKeyReleased
         if (Text.getText().equals("")) {
             return;

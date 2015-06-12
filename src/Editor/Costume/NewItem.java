@@ -30,7 +30,7 @@ public class NewItem extends javax.swing.JDialog {
     File f;
 
     /**
-     * Creates new form NewSpot
+     * Creates a new costume Item Dialog
      */
     public NewItem(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -453,7 +453,10 @@ public class NewItem extends javax.swing.JDialog {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         createItem();
     }//GEN-LAST:event_jButton2ActionPerformed
-
+    /**
+     * Lets the User set Costume-Stats for the Item in a Text-Box
+     * @param evt 
+     */
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         JOptionPane.showMessageDialog(null, Stats);
         if (!jTextArea1.getText().equals("")) {
@@ -470,12 +473,18 @@ public class NewItem extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_jButton6ActionPerformed
-
+    /**
+     * Sets the Type for the Item, chosen in a JComboBox
+     * @param evt 
+     */
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         typeName = jComboBox1.getSelectedItem().toString();
         System.out.println(typeName);
     }//GEN-LAST:event_jComboBox1ActionPerformed
-
+    /**
+     * Lets the User write a Description-Text for the Item into a Text-Box
+     * @param evt 
+     */
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         JOptionPane.showMessageDialog(null, jTextArea1);
         if (!jTextArea1.getText().equals("")) {
@@ -483,11 +492,17 @@ public class NewItem extends javax.swing.JDialog {
             System.out.println(description);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
-
+    /**
+     * Updates the Text of this Text-Box when the Focus is lost
+     * @param evt 
+     */
     private void jTextArea1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea1FocusGained
         jTextArea1.setText(description);
     }//GEN-LAST:event_jTextArea1FocusGained
-
+    /**
+     * Updates the Text-Box to its previous Text
+     * @param evt 
+     */
     private void StatsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_StatsFocusGained
         String text = "";
         for (int i = 0; i < stats.size(); i++) {
@@ -495,23 +510,38 @@ public class NewItem extends javax.swing.JDialog {
         }
         Stats.setText(text);
     }//GEN-LAST:event_StatsFocusGained
-
+    /**
+     * Lets the User set Basic-Stats (Health, Damage, etc.)
+     * @param evt 
+     */
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         JOptionPane.showMessageDialog(null, jPanel2);
     }//GEN-LAST:event_jButton5ActionPerformed
-
+    /**
+     * Empties this Text-Field when it gains the Focus
+     * @param evt 
+     */
     private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusGained
         jTextField1.setText("");
     }//GEN-LAST:event_jTextField1FocusGained
-
+    /**
+     * Empties this Text-Field when it gains the Focus
+     * @param evt 
+     */
     private void jTextField3FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField3FocusGained
         jTextField3.setText("");
     }//GEN-LAST:event_jTextField3FocusGained
-
+    /**
+     * Empties this Text-Field when it gains the Focus
+     * @param evt 
+     */
     private void jTextField4FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField4FocusGained
         jTextField4.setText("");
     }//GEN-LAST:event_jTextField4FocusGained
-
+    /**
+     * Empties this Text-Field when it gains the Focus
+     * @param evt 
+     */
     private void jTextField5FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField5FocusGained
         jTextField5.setText("");
     }//GEN-LAST:event_jTextField5FocusGained
@@ -571,11 +601,12 @@ public class NewItem extends javax.swing.JDialog {
             jTextField5.setText("");
         }
     }//GEN-LAST:event_jTextField5KeyReleased
-    
+        /**
+         * Sets the Name of the Item, chosen by the User
+         * @param evt 
+         */
     private void TextKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextKeyReleased
-        if (Text.getText().equals("")) {
-            return;
-        } else {
+        if (!Text.getText().equals("")) {
             name = Text.getText();
             System.out.println(name);
         }
@@ -613,8 +644,8 @@ public class NewItem extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     /**
-     * Creates the Event with all the Information entered by the User
-     * Makes the Form invisible to signal the completion of the Event
+     * Creates the Item with all the Information entered by the User
+     * Makes the Form invisible to signal the completion of the Item
      */
     private void createItem() {
         item = new Items(typeName, name, img, useable);
@@ -637,8 +668,8 @@ public class NewItem extends javax.swing.JDialog {
         this.setVisible(false);
     }
     /**
-     * Returns the created Event
-     * @return The Event made by this Dialog
+     * Returns the created Item
+     * @return The Item made by this Dialog
      */
     public Items getItem() {
         return item;

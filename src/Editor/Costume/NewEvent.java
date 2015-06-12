@@ -292,7 +292,6 @@ public class NewEvent extends javax.swing.JDialog {
                 destiny = destination(str);
                 Info.setText("Teleport: \n  X: " + destiny.x + "\n  Y: " + destiny.y);
                 System.out.println(destiny);
-                ;
                 break;
             case Event.MAPTELEPORT:
                 str = "Set Coordinates (In spots): \nX: \nY: \nSet MapName: \nMapName: ";
@@ -319,7 +318,6 @@ public class NewEvent extends javax.swing.JDialog {
                 Info.setText("Teleport: \n  X: " + destiny.x + "\n  Y: " + destiny.y
                         + "\nMapName: \n  " + mapName);
                 System.out.println(destiny + " | " + mapName);
-                ;
                 break;
             case Event.SPAWN:
                 choosed = JOptionPane.showConfirmDialog(null, enemies, "Choose an Enemie", JOptionPane.OK_CANCEL_OPTION);
@@ -331,7 +329,6 @@ public class NewEvent extends javax.swing.JDialog {
                 str = "Set Coordinates (In spots): \nX: \nY: ";
                 destiny = destination(str);
                 Info.setText("Spawn at: \n  X: " + destiny.x + "\n  Y: " + destiny.y);
-                ;
                 break;
             case Event.ITEM:
                 choosed = JOptionPane.showConfirmDialog(null, items, "Choose an Item", JOptionPane.OK_CANCEL_OPTION);
@@ -343,7 +340,6 @@ public class NewEvent extends javax.swing.JDialog {
                 str = "Set Coordinates (In spots): \nX: \nY: ";
                 destiny = destination(str);
                 Info.setText("Spawn at: \n  X: " + destiny.x + "\n  Y: " + destiny.y);
-                ;
                 break;
             case Event.HEAL:
                 str = "Set Heal Amount (Integer): \nAmount: ";
@@ -358,7 +354,6 @@ public class NewEvent extends javax.swing.JDialog {
                 }
                 Info.setText("Heal: \n  Heal Amount: " + heal);
                 System.out.println("Heal: " + heal);
-                ;
                 break;
             case Event.TEXT:
                 str = "Set Text: \n";
@@ -368,7 +363,6 @@ public class NewEvent extends javax.swing.JDialog {
                 text = str.replace("Set Text: \n", "");
                 Info.setText("Text: \n" + text);
                 System.out.println(text);
-                ;
                 break;
         }
 

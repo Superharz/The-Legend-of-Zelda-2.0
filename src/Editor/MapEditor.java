@@ -66,19 +66,16 @@ public class MapEditor extends Game.Map {
                 help = new ObjectHelp(s, type, this.getSpot(s.x, s.y));
                 this.addSpot(spot, s.x, s.y);
                 this.build();
-                ;
                 break;
             case ITEMS:
                 System.out.println("Item");
                 if (obj == null) {
-
                     Items i = this.removeItem(s.x, s.y);
                     return new ObjectHelp(s, type, i);
                 }
                 Items item = (Items) obj;
                 this.addItem(s.x, s.y, item);
                 this.build();
-                ;
                 break;
             case EVENTS:
                 System.out.println("Event");
@@ -89,7 +86,6 @@ public class MapEditor extends Game.Map {
                 Event event = (Event) obj;
                 this.addEvent(s.x, s.y, event);
                 this.build();
-                ;
                 break;
             case ENEMIES:
                 System.out.println("Enemie");
@@ -100,7 +96,6 @@ public class MapEditor extends Game.Map {
                 Enemie e = (Enemie) obj;
                 this.addEnemy(e, s, false);
                 this.build();
-                ;
                 break;
         }
         return help;

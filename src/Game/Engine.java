@@ -39,7 +39,9 @@ public class Engine extends javax.swing.JFrame implements MapChange {
     File original, save;
 
     /**
-     * Creates new form Engine
+     * This is a Test-Method for a Costume-Game which has been used in the early
+     * States of the Creation of this Program, it still works
+     * @deprecated 
      */
     public Engine() {
         map1 = new Game.Map();
@@ -108,20 +110,21 @@ public class Engine extends javax.swing.JFrame implements MapChange {
         }
         map1.requestFocus();
     }
-
+    @Deprecated
     public Engine(Map map1) {
         this.map1 = map1;
         map1.addListener(this);
         map1.reUpdate();
-
         initComponents();
-
         map1.build();
         map1.requestFocus();
-
-
     }
-
+    /**
+     * Loads a Game and sets the Game-Paths
+     * @param p The Player of this Game
+     * @param original The Path for the Original-Maps
+     * @param save The Path for the Save-Maps
+     */
     public Engine(Player p, File original, File save) {
         this.original = original;
         this.save = save;
@@ -142,7 +145,11 @@ public class Engine extends javax.swing.JFrame implements MapChange {
         HUT.setSize(map1.getDimension());
         HUT.setPreferredSize(map1.getDimension());
     }
-
+    /**
+     * Used by the Editor for temporary Testing of a Map
+     * Loads a Map and uses a Default-Player
+     * @param file 
+     */
     public Engine(String file) {
         Map temp = Serialize.xStreamIn(Map.class, file);
         map1 = temp;
@@ -214,7 +221,10 @@ public class Engine extends javax.swing.JFrame implements MapChange {
 
         pack();
     }// </editor-fold>                        
-
+    /**
+     * This Method handles all the IO-Key Input 
+     * @param evt The Event with the pressed Key
+     */
     private void formKeyTyped(java.awt.event.KeyEvent evt) {
         if (!move) {
             move = true;
@@ -242,7 +252,10 @@ public class Engine extends javax.swing.JFrame implements MapChange {
             }
         }
     }
-
+    /**
+     * Saves the actual Map at it actual State
+     * Pauses the Game for Saving but resumes it after
+     */
     public void save() {
         map1.play(false);
         map1.releaseEvents();
@@ -250,7 +263,10 @@ public class Engine extends javax.swing.JFrame implements MapChange {
         map1.addListener(this);
         map1.play(true);
     }
-
+    /**
+     * Tries to resize all the Containers when the Frame resizes
+     * @param evt 
+     */
     private void formComponentResized(ComponentEvent evt) {
         if (i != null) {
             i.setBounds(0, 0, this.getWidth(), this.getHeight());
@@ -261,18 +277,23 @@ public class Engine extends javax.swing.JFrame implements MapChange {
         map1.repaint();
         map1.build();
     }
-
+    
     private void formKeyReleased(java.awt.event.KeyEvent evt) {
         map1.getplayer().stop();
         move = false;
     }
-
+    /**
+     * Shots an Arrow when the User clicks his Mouse
+     * @param evt 
+     */
     private void map1MousePressed(java.awt.event.MouseEvent evt) {
         map1.playerShoot();
     }
 
     /**
+     * Starts the old test Version of the Game
      * @param args the command line arguments
+     * @deprecated 
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -311,7 +332,11 @@ public class Engine extends javax.swing.JFrame implements MapChange {
     private Game.Map map1;
     private javax.swing.JPanel HUT;
     // End of variables declaration                   
-
+    /**
+     * Toggles between the Game-Menu and the actual Map
+     * Pauses the Game for opening the Menu
+     * Resumes the Game on returning to the Map
+     */
     private void menu() {
         if (i == null) {
             i = map1.getInventory();
@@ -336,7 +361,13 @@ public class Engine extends javax.swing.JFrame implements MapChange {
             map1.play(true);
         }
     }
-
+    /**
+     * Changes the actual Map to the new Map provided
+     * Loads a Original-Map if the Map was never Used
+     * Loads a Save-Map if a Save of this Map exists
+     * @param destination The Point for the Player to appear on the new Map 
+     * @param newMap The Name of the new Map
+     */
     @Override
     public void mapChange(Point destination, String newMap) {
         Player p = map1.getplayer();
@@ -345,7 +376,6 @@ public class Engine extends javax.swing.JFrame implements MapChange {
         System.gc();
         map1 = null;
         File f = new File(save.getPath() + "/" + newMap + ".she");
-
         if (!f.exists()) {
             f = new File(original.getPath() + "/" + newMap + ".she");
         }
@@ -362,18 +392,24 @@ public class Engine extends javax.swing.JFrame implements MapChange {
         formComponentResized(null);
         currentMap = newMap;
     }
-
+    /**
+     * Re-Initializes all the Events and Layouts for the Containers of this Game
+     * Used on switching Maps
+     */
     public void secondaryInit() {
         map1.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 formKeyReleased(evt);
             }
 
+            @Override
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 formKeyTyped(evt);
             }
         });
         map1.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 map1MousePressed(evt);
             }
@@ -386,8 +422,6 @@ public class Engine extends javax.swing.JFrame implements MapChange {
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(map1, javax.swing.GroupLayout.PREFERRED_SIZE, map1.getDimension().height, javax.swing.GroupLayout.PREFERRED_SIZE));
-
         pack();
-
     }
 }

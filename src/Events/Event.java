@@ -36,64 +36,96 @@ public class Event implements Serializable, Image {
     private int eventCount = NOCOUNT;
     private int count;
     JLabel label;
-
+    @Deprecated
     public Event(Point destiny) {
         this(destiny, "");
     }
-
+    /**
+     * Creates a new Teleport-Event which Teleports the User
+     * @param destiny The Point of Destination
+     * @param mapName The Map of Destination, null if it's the same Map
+     */
     public Event(Point destiny, String mapName) {
         this.destiny = destiny;
         this.mapName = mapName;
         eventType = TELEPORT;
     }
-
+    /**
+     * Creates a new Text-Event which Displays a Text to the User
+     * @param text The Text to display the User
+     */
     public Event(String text) {
         this.text = text;
         eventType = TEXT;
     }
-
+    /**
+     * Creates a new Heal-Event which Heals th user
+     * @param healAmount The Amount of Health-Points to heal the User
+     */
     public Event(int healAmount) {
         this.healAmount = healAmount;
         eventType = HEAL;
     }
-
+    /**
+     * Creates a new Enemy-Event which Spawns an Enemy at a certain Point
+     * @param destiny The Destination for the Enemy to spawn
+     * @param e The Enemy to Spawn
+     */
     public Event(Point destiny, Enemie e) {
         this.destiny = destiny;
         this.e = e;
         eventType = SPAWN;
     }
-
+    /**
+     * Creates a new Item-Event which Spawns an Item at a certain Point
+     * @param destiny The Destination for the Item to spawn
+     * @param item The Item to Spawn
+     */
     public Event(Point destiny, Items item) {
         this.destiny = destiny;
         this.item = item;
         eventType = ITEM;
     }
-
+    /**
+     * Sets a Counter for this Event, how often it can be used
+     * @param eventCount An Integer for the Amount this Event can be used
+     */
     public void addEventCount(int eventCount) {
         this.eventCount = eventCount;
         count = 0;
     }
-
+    /**
+     * Adds a Listener to this Event which will activate it
+     * @param toAdd The Listener to add to this Event
+     */
     public void addListener(Events toAdd) {
         listeners.add(toAdd);
     }
-
+    /**
+     * Removes all the Listeners linked to this Event 
+     */
     public void resetListener() {
         listeners.clear();
     }
-
+    /**
+     * Returns the Type of this Event
+     * @return The Constant for this Events Type 
+     */
     public int getEventType() {
         return eventType;
     }
-
+    @Deprecated
     public void setJLabel(JLabel label) {
         this.label = label;
     }
-
+    @Deprecated
     public JLabel getJLabel() {
         return label;
     }
-
+    /**
+     * Activates this Event and counts down the Event-Count
+     * @return True if the Event can be still used one or more Times
+     */
     public boolean callEvent() {
         switch (eventType) {
             case MAPTELEPORT:
@@ -117,13 +149,15 @@ public class Event implements Serializable, Image {
         }
         if (eventCount != NOCOUNT) {
             count++;
-            if (count == eventCount) {
+            if (count >= eventCount) {
                 return false;
             }
         }
         return true;
     }
-
+    /**
+     * Teleports the User by calling the same Method in the linked Map
+     */
     private void teleport() {
         if (EMPTY.equals(mapName)) {
             for (Events hl : listeners) {
@@ -135,31 +169,42 @@ public class Event implements Serializable, Image {
             }
         }
     }
-
+    /**
+     * Displays a Text to the User by calling the same Method in the linked Map
+     */
     private void text() {
         for (Events hl : listeners) {
             hl.text(text);
         }
     }
-
+    /**
+     * Heals the User by calling the same Method in the linked Map
+     */
     private void heal() {
         for (Events hl : listeners) {
             hl.heal(healAmount);
         }
     }
-
+    /**
+     * Spawns an Enemy by calling the same Method in the linked Map
+     */
     private void spawn() {
         for (Events hl : listeners) {
             hl.spawnEnemie(destiny, e);
         }
     }
-
+    /**
+     * Spawns an Item by calling the same Method in the linked Map
+     */
     private void item() {
         for (Events hl : listeners) {
             hl.spawnItem(destiny, item);
         }
     }
-
+    /**
+     * Creates an ImageIcon representing the Type of this Event
+     * @return An ImageIcon with the Type of this Event
+     */
     @Override
     public ImageIcon getImageIcon() {
         BufferedImage img = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
