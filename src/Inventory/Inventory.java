@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 /**
  * This is an Inventory for the player
  * It contains many control panels 
- * @author Florian Harzrian Harz
+ * @author Florian Harz
  */
 public class Inventory extends javax.swing.JPanel {
 
@@ -16,7 +16,7 @@ public class Inventory extends javax.swing.JPanel {
     private final int INVENTORY = 0, STATS = 1;
 
     /**
-     * Creates new form Inventory
+     * Creates a new Inventory which allows you to do all kind of Game-Operation
      */
     public Inventory(int lvl, int live) {
         initComponents();
@@ -183,7 +183,11 @@ public class Inventory extends javax.swing.JPanel {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Called when the user changes the Slider to a new Entry
+     * Switches the Menu to the Selected Entry
+     * @param evt 
+     */
     private void MenuStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_MenuStateChanged
         Info.removeAll();
         int value = Menu.getValue();
@@ -196,8 +200,12 @@ public class Inventory extends javax.swing.JPanel {
         Info.repaint();
         Info.validate();
     }//GEN-LAST:event_MenuStateChanged
-
+    /**
+     * Resizes the Menu when it gets Resized
+     * @param evt 
+     */
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
+        
         this.setSize(this.getSize());
     }//GEN-LAST:event_formComponentResized
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -211,36 +219,56 @@ public class Inventory extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
-
+    /**
+     * Adds an Item to the Equipment
+     * @param item The Item to add
+     */
     public void addItem(Items item) {
         ((Equiment) stuff[INVENTORY]).add(item);
     }
-
+    /**
+     * Sets the Level and Health Stat
+     * @param lvl The Level Stat
+     * @param live The Live Stat
+     */
     public void setStats(int lvl, int live) {
         Level.setText("Level:   " + lvl);
-        Live.setText("Live:     " + live);
+        setLive(live);
         ((Stats) stuff[STATS]).setLive(live);
         ((Stats) stuff[STATS]).setLevel(lvl);
     }
-
+    /**
+     * Sets all the Stats of the Player
+     * @param lvl The Level Stat
+     * @param live The Live Stat
+     * @param damage The Strength Stat
+     * @param armor The Armor Stat
+     * @param speed The Speed Stat
+     */
     public void setStats(int lvl, int live, int damage, int armor, int speed) {
-        Level.setText("Level:   " + lvl);
-        Live.setText("Live:     " + live);
-        ((Stats) stuff[STATS]).setLive(live);
-        ((Stats) stuff[STATS]).setLevel(lvl);
+        setStats(lvl, live);
         ((Stats) stuff[STATS]).setDamage(damage);
         ((Stats) stuff[STATS]).setArmor(armor);
         ((Stats) stuff[STATS]).setSpeed(speed);
     }
-
+    /**
+     * Sets the Live Stat
+     * @param live The Live Stat
+     */
     public void setLive(int live) {
         Live.setText("Live:     " + live);
     }
-
+    /**
+     * Adds a Listener to the Sub-Components
+     * @param toAdd The Listener to add
+     */
     public void addListener(Events toAdd) {
         ((Equiment) stuff[INVENTORY]).addListener(toAdd);
     }
-
+    /**
+     * Adds a Slider Change-Listener to the Slider
+     * Event that will update the Menu when the Slider gets changed
+     */
     public void addEvent() {
         Menu.addChangeListener(new javax.swing.event.ChangeListener() {
             @Override

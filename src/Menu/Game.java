@@ -12,8 +12,9 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author Florian Harzrian Harz
+ * A Game-Object contains the information for one specific Game
+ * Used to gather Information about a Game and Run it if requested
+ * @author Florian Harz
  */
 public class Game {
 
@@ -22,7 +23,10 @@ public class Game {
     File playerFile;
     HashMap<String, File> players;
     File directory;
-
+    /**
+     * Creates a new Game-object and fills it with Information about the Game
+     * @param directory A File for the Root of the Game
+     */
     public Game(File directory) {
         try {
             this.directory = directory;
@@ -39,11 +43,10 @@ public class Game {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    public Game(String ini) {
-        this(new File(ini));
-    }
-
+    /**
+     * Loads all the Players which exist in the Game yet
+     * Adds them to a HashMap
+     */
     public void setPlayers() {
         players = new HashMap<String, File>();
         File[] files = playerFile.listFiles();
@@ -54,7 +57,10 @@ public class Game {
 
         }
     }
-
+    /**
+     * Creates a new Player and add it to the Game
+     * @param name The Name of the new Player
+     */
     public void newPlayer(String name) {
         File f = new File(playerFile.getPath() + "/" + name + "/Save");
         if (f.exists()) {
@@ -70,24 +76,10 @@ public class Game {
         players.put(name, f);
         setPlayers();
     }
-
-    @Override
-    public String toString() {
-        return null;
-    }
-
-    public boolean equals(Game object) {
-        return false;
-    }
-
-    public void destroy() {
-    }
-
-    @Override
-    public Game clone() {
-        return null;
-    }
-
+    /**
+     * Deletes the given Player
+     * @param player The Name of the Player to delete
+     */
     void delete(String player) {
         File f = players.get(player);
         f.delete();
@@ -97,7 +89,10 @@ public class Game {
         System.out.println(f.exists());
         setPlayers();
     }
-
+    /**
+     * Used to delete the Sub-Folders and Files in a Root-Folder
+     * @param folder The Root-Folder which is supposed to be deleted
+     */
     private void deleteFolder(File folder) {
         File[] files = folder.listFiles();
         if (files != null) { //some JVMs return null for empty dirs
@@ -111,7 +106,11 @@ public class Game {
         }
         folder.delete();
     }
-
+    /**
+     * Starts the Game with a selected Player
+     * @param dir The Root of the selected Player
+     * @return A new Game-Engine for the Game
+     */
     public Engine startGame(String dir) {
         File f = players.get(dir);
         File player = new File(f.getPath() + "/player.she");

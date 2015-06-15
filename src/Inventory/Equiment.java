@@ -26,7 +26,7 @@ public class Equiment extends Tools.ImagePanel {
     Items selection;
 
     /**
-     * Creates new form Equiment
+     * Creates a new Equipment
      */
     public Equiment() {
         try {
@@ -128,7 +128,10 @@ public class Equiment extends Tools.ImagePanel {
     private javax.swing.JPanel Stats;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
-
+    /**
+     * Adds an Item to the Equipment and adds the Events to the Item
+     * @param item The Item to add to the Equipment
+     */
     public void add(Items item) {
         if (!items.contains(item)) {
             items.add(item);
@@ -140,7 +143,10 @@ public class Equiment extends Tools.ImagePanel {
             item.setVisible(true);
         }
     }
-
+    /**
+     * Adds Mouse-Listeners to a given Item for further Events
+     * @param item The Item to add the Events to
+     */
     private void addMouse(Items item) {
         item.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -159,7 +165,10 @@ public class Equiment extends Tools.ImagePanel {
             }
         });
     }
-
+    /**
+     * Adds all the Events again to all the Items
+     * MUST be called after changing a Map
+     */
     public void updateEvents() {
         Items item;
         for (int i = 0; i < items.size(); i++) {
@@ -167,7 +176,10 @@ public class Equiment extends Tools.ImagePanel {
             addMouse(item);
         }
     }
-
+    /**
+     * Event that displays the Information for an Item when the Mouse enters it
+     * @param evt 
+     */
     private void ItemMouseEntered(java.awt.event.MouseEvent evt) {
         Items l = (Items) evt.getComponent();
         if (!l.equals(selection)) {
@@ -175,7 +187,11 @@ public class Equiment extends Tools.ImagePanel {
         }
         showInfo(l);
     }
-
+    /**
+     * Event when the Mouse leaves an Item
+     * Removes the Information about an Item or sets it back to the selected one
+     * @param evt 
+     */
     private void ItemMouseExited(java.awt.event.MouseEvent evt) {
         Items l = (Items) evt.getComponent();
         if (!l.equals(selection)) {
@@ -185,7 +201,12 @@ public class Equiment extends Tools.ImagePanel {
             }
         }
     }
-
+    /**
+     * Event when the Mouse presses an Item
+     * Left-Click: Sets the Indo-Display to that Item
+     * Right-Click: Equips the Item
+     * @param evt 
+     */
     private void ItemMousePressed(java.awt.event.MouseEvent evt) {
         Items l = (Items) evt.getComponent();
         if (!l.equals(selection)) {
@@ -201,7 +222,10 @@ public class Equiment extends Tools.ImagePanel {
             }
         }
     }
-
+    /**
+     * Displays the Info about a given Item in the Info-Display
+     * @param l The Item to Display the Info of
+     */
     private void showInfo(Items l) {
         Image.setIcon(l.getIcon());
         Name.setText("Name: " + l.getName());
@@ -213,23 +237,34 @@ public class Equiment extends Tools.ImagePanel {
         }
         update();
     }
-
+    /**
+     * Updates the UI-Graphics
+     */
     private void update() {
         Info.validate();
         Info.repaint();
     }
-
+    /**
+     * Adds a Listener to this Object for further use of Events
+     * @param toAdd The Listener to add 
+     */
     public void addListener(Events toAdd) {
         listeners.add(toAdd);
     }
-
+    /**
+     * Resets the Indo-Display to empty
+     */
     private void reset() {
         Image.setIcon(null);
         Name.setText("Name:");
         Info.removeAll();
         update();
     }
-
+    /**
+     * Equips the given Item and sets a Border around it
+     * Un-Equips the given Item when it was Equip before and removes the Border
+     * @param item The Item to Un-/Equip
+     */
     private void select(Items item) {
         if (!item.isSelected()) {
             item.setBorder(BorderFactory.createEtchedBorder(Color.lightGray, Color.yellow));

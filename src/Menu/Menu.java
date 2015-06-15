@@ -7,8 +7,9 @@ import java.util.Arrays;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author Florian Harzrian Harz
+ * This is a Menu that allows the user to choose a Game and select a Player for
+ * the Game or create a new one
+ * @author Florian Harz
  */
 public class Menu extends javax.swing.JFrame {
 
@@ -17,7 +18,7 @@ public class Menu extends javax.swing.JFrame {
     String player;
 
     /**
-     * Creates new form Menu
+     * Creates a new Menu
      */
     public Menu() {
         initComponents();
@@ -246,32 +247,48 @@ public class Menu extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Event to switch from the Main-Menu to the Game-Selection
+     * @param evt 
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Menu.setVisible(false);
         Games.setVisible(true);
         this.setSize(Games.getPreferredSize());
         this.setSize(this.getWidth() + 20, this.getHeight() + 50);
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    /**
+     * Event to Shut me Down :=(
+     * @param evt 
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         System.exit(00);
     }//GEN-LAST:event_jButton2ActionPerformed
-
+    /**
+     * Event to switch from the Player-Selection to the Game-Selection
+     * @param evt 
+     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         Games.setVisible(true);
         Players.setVisible(false);
         this.setSize(Games.getPreferredSize());
         this.setSize(this.getWidth() + 20, this.getHeight() + 50);
     }//GEN-LAST:event_jButton3ActionPerformed
-
+    /**
+     * Event to switch from the Game-Selection to the Main-Menu
+     * @param evt 
+     */
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         Menu.setVisible(true);
         Games.setVisible(false);
         this.setSize(Menu.getPreferredSize());
         this.setSize(this.getWidth() + 20, this.getHeight() + 50);
     }//GEN-LAST:event_jButton5ActionPerformed
-
+    /**
+     * Event to switch from the Game-Selection to the Player-Selection
+     * Makes sure, that a Game is selected
+     * @param evt 
+     */
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         if (!List.isSelectionEmpty()) {
             System.out.println(selected.gameName);
@@ -312,6 +329,7 @@ public class Menu extends javax.swing.JFrame {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         Engine t = selected.startGame(player);
         t.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 setVisible(true);
             }
@@ -356,6 +374,7 @@ public class Menu extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new Menu().setVisible(true);
             }

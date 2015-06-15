@@ -7,7 +7,7 @@ package Inventory;
 public class Stats extends javax.swing.JPanel {
 
     /**
-     * Creates new form Stats
+     * Creates a new Stats JPanel
      */
     public Stats() {
         initComponents();
@@ -104,23 +104,38 @@ public class Stats extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
-
+    /**
+     * Sets the Live Stat
+     * @param live The Live Stat
+     */
     public void setLive(int live) {
         Live.setText("Live: " + live);
     }
-
+    /**
+     * Sets the Level Stat
+     * @param lvl The Level Stat
+     */
     public void setLevel(int lvl) {
         Level.setText("Level: " + lvl);
     }
-
+    /**
+     * Sets the Strength Stat
+     * @param damage The Strength Stat
+     */
     public void setDamage(int damage) {
         Damage.setText("Damage: " + damage);
     }
-
+    /**
+     * Sets the Armor Stat
+     * @param armor The Armor Stat
+     */
     public void setArmor(int armor) {
         Armor.setText("Armor: " + armor);
     }
-
+    /**
+     * Sets the Speed Stat
+     * @param speed The Speed Stat
+     */
     public void setSpeed(int speed) {
         Speed.setText("speed: " + speed);
     }
