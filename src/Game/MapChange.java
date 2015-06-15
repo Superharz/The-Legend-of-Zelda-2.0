@@ -8,6 +8,10 @@ import java.awt.Point;
  * @author Florian Harzrian Harz
  */
 public interface MapChange {
-
+    /**
+     * Event to change the Map
+     * @param destination The Destination for the Player on the new Map
+     * @param newMap The Map-Name of the new Map
+     */
     public void mapChange(Point destination, String newMap);
 }

@@ -16,11 +16,19 @@ import java.io.PrintWriter;
  * @author Florian Harz
  */
 public class Serialize {
-
+    /**
+     * Serializes a given Object to a given File
+     * @param obj The Object to Serialize
+     * @param file The String of the File to Serialize the Object to
+     */
     public static void xStreamOut(Object obj, String file) {
         xStreamOut(obj, new File(file));
     }
-
+    /**
+     * Serializes a given Object to a given File
+     * @param obj The Object to Serialize
+     * @param file The File to Serialize the Object to
+     */
     public static void xStreamOut(Object obj, File file) {
         PrintWriter out = null;
         XStream x = new XStream(new StaxDriver());
@@ -38,11 +46,23 @@ public class Serialize {
             out.close();
         }
     }
-
+    /**
+     * De-Serializes an Object from a given File of a given Class-Type
+     * @param <T> The class-Type of the Object
+     * @param data The Class of the Object
+     * @param file The String of the File to De-Serialize the Object from
+     * @return The De-Serialized Object
+     */
     public static <T> T xStreamIn(Class<T> data, String file) {
         return xStreamIn(data, new File(file));
     }
-
+    /**
+     * De-Serializes an Object from a given File of a given Class-Type
+     * @param <T> The class-Type of the Object
+     * @param data The Class of the Object
+     * @param file The File to De-Serialize the Object from
+     * @return The De-Serialized Object
+     */
     public static <T> T xStreamIn(Class<T> data, File file) {
         T clazz;
         XStream x = new XStream(new StaxDriver());

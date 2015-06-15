@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -802,7 +803,7 @@ public class GameMaker extends javax.swing.JFrame {
             map1.setUP(20, 20, 5, 5);
             BufferedImage before = ImageIO.read(this.getClass().
                     getResource("/Pictures/tile1.png"));
-            Spot s = new Spot(before, true);
+            Spot s = new Spot(new ImageIcon(before), true);
             map1.setAllSpots(s);
             map1.build();
             map1.setPreferredSize(map1.getDimension());
