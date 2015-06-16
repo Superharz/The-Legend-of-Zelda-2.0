@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -622,8 +623,8 @@ public class Map extends ImagePanel implements Moveable.Events, java.io.Serializ
             BufferedImage arrow = null;
             arrow = ImageIO.read(this.getClass().
                     getResource("/Pictures/Arrow" + direction + ".png"));
-            Arrow a = new Arrow(x, y, direction, damage, arrow, spots, player.getLayer());
-            a.setFrienfly(friendly);
+            Arrow a = new Arrow(x, y, direction, damage, new ImageIcon(arrow), spots, player.getLayer());
+            a.setFriendly(friendly);
             arrows.addFirst(a);
             this.add(a);
             a.setBounds(x, y, arrow.getWidth(), arrow.getHeight());

@@ -256,6 +256,7 @@ public class Menu extends javax.swing.JFrame {
         Games.setVisible(true);
         this.setSize(Games.getPreferredSize());
         this.setSize(this.getWidth() + 20, this.getHeight() + 50);
+        List.setSelectedIndex(0);
     }//GEN-LAST:event_jButton1ActionPerformed
     /**
      * Event to Shut me Down :=(
@@ -296,27 +297,43 @@ public class Menu extends javax.swing.JFrame {
             Players.setVisible(true);
             this.setSize(Players.getPreferredSize());
             this.setSize(this.getWidth() + 20, this.getHeight() + 50);
+            PlayerList.setSelectedIndex(0);
         }
     }//GEN-LAST:event_jButton6ActionPerformed
-
+    /**
+     * Called when the User selects a Game
+     * Updates the Player-List
+     * @param evt 
+     */
     private void ListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_ListValueChanged
         selected = games[List.getSelectedIndex()];
         selected.setPlayers();
         PlayerList.setListData(selected.players.keySet().toArray());
     }//GEN-LAST:event_ListValueChanged
-
+    /**
+     * Deletes the selected Player if any
+     * @param evt 
+     */
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         if (player != null) {
             selected.delete(player);
             PlayerList.setListData(selected.players.keySet().toArray());
             System.out.println(Arrays.toString(selected.players.keySet().toArray()));
+            PlayerList.setSelectedIndex(0);
         }
     }//GEN-LAST:event_jButton8ActionPerformed
-
+    /**
+     * Called when the user selects a Player
+     * Selects the Player
+     * @param evt 
+     */
     private void PlayerListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_PlayerListValueChanged
         player = (String) PlayerList.getSelectedValue();
     }//GEN-LAST:event_PlayerListValueChanged
-
+    /**
+     * Lets the User choose a new Player and selects the Player
+     * @param evt 
+     */
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         String f = JOptionPane.showInputDialog("Player Name:");
         if (f == null || f.isEmpty()) {
@@ -324,10 +341,15 @@ public class Menu extends javax.swing.JFrame {
         }
         selected.newPlayer(f);
         PlayerList.setListData(selected.players.keySet().toArray());
+        PlayerList.setSelectedValue(f, true);
     }//GEN-LAST:event_jButton4ActionPerformed
-
+    /**
+     * Starts the selected Game and Loads the last Save of the selected Player
+     * @param evt 
+     */
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         Engine t = selected.startGame(player);
+        if (t==null)return;
         t.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -336,12 +358,16 @@ public class Menu extends javax.swing.JFrame {
         });
         this.setVisible(false);
     }//GEN-LAST:event_jButton7ActionPerformed
-
+    /**
+     * Called when the Game is Closed
+     * Displays an Exit-Dialog to the User
+     * @param evt 
+     */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         JOptionPane.showMessageDialog(null, "Thank you for using:"
-                + "/nThe Legend of Zelda 2.0"
-                + "/nMade by SuperHarz"
-                + "/nPublished by SuperHarz Ent."
+                + "\nThe Legend of Zelda 2.0"
+                + "\nMade by SuperHarz"
+                + "\nPublished by SuperHarz Ent."
                 + "Not just do it, make it AWESOME!");
     }//GEN-LAST:event_formWindowClosing
 
@@ -401,7 +427,11 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
-
+    /**
+     * Gets the Games that exist in the Game-Folder
+     * Displays them in the List
+     * @return An Object-Array with all the Games that exist
+     */
     private Object[] getData() {
         File file = new File("Games/");
         File[] files = file.listFiles(new FilenameFilter() {

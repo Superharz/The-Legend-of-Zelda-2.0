@@ -25,7 +25,9 @@ public class Player extends Mover {
     Inventory inventory;
     private boolean first = true;
     private String mapName;
-
+    /**
+     * Creates a new Player with a Default Move-Animation
+     */
     public Player() {
         try {
             for (int i = 0; i < 3; i++) {
@@ -39,41 +41,65 @@ public class Player extends Mover {
         }
         inventory = new Inventory(1, 1);
     }
-
+    /**
+     * Adds a Listener to the Player and its Inventory for further Event-Use
+     * @param toAdd The Listener to Add
+     */
     @Override
     public void addListener(Events toAdd) {
         super.addListener(toAdd);
         inventory.addListener(toAdd);
     }
-
+    /**
+     * Heals the Player by a given Amount
+     * @param amount The Amount the Player to Heal
+     */
     @Override
     public void heal(int amount) {
         super.heal(amount);
         updateInvent();
     }
-
+    /**
+     * Lets the Player use a given Item
+     * @param item The Item to use
+     */
     public void use(Items item) {
         super.useItem(item);
         updateInvent();
     }
-
+    /**
+     * Sets the Map-Name of the actual Map
+     * @param name The Map-Name of the actual Map
+     */
     public void setMapName(String name) {
         mapName = name;
     }
-
+    /**
+     * Gets the Name of the Map the Player is in right now
+     * @return The Map-Name of the actual Map
+     */
     public String getMapName() {
         return mapName;
     }
-
+    /**
+     * Updates the Players Stats
+     */
     public void updateInvent() {
         inventory.setStats(super.getLevel(), super.getHealth(), super.getDamage(), super.getArmor(), super.getSpeed());
     }
-
+    /**
+     * Gets the Width of the Player
+     * @return The Width of the Player
+     */
     @Override
     public int getWidth() {
         return this.before[0][0].getIconWidth();
     }
-
+    /**
+     * Lets the Player take Damage and Kills him when his Health is <= 0
+     * Updates the Players Stats
+     * @param damage The Amount of Damage the Player took 
+     */
     @Override
     public void takeDamage(int damage) {
         if (!immortal) {
@@ -84,7 +110,10 @@ public class Player extends Mover {
         }
         updateInvent();
     }
-
+    /**
+     * Sets the Player up
+     * @param spots The Spots of the Map the Player is in
+     */
     public void setUP(Spot[][] spots) {
         if (first) {
             Rectangle r = new Rectangle(this.getX(), this.getY(), getWidth(), getWidth());
@@ -96,7 +125,9 @@ public class Player extends Mover {
             setSpots(spots);
         }
     }
-
+    /**
+     * Lets the Player attack in the direction he looks rigth now
+     */
     @Override
     public void attack() {
         Rectangle r = null;
@@ -116,13 +147,21 @@ public class Player extends Mover {
             hl.attacke(r);
         }
     }
-
+    /**
+     * Shoots an Arrow
+     */
     public void shoot() {
         super.shoot(true);
     }
-
+    /**
+     * Heavy Thread to take care of the Players Movement
+     * @param direction The Direction for the Player to Walk
+     * @return False, just to override
+     */
+    @Override
     public boolean move(final int direction) {
         Thread t = new Thread() {
+            @Override
             public void run() {
                 synchronized (this) {
                     move = true;
@@ -167,21 +206,27 @@ public class Player extends Mover {
         t.start();
         return false;
     }
-
-    public Point[] getLeft() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
+    /**
+     * No one can live FOREVER...
+     * Shuts me Down :=(
+     * For now...
+     */
     @Override
     public void die() {
         JOptionPane.showMessageDialog(null, "You died!");
         System.exit(00);
     }
-
+    /**
+     * Adds an Item to the Players Inventory
+     * @param item The Item to add to the Players Inventory
+     */
     public void addItem(Items item) {
         inventory.addItem(item);
     }
-
+    /**
+     * Gets the Inventory of the Player
+     * @return The Inventory of the Player
+     */
     public Inventory getInventory() {
         return inventory;
     }

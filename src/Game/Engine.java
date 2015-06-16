@@ -279,7 +279,7 @@ public class Engine extends javax.swing.JFrame implements MapChange {
     }
     
     private void formKeyReleased(java.awt.event.KeyEvent evt) {
-        map1.getplayer().stop();
+        map1.getplayer().stopMoving();
         move = false;
     }
     /**

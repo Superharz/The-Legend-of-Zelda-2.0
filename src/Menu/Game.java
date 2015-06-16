@@ -112,6 +112,7 @@ public class Game {
      * @return A new Game-Engine for the Game
      */
     public Engine startGame(String dir) {
+        if (dir == null) return null;
         File f = players.get(dir);
         File player = new File(f.getPath() + "/player.she");
         System.out.println(player);

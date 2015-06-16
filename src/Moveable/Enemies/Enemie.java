@@ -40,12 +40,24 @@ public class Enemie extends Mover implements Image {
             Logger.getLogger(Enemie.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    /**
+     * Creates a new Enemy with its own Icons and a given Move-Set
+     * @param moveMethod The Move-Set of the Enemy
+     * @param img An ImageIcon-Array with the Icons of the Enemy
+     * I may only me a few Second old but I'm certainly faster in Math than you!
+     */
     public Enemie(int moveMethod, ImageIcon[] img) {
         this.img = img;
         this.moveMethod = moveMethod;
     }
-
+    /**
+     * Sets the Stats of this Enemy
+     * @param speed The Speed of the Object
+     * @param live The Health of the Object
+     * @param damage The Strength of the Object
+     * @param armor The Armor of the Object
+     * Level UP...
+     */
     public void setStats(int live, int damage, int speed, int armor) {
         this.live = live;
         this.damage = damage;
@@ -55,7 +67,11 @@ public class Enemie extends Mover implements Image {
         System.out.println("Stats Set");
         System.out.println("LIVE: " + live);
     }
-
+    /**
+     * Sets the Enemy up
+     * @param spots The Spots of the Map the Enemy is on
+     * I'm ready to roll...
+     */
     public void setUP(Spot[][] spots) {
         Rectangle r = new Rectangle(this.getX(), this.getY(), getWidth(), getWidth());
         if (defaultStats) {
@@ -66,12 +82,19 @@ public class Enemie extends Mover implements Image {
         }
         System.out.println("LIVE: " + live);
     }
-
+    /**
+     * Gets the Width of this Enemy
+     * @return The Width of this Enemy
+     * Do I look fat in that dress Honey?...
+     */
     @Override
     public int getWidth() {
         return this.img[0].getIconWidth();
     }
-
+    /**
+     * Lets the Mover die
+     * You might have kill my Physically form but my Soul lives on FOREVER...
+     */
     @Override
     public void die() {
         stopMoving();
@@ -79,11 +102,18 @@ public class Enemie extends Mover implements Image {
             hl.removeMover(this);
         }
     }
-
+    /**
+     * Toggles the Enemy to Pause/Move
+     * @param play True if the Enemy is supposed to Move
+     * Move or don't Move, that's the Question...
+     */
     public void play(boolean play) {
         pause = !play;
     }
-
+    /**
+     * Lets the Enemy start Moving
+     * This is a small Step for an Enemy but an even smaller one for a JLabel...
+     */
     public void startMove() {
         switch (moveMethod) {
             case RANDOMMOVE:
@@ -94,7 +124,10 @@ public class Enemie extends Mover implements Image {
                 break;
         }
     }
-
+    /**
+     * Pauses the Enemy if he's supposed to to Pause
+     * No one can Stop me...
+     */
     private void checkForPaused() {
         synchronized (this) {
             while (pause) {
@@ -109,14 +142,20 @@ public class Enemie extends Mover implements Image {
     public void pauseThread() throws InterruptedException {
         pause = true;
     }
-
+    /**
+     * Lets the Enemy resume moving
+     * The show MUST go on...
+     */
     public void resumeThread() {
         synchronized (this) {
             pause = false;
             this.notify();
         }
     }
-
+    /**
+     * Heavy Thread to let the Enemy move random through the Room
+     * Was there Alcohol in that Drink?...
+     */
     private void randomMove() {
         Thread t = new Thread() {
             @Override
@@ -166,7 +205,10 @@ public class Enemie extends Mover implements Image {
         };
         t.start();
     }
-
+    /**
+     * Heavy Thread to let the Enemy move among the Walls
+     * May the Walls be with you...
+     */
     private void wallMove() {
         Thread t = new Thread() {
             @Override
@@ -248,25 +290,29 @@ public class Enemie extends Mover implements Image {
         };
         t.start();
     }
-
+    /**
+     * Clones this Enemy
+     * @return An exact Copy of this Enemy, you might not notice me but I'm 
+     * different :=)
+     */
     @Override
     public Enemie clone() {
         Enemie e = new Enemie(moveMethod, img);
         e.setStats(live, damage, speed, armor);
         return e;
     }
-
+    /**
+     * Gets a Random Integer within 0 and 3
+     * @return A random chosen Integer within 0 and 3
+     */
     private int getRandom() {
-        int min = 0;
-        int max = 3;
-        double seed = Math.random();
-        double L = (double) min;
-        double H = (double) max;
-        double random = (H - L + 1) * seed + L;
-        int answer = (int) random;
-        return answer;
+        return getRandom(3);
     }
-
+    /**
+     * Gets a Random Integer within 0 and the given Number
+     * @param max The Highest Number possible to choose
+     * @return A random chosen Integer within 0 and the given Number
+     */
     private int getRandom(int max) {
         int min = 0;
         double seed = Math.random();

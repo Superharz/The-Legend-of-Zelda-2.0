@@ -3,8 +3,8 @@ package Menu;
 import Editor.GameMaker;
 
 /**
- *
- * @author Florian Harzrian Harz
+ * This is a simple Star-Screen that lets the User chose to Run or Edit a Game
+ * @author Florian Harz
  */
 public class StartScreen extends javax.swing.JFrame {
 
@@ -126,17 +126,26 @@ public class StartScreen extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Starts the Game-Engine to create a Game
+     * @param evt 
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         GameMaker.main(null);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    /**
+     * Shows the menu for playing a Game
+     * @param evt 
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         Menu.main(null);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
-
+    /**
+     * Ends the Program
+     * @param evt 
+     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         System.exit(00);
     }//GEN-LAST:event_jButton3ActionPerformed
