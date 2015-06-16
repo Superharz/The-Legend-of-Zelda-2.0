@@ -1,224 +1,233 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Moveable.Player;
 
+import Inventory.Inventory;
+import Moveable.Events;
 import Game.Spot;
+import Inventory.Items;
 import Moveable.Mover;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-//import javax.swing.Timer;
+import javax.swing.JOptionPane;
 
 /**
- *
- * @author Flo
+ * This is the main player class
+ * It also takes care of his movement
+ * @author Florian Harz
  */
-public class Player extends Mover{
-    //Thread t;
-    //private int lastDirection = 0;
-    BufferedImage[][] before = new BufferedImage[3][4];
-    //private final List<PlayerEvent> listeners = new ArrayList<PlayerEvent>();
+public class Player extends Mover {
+
+    ImageIcon[][] before = new ImageIcon[3][4];
+    Inventory inventory;
+    private boolean first = true;
+    private String mapName;
+    /**
+     * Creates a new Player with a Default Move-Animation
+     */
     public Player() {
-        //t = new Thread(this,"test");
-        //super(speed, live, damage, hotSpot, hitBox, img);
         try {
-        
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 4; j++) {
-                
-            
-                before[i][j] = ImageIO.read (this.getClass(). 
-                        getResource("/Pictures/player1"+j+""+i+".png"));
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 4; j++) {
+                    before[i][j] = new ImageIcon(ImageIO.read(this.getClass().
+                            getResource("/Pictures/player1" + j + "" + i + ".png")));
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        inventory = new Inventory(1, 1);
+    }
+    /**
+     * Adds a Listener to the Player and its Inventory for further Event-Use
+     * @param toAdd The Listener to Add
+     */
+    @Override
+    public void addListener(Events toAdd) {
+        super.addListener(toAdd);
+        inventory.addListener(toAdd);
+    }
+    /**
+     * Heals the Player by a given Amount
+     * @param amount The Amount the Player to Heal
+     */
+    @Override
+    public void heal(int amount) {
+        super.heal(amount);
+        updateInvent();
+    }
+    /**
+     * Lets the Player use a given Item
+     * @param item The Item to use
+     */
+    public void use(Items item) {
+        super.useItem(item);
+        updateInvent();
+    }
+    /**
+     * Sets the Map-Name of the actual Map
+     * @param name The Map-Name of the actual Map
+     */
+    public void setMapName(String name) {
+        mapName = name;
+    }
+    /**
+     * Gets the Name of the Map the Player is in right now
+     * @return The Map-Name of the actual Map
+     */
+    public String getMapName() {
+        return mapName;
+    }
+    /**
+     * Updates the Players Stats
+     */
+    public void updateInvent() {
+        inventory.setStats(super.getLevel(), super.getHealth(), super.getDamage(), super.getArmor(), super.getSpeed());
+    }
+    /**
+     * Gets the Width of the Player
+     * @return The Width of the Player
+     */
+    @Override
+    public int getWidth() {
+        return this.before[0][0].getIconWidth();
+    }
+    /**
+     * Lets the Player take Damage and Kills him when his Health is <= 0
+     * Updates the Players Stats
+     * @param damage The Amount of Damage the Player took 
+     */
+    @Override
+    public void takeDamage(int damage) {
+        if (!immortal) {
+            this.live -= damage;
+            if (this.live <= 0) {
+                die();
             }
         }
-        
-        } catch (IOException ex) {
-                Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        
-        
+        updateInvent();
     }
-    
-    public void addListener(PlayerEvent toAdd) {
-        //listeners.add(toAdd);
-        super.addListener(toAdd);
-    }
-    
-    @Override
-    public int getWidth(){
-        return this.before[0][0].getWidth();
-    }
-    
+    /**
+     * Sets the Player up
+     * @param spots The Spots of the Map the Player is in
+     */
     public void setUP(Spot[][] spots) {
-        Rectangle r = new Rectangle(this.getX(), this.getY(),  getWidth(), getWidth());
-        this.setMover(10, 100, 100, new Point(0,0), before[0],spots,r);
-        //this.setLocation(100,100);
+        if (first) {
+            Rectangle r = new Rectangle(this.getX(), this.getY(), getWidth(), getWidth());
+            this.setMover(10, 100000, 100, new Point(before[0][0].getIconWidth() / 2, before[0][0].getIconHeight() / 2), before[0], spots, r);
+            super.setPlayer(1, 100);
+            updateInvent();
+            first = false;
+        } else {
+            setSpots(spots);
+        }
     }
-    
+    /**
+     * Lets the Player attack in the direction he looks rigth now
+     */
     @Override
     public void attack() {
         Rectangle r = null;
         if (lastDirection == 2) {
-            r = new Rectangle(this.getX()+this.getWidth(), this.getY(), this.getWidth(),this.getWidth());
-        
-                    
+            r = new Rectangle(this.getX() + this.getWidth(), this.getY(), this.getWidth(), this.getWidth());
         }
         if (lastDirection == 3) {
-            r = new Rectangle(this.getX()-this.getWidth(), this.getY(), this.getWidth(),this.getWidth());
-        
-                    
+            r = new Rectangle(this.getX() - this.getWidth(), this.getY(), this.getWidth(), this.getWidth());
         }
         if (lastDirection == 0) {
-            r = new Rectangle(this.getX(), this.getY()+this.getWidth(), this.getWidth(),this.getWidth());
-        
-                    
-        }if (lastDirection == 1) {
-            r = new Rectangle(this.getX(), this.getY()-this.getWidth(), this.getWidth(),this.getWidth());
-        
-                    
+            r = new Rectangle(this.getX(), this.getY() + this.getWidth(), this.getWidth(), this.getWidth());
         }
-        for (PlayerEvent hl : listeners)
-            hl.attacke( r);
+        if (lastDirection == 1) {
+            r = new Rectangle(this.getX(), this.getY() - this.getWidth(), this.getWidth(), this.getWidth());
+        }
+        for (Events hl : listeners) {
+            hl.attacke(r);
+        }
     }
+    /**
+     * Shoots an Arrow
+     */
     public void shoot() {
         super.shoot(true);
     }
-    
-    public void moveUp() {
-//        //Timer t = new Timer(speed,PlayerEvent)
-//        move = true;
-//        int j = 0, i = 0;
-//        this.setIcon(new ImageIcon(img[UP]));
-//        try {
-//          while(move) {
-//                for (PlayerEvent hl : listeners)
-//                   hl.moveUP();            
-//                Thread.sleep(speed);
-//                j++;
-//                if (j == 24) {
-//                    j = 0;
-//                    i = (i+1)%2;
-//                    this.setIcon(new ImageIcon(before[i+1][UP]));
-//                }
-//            }
-//        } catch (InterruptedException ex) {
-//            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-    } 
-    
-    public void moveDown() {
-//        move = true;
-//        int j = 0, i = 0;
-//        this.setIcon(new ImageIcon(img[DOWN]));
-//        try {
-//          while(move) {
-//                for (PlayerEvent hl : listeners)
-//                   hl.moveDOWN();            
-//                Thread.sleep(speed);
-//            }
-//        } catch (InterruptedException ex) {
-//            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-    }
-    
-    public void moveRight() {
-//        move = true;
-//        int j = 0, i = 0;
-//        this.setIcon(new ImageIcon(img[RIGHT]));
-//        try {
-//          while(move) {
-//                for (PlayerEvent hl : listeners)
-//                   hl.moveRIGHT();   
-//                Thread.sleep(speed);
-//            }
-//        } catch (InterruptedException ex) {
-//           Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-    }
-    
- 
-    
+    /**
+     * Heavy Thread to take care of the Players Movement
+     * @param direction The Direction for the Player to Walk
+     * @return False, just to override
+     */
+    @Override
     public boolean move(final int direction) {
-        //lastDirection = direction;
-            
-        
         Thread t = new Thread() {
+            @Override
             public void run() {
-                synchronized(this) {
-                move = true;
-                int j = 0, i = 0;
-               
-                setIcon(new ImageIcon(before[1][direction]));
-                try {
-                    while(move) {
-                        //for (PlayerEvent hl : listeners) {
+                synchronized (this) {
+                    move = true;
+                    int j = 0, i = 0;
+                    setIcon((before[1][direction]));
+                    try {
+                        while (move) {
                             switch (direction) {
-                                case 3: moveLEFT();break;//hl.moveLEFT(); break;
-                                case 2: moveRIGHT();break;
-                                case 1: moveUP();   break;
-                                case 0: moveDOWN();  break;
+                                case 3:
+                                    moveLEFT();
+                                    break;
+                                case 2:
+                                    moveRIGHT();
+                                    break;
+                                case 1:
+                                    moveUP();
+                                    break;
+                                case 0:
+                                    moveDOWN();
+                                    break;
                             }
-                        for (PlayerEvent hl : listeners)
-                            hl.moved();
-                        attack();
-                        //this.wait(speed);
-                        //this.wait(0, speed);
-                        Thread.sleep(speed);
-                        j++;
-                        System.out.println(j);
-                        if (j == 24) {
-                            j = 0;
-                            i = (i+1)%2;
-                            setIcon(new ImageIcon(before[i+1][direction]));
+                            for (Events hl : listeners) {
+                                hl.moved();
+                                hl.playerMoved();
+                            }
+                            attack();
+                            Thread.sleep(speed);
+                            j++;
+                            if (j == 24) {
+                                j = 0;
+                                i = (i + 1) % 2;
+                                setIcon((before[i + 1][direction]));
+                            }
                         }
+                        setIcon((before[0][direction]));
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    setIcon(new ImageIcon(before[0][direction]));
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                }   
             }
         };
         t.start();
         return false;
     }
-    
-    
-    
-    public void moveLeft() {
-//        move = true;
-//        int j = 0, i = 0;
-//        //System.out.println("MOVE");
-//        this.setIcon(new ImageIcon(img[LEFT]));
-//        try {
-//          while(move) {
-//              //System.out.println("MOVE");
-//                for (PlayerEvent hl : listeners)
-//                   hl.moveLEFT();            
-//                Thread.sleep(speed);
-//            }
-//        } catch (InterruptedException ex) {
-//            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-    }
-
-    public Point[] getLeft() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    /**
+     * No one can live FOREVER...
+     * Shuts me Down :=(
+     * For now...
+     */
     @Override
     public void die() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        JOptionPane.showMessageDialog(null, "You died!");
+        System.exit(00);
     }
-    
+    /**
+     * Adds an Item to the Players Inventory
+     * @param item The Item to add to the Players Inventory
+     */
+    public void addItem(Items item) {
+        inventory.addItem(item);
+    }
+    /**
+     * Gets the Inventory of the Player
+     * @return The Inventory of the Player
+     */
+    public Inventory getInventory() {
+        return inventory;
+    }
 }

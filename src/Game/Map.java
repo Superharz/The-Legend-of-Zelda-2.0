@@ -1,44 +1,105 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Game;
 
+import Inventory.Inventory;
+import Events.Event;
+import Inventory.Items;
 import Moveable.Enemies.Enemie;
 import Moveable.Mover;
 import Moveable.Player.Player;
 import Moveable.Weapons.Arrow;
 import Tools.ImagePanel;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
 /**
- *
- * @author Flo
+ * This is the Map-Class which is contained by the Engine
+ * The Map keeps track of everything, Spots, Arrows, Enemies, Events 
+ * and the Player 
+ * @author Florian Harz
  */
-public class Map extends ImagePanel implements Moveable.Player.PlayerEvent{
+public class Map extends ImagePanel implements Moveable.Events, java.io.Serializable {
+
+    public final List<MapChange> listeners = new ArrayList<MapChange>();
+    boolean pause = false, first = true;
     Spot[][] spots;
+    Point playerPosition = new Point(-1, -1);
     int width, height;
-    BufferedImage img;
+    transient BufferedImage img;
     LinkedList<Enemie> enemies;
     LinkedList<Arrow> arrows;
+    int spotWidth;
+    String mapName = "Map1";
+    transient Thread t;
+    private int startX, startY;
+    private boolean protection = false;
+
     /**
-     * Creates new form Map
+     * Creates a new Map
      */
     public Map() {
+        this.player = new Player();
         initComponents();
         player.addListener(this);
-        
         enemies = new LinkedList();
         arrows = new LinkedList<Arrow>();
+    }
+    @Deprecated
+    public Map(Player player) {
+        this.player = player;
+        initComponents();
+        player.addListener(this);
+        startX = toSpots(player.getLocation().x);
+        startY = toSpots(player.getLocation().y);
+        enemies = new LinkedList();
+        arrows = new LinkedList<Arrow>();
+    }
+    /**
+     * Sets the Name of the Map
+     * @param mapName A String with the Map-Name
+     */
+    public void setMapName(String mapName) {
+        this.mapName = mapName;
+    }
+    /**
+     * Gets the Name of the Map
+     * @return A String with the Map-Name
+     */
+    public String getMapName() {
+        return mapName;
+    }
+    /**
+     * Sets the Player for this Map
+     * Moves him to given Point on the Map
+     * @param player The PLayer for this Map
+     * @param location The Start-Point for the Player on this Map
+     */
+    public void setPlayer(Player player, Point location) {
+        this.remove(this.player);
+        this.player = player;
+        this.add(this.player);
+        player.addListener(this);
+        player.setBounds(toPixel(location.x), toPixel(location.y),
+                player.getIcon().getIconWidth(),
+                player.getIcon().getIconHeight());
+        startX = location.x;
+        startY = location.y;
+        if (spots != null) {
+            player.setSpots(spots);
+        }
+        this.validate();
+        this.repaint();
     }
 
     /**
@@ -50,11 +111,11 @@ public class Map extends ImagePanel implements Moveable.Player.PlayerEvent{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
         this.setLayout(null);
-        player = new Moveable.Player.Player();
+        //player = new Moveable.Player.Player();
         this.add(player);
-        player.setBounds(50, 50, player.getWidth(), player.getHeight());
+        //player.setBounds(100, 50, player.getWidth(), player.getHeight());
         this.repaint();
-       
+
         //enemie1 = new Moveable.Enemies.Enemie();
 
 //        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -82,300 +143,676 @@ public class Map extends ImagePanel implements Moveable.Player.PlayerEvent{
 //                .addContainerGap(139, Short.MAX_VALUE))
 //        );
     }// </editor-fold>                        
-
-
     // Variables declaration - do not modify                     
-    //private Moveable.Enemies.Enemie enemie1;
     private Moveable.Player.Player player;
     // End of variables declaration                   
-
-public void setUP(int width,int heights,int playerX, int playerY) {
+    /**
+     * Sets up the Map
+     * Sets the Size and the Player-Position
+     * @param width The Width (in Spots) for the Map
+     * @param heights The Height (in Spots) for the Map
+     * @param playerX The Colum (in Spots) for the Player-Position
+     * @param playerY The Row (in Spots) for the Player-Position
+     */
+    public void setUP(int width, int heights, int playerX, int playerY) {
         this.width = width;
         this.height = heights;
+        if (playerX != -1 && playerY != -1) {
+            startX = playerX;
+            startY = playerY;
+        }
         player.setSize(player.getWidth(), player.getWidth());
-        //player.setText("Try");
-        //player.setLocation(50,50);
         spots = new Spot[heights][width];
     }
-    
-    public void addSpot(Spot spot,int x, int y) {
-        spots[y][x] = spot;
-        this.setSize(width * spots[y][x].image().getWidth(),  height * spots[y][x].image().getHeight());
-        player.setUP(spots);
-        System.out.println("Seted up");
-        //enemie1.setUP(spots);
+    /**
+     * Gets the Point where the Player is on the Map (in Spots)
+     * @return The Point of the Player on the Map (in Spots)
+     */
+    public Point getPlayerPosition() {
+        return playerPosition;
     }
-  
-    
-   public void build() {
+    /**
+     * Adds/Updates a given Spot on the Map
+     * @param spot The new Spot
+     * @param x The Colum of the Spot
+     * @param y The Row of the Spot
+     */
+    public void addSpot(Spot spot, int x, int y) {
+        spots[y][x] = spot;
+        if (first) {
+            this.setSize(width * spots[y][x].image().getWidth(), height * spots[y][x].image().getHeight());
+            spotWidth = spot.image().getWidth();
+            player.setBounds(toPixel(startX), toPixel(startY), player.getWidth(), player.getWidth());
+            first = false;
+        }
+        player.setUP(spots);
+    }
+    /**
+     * Sets every Spot to a Copy of the given Spot
+     * @param s The Spot to set all the other Spots
+     */
+    public void setAllSpots(Spot s) {
+        for (int y = 0; y < spots.length; y++) {
+            for (int x = 0; x < spots[0].length; x++) {
+                addSpot(s.clone(), x, y);
+            }
+        }
+    }
+    /**
+     * Updates the Player's Position and returns any changes
+     * @return True if the Player has NOT moved to a new Spot
+     */
+    private boolean updatePlayerPosition() {
+        Point oldPosition = playerPosition;
+        playerPosition = new Point(toSpots(player.getHotSpot().x), toSpots(player.getHotSpot().y));
+        return !oldPosition.equals(playerPosition);
+    }
+    /**
+     * Gets a Spot at a given Point
+     * @param x The Colum of the Spot
+     * @param y The Row of the Spot
+     * @return The Spot at the given Point
+     */
+    public Spot getSpot(int x, int y) {
+        return spots[y][x];
+    }
+    /**
+     * Gets the Enemies which are on the Map
+     * @return A LinkedList of all the Enemies on the Map
+     */
+    public LinkedList<Enemie> getEnemies() {
+        return enemies;
+    }
+    /**
+     * Gets the Width of the Spots (Same as its Height)
+     * @return An Integer with the Width of the Spots (in Pixel)
+     */
+    public int getSpotWidth() {
+        return spotWidth;
+    }
+    /**
+     * Releases all Listeners connected to this Map
+     */
+    public void releaseEvents() {
+        listeners.clear();
+    }
+    /**
+     * Gets the Dimension of this Map
+     * @return The Dimension of this Map
+     */
+    public Dimension getDimension() {
+        return new Dimension(img.getWidth(), img.getHeight());
+    }
+    /**
+     * Builds the Map
+     * Draws all the Spots and the Grid
+     */
+    public void build() {
         int x = spots[0][0].image().getWidth();
         int y = spots[0][0].image().getHeight();
-       img = new BufferedImage(x*width,y*height,BufferedImage.TYPE_INT_ARGB);
+        img = new BufferedImage(x * width, y * height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = img.getGraphics();
-        for (int i = 0; i < spots.length; i++) {
-            for (int j = 0; j < spots[i].length; j++) {
-                if (spots[i][j] != null)
-                    g.drawImage(spots[i][j].image(), j*x, i*y, this);
+        for (int i = 0; i < spots.length; i++) { //rows
+            for (int j = 0; j < spots[i].length; j++) { //colums
+                if (spots[i][j] != null) {
+                    g.drawImage(spots[i][j].image(), j * x, i * y, this);
+                }
             }
-            g.drawLine(0, i*y, x*width, i*y);
-       }
+            g.drawLine(0, i * y, x * width, i * y);
+        }
         for (int i = 0; i < spots[0].length; i++) {
-           g.drawLine(i*x, 0, i*x, y*height);
-       }
+            g.drawLine(i * x, 0, i * x, y * height);
+        }
         setBackground(img);
-        
     }
-    
-    
-    public void moveUP() {
-//        if (move(1))
-//        player.setLocation(player.getX(), player.getY()-1);
-    }
-//
-    
-    public void moveDOWN() {
-//        if (move(0))
-//         player.setLocation(player.getX(), player.getY()+1);
-    }
-//
-   
-    public void moveRIGHT() {
-//        if (move(2))
-//         player.setLocation(player.getX()+1, player.getY());
-//        
-//        //System.out.println("MOVE");
-//        //this.update(this.getGraphics());
-    }
-//    
-//    public boolean move(int direction) {
-//        int x = player.getWidth();
-//        int y = player.getHeight();
-//        int px = player.getLocation().x;
-//        int py = player.getLocation().y;
-//        int w2 = spots[0][0].image().getWidth();
-//        int h2 = spots[0][0].image().getHeight();
-////        if (px-1 <= 0 || py - 1<= 0 || px + x +1 >=spots[0][0].image().getWidth()*width || py + y + 1 >= spots[0][0].image().getHeight()*height)
-////            return false;
-//        //Left
-//        if (direction == 3) {
-//            if (px-1 < 0)
-//                return false;
-//            Point[] points  = {new Point(px-1,py),new Point(px-1,py + y/2),new Point(px-1,py + y-1)};
-//            //System.out.println(px-1);
-//            //System.out.println(points[1].x/width + "    |   " + points[0].y/height);
-//            for (Point point : points) {
-//                
-//                if (!spots[point.y / h2][point.x / w2].walk()) {
-//                    return false;
-//                }
-//            }
-//            
-//            
-//        }
-//        //Right
-//        if (direction == 2) {
-//            if (px + x +1 >=w2*width)
-//                return false;
-//            Point[] points  = {new Point(px+1+x,py),new Point(px+1+x,py + y/2),new Point(px+1+x,py + y-1)};
-//            //System.out.println(px-1);
-//            //System.out.println(points[1].x/width + "    |   " + points[0].y/height);
-//            for (Point point : points) {
-//                
-//                if (!spots[point.y / h2][point.x / w2].walk()) {
-//                    return false;
-//                }
-//            }
-//            
-//            
-//        }
-//        //Up
-//        if (direction == 1) {
-//            if (py-1 < -1)
-//                return false;
-//            Point[] points  = {new Point(px+1,py-1),new Point(px+x/2,py-1),new Point(px + x-1,py-1)};
-//            //System.out.println(px-1);
-//            //System.out.println(points[1].x/width + "    |   " + points[0].y/height);
-//            for (Point point : points) {
-//                
-//                if (!spots[point.y / h2][point.x / w2].walk()) {
-//                    return false;
-//                }
-//            }
-//            
-//            
-//        }
-//        //Down
-//        if (direction == 0) {
-//            if (py + y + 1 < h2*height) {
-//               // return false;
-//            Point[] points  = {new Point(px+1,py + y+1),new Point(px+x/2,py + y+1),new Point(px + x-1,py + y+1)};
-//            //System.out.println(px-1);
-//            //System.out.println(points[1].x/width + "    |   " + points[0].y/height);
-//            for (Point point : points) {
-//                
-//                if (!spots[point.y / h2][point.x / w2].walk()) {
-//                    return false;
-//                }
-//            }
-//            }
-//            else if (py + y + 1 > h2*height)
-//                return false;
-//            
-//        }
-//        return true;
-//    }
-//    
-    public void moveLEFT() {
-//        //System.out.println(player.getLocation().x);
-//        if (move(3))
-//        //System.out.println("LEFT");
-//        player.setLocation(player.getX()-1, player.getY());
-    }
-
+    /**
+     * Calls the playerAttack() method to attack everything in the given
+     * Rectangle
+     * @param r The Rectangle for the Attack-Radius
+     */
     @Override
     public void attacke(Rectangle r) {
         playerAttack(r);
-        Graphics g = img.getGraphics();
-        g.drawRect(r.x, r.y, r.width, r.height);
-        this.setImage(img);
-        
     }
-    
+    /**
+     * Gets the Player of this Map
+     * @return The Player of this Map
+     */
     public Player getplayer() {
         return player;
     }
-    
-    public void addEnemy(Enemie e,int x, int y) {
+
+    /**
+     * Adds an Enemy to this Map
+     * X and Y in Pixels
+     *
+     * @param e The Enemy to add
+     * @param x Its Colum
+     * @param y Its Row
+     * @param start True if the Enemy should start Moving
+     * @return The Enemy which was added to the Map
+     */
+    public Enemie addEnemy(Enemie e, int x, int y, boolean start) {
+        e = e.clone();
         enemies.add(e);
         this.add(e);
         e.addListener(this);
         e.setBounds(x, y, e.getWidth(), e.getWidth());
-        //e.setLocation(x, y);
-        
         e.setUP(spots);
-        e.randomMove();
-        //System.out.println("Set up");
-        //player.setLocation(50,50);
-        //e.randomMove();
-        
+        if (start)
+            e.startMove();
+        return e;
     }
+    /**
+     * Same as addEnemy(Enemie e, int x, int y, boolean start))
+     * Enemies always start Moving
+     */
+     public Enemie addEnemy(Enemie e, int x, int y){
+         return addEnemy(e, x, y, true);
+     }
+
+    /**
+     * Point in spots
+     * Same as addEnemy(Enemie e, int x, int y)
+     * @param p The Point of the Enemy
+     */
+    public Enemie addEnemy(Enemie e, Point p) {
+        return addEnemy(e, toPixel(p.x), toPixel(p.y));
+    }
+
+    /**
+     * Point in spots
+     * Adds an Enemy to the Map
+     * @param e The Enemy to add
+     * @param p The Point of the Enemy
+     * @param start True if the Enemy should start Moving
+     */
+    public void addEnemy(Enemie e, Point p, boolean start) {
+        addEnemy(e, toPixel(p.x), toPixel(p.y),start);
+    }
+    /**
+     * Adds an Event to the Map at a given Point
+     * @param x The Colum of the Point
+     * @param y The Row of the Point
+     * @param evt The Event to add to the Map
+     */
+    public void addEvent(int x, int y, Event evt) {
+        evt.addListener(this);
+        spots[y][x].addEvent(evt);
+    }
+    /**
+     * Adds an Item to the Map at a given Point
+     * @param x The Colum of the Point
+     * @param y The Row of the Point
+     * @param item The Item to add to the Map
+     */
+    public void addItem(int x, int y, Items item) {
+        spots[y][x].additem(item);
+        this.add(item);
+        item.setBounds(toPixel(x), toPixel(y), item.getIcon().getIconWidth(), item.getIcon().getIconHeight());
+        System.out.println("Item added!");
+    }
+    /**
+     * Removes an Item from a given Point and returns it
+     * @param x The Colum of the Point
+     * @param y The Row of the Point
+     * @return The removed Item, null if none was removed
+     */
+    public Items removeItem(int x, int y) {
+        Items j, f = null;
+        if (spots[y][x].hasItem()) {
+            for (int i = 0; i < spots[y][x].itemLength(); i++) {
+                if (i == 0) {
+                    f = spots[y][x].pickUp();
+                    j = f;
+                } else {
+                    j = spots[y][x].pickUp();
+                }
+                this.remove(j);
+                if (spots[y][x].hasItem()) {
+                    break;
+                }
+            }
+        }
+        System.out.println("Item removed!");
+        return f;
+    }
+    /**
+     * Removes an Event from a given Point and returns it
+     * @param x The Colum of the Point
+     * @param y The Row of the Point
+     * @return The removed Event, null if none was removed
+     */
+    public Event removeEvent(int x, int y) {
+        LinkedList<Event> events;
+        Event evt = null;
+        events = spots[y][x].removeEvents();
+        if (events != null) {
+            evt = events.getLast();
+        }
+        events = null;
+        System.gc();
+        System.out.println("Event removed!");
+        return evt;
+    }
+    /**
+     * Removes an Enemy from a given Point and returns it
+     * @param x The Colum of the Point
+     * @param y The Row of the Point
+     * @return The removed Enemy, null if none was removed
+     */
+    public Enemie removeEnemie(int x, int y) {
+        int X;
+        int Y;
+        Enemie f = null;
+        Enemie e;
+        for (int i = 0; i < enemies.size(); i++) {
+            e = enemies.get(i);
+            X = toSpots(e.getLocation().x);
+            Y = toSpots(e.getLocation().y);
+            if (X == x && Y == y) {
+                f = e;
+                this.removeMover(e);
+            }
+        }
+        System.gc();
+        System.out.println("Enemie removed!");
+        return f;
+    }
+    /**
+     * Gets the Spot-Grid of the Map
+     * @return The Spot-Array of the Map
+     */
     public Spot[][] getSpots() {
         return spots;
     }
-
+    /**
+     * Gets called EveryTime something moves
+     * Checks whether any Enemy attacks the Player
+     * Lets the Player take Damage
+     * Protects the Player
+     */
     @Override
-    public void moved() {
-        Rectangle enemieBox;
-        Rectangle playerBox = player.getHitBox();
-        for (Enemie enemie : enemies) {
-            enemieBox = enemie.getHitBox();
-            if (playerBox.intersects(enemieBox)) {
-                
-                
-                    //player.takeDamage(enemie.getStrength());
-                    //enemies.get(i).takeDamage(enemies.get(i).getStrength());
-                    System.out.println("Got Damage");
-                    break;
-                
-            }
-        }
-    }
-    public boolean playerAttack(Rectangle r) {
-        Rectangle enemieBox;
-        boolean killed = false;
-        //Rectangle playerBox = player.getHitBox();
-        for (int i = 0; i < enemies.size(); i++) {
-            enemieBox = enemies.get(i).getHitBox();
-            if (r.intersects(enemieBox)) {
-                    killed = true;
-                    enemies.get(i).takeDamage(player.getStrength());
-                    //if (!enemies.get(i).isAlive()) {
-                        //this.remove(enemies.get(i));
-                        //enemies.get(i).stopMoving();
-                        //enemies.remove(enemies.get(i));
-                    //}
-                
-                
-            }
-        }
-        return killed;
-    }
-    
-    public void move() {
-        //lastDirection = direction;
-            
-        
-        Thread t = new Thread() {
-            public void run() {
-                synchronized(this) {
-                boolean move = true;
-                
-                
-                try {
-                    while(move) {
-                        Thread.sleep(10);
-                        for (int i = 0; i < arrows.size(); i++) {
-                            
-                            if (!arrows.get(i).move() || playerAttack(arrows.get(i).getHitBox())) {
-                                remove(arrows.get(i));
-                                arrows.remove(i);
-                                
-                                if (arrows.size() <= 0)
-                                    move = false;
-                                
-                                
-                            }
-                            
-                        }
-                    }
-
-                } catch (Exception ex) {
-                    Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+    public synchronized void moved() {
+        if (!protection) {
+            Rectangle enemieBox;
+            Rectangle playerBox = player.getHitBox();
+            for (Enemie enemie : enemies) {
+                enemieBox = enemie.getHitBox();
+                if (enemieBox == null) {
+                    System.out.println("Null-enemie");//Shouldn't happen
+                } else if (playerBox == null) {
+                    System.out.println("Null-playerBox");//Shouldn't happen
+                } else if (playerBox.intersects(enemieBox)) {
+                    System.out.println("Got Damage, Live left: " + player.getHealth());
+                    player.takeDamage(enemie.getStrength());
+                    protection = true;
+                    protect();
+                    return;
                 }
-                }   
+            }
+        }
+    }
+    /**
+     * Protects the Player from any Damage for 5 Seconds
+     */
+    private void protect() {
+        Thread t = new Thread() {
+            @Override
+            public void run() {
+                synchronized (this) {
+                    try {
+                        Thread.sleep(5000);//How long the player is protected
+                        protection = false;
+                    } catch (Exception ex) {
+                        Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             }
         };
         t.start();
     }
-    
-    public void playerShoot() {
-        spawnArrow(true, player.getX()+player.getWidth()/2,  player.getY()+player.getWidth()/2, player.lastDirection, player.getDamage());
+    /**
+     * Calls the playerAttack() method when the Player attacks 
+     * @param r The rectangle for the Radius of the Attack
+     * @return True if the Player killed someone
+     */
+    public synchronized boolean playerAttack(Rectangle r) {
+        return playerAttack(r, true, player.getStrength());
     }
-    
-    @Override
-    public void spawnArrow(boolean friendly,int x,int y,int direction, int damage) {
-        try {
-        BufferedImage arrow = null;
-        
-            
-                arrow = ImageIO.read (this.getClass().
-                            getResource("/Pictures/Arrow"+direction+".png"));
-            
-        
-        Arrow a = new Arrow(x, y, direction, damage,arrow,spots);
-        arrows.add(a);
-        this.add(a);
-        //e.addListener(this);
-        a.setBounds(x, y, arrow.getWidth(), arrow.getHeight());
-        this.repaint();
-        if (arrows.size() == 1)
-            move();
-        
-        } catch (IOException ex) {
-                Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
+    /**
+     * Attacks any Enemy of the Player depending of 'friendly'
+     * Returns as soon as one Object gets killed
+     * @param r The Rectangle for the Radius of the Attack
+     * @param friendly True if the Player does the Attack
+     * @param strength The Strength of the Attack
+     * @return True if someone got killed
+     */
+    private synchronized boolean playerAttack(Rectangle r, boolean friendly, int strength) {
+        Rectangle enemieBox;
+        boolean killed = false;
+        if (friendly) {
+            for (int i = 0; i < enemies.size(); i++) {
+                if (enemies.get(i).getLayer() == player.getLayer()) {
+                    enemieBox = enemies.get(i).getHitBox();
+                    if (r.intersects(enemieBox)) {
+                        killed = true;
+                        enemies.get(i).takeDamage(strength);
+                        return killed;
+                    }
+                }
             }
+            return killed;
+        } else {
+            if (r.intersects(player.getHitBox())) {
+                killed = true;
+                player.takeDamage(strength);
+            }
+            return killed;
+        }
     }
-
+    /**
+     * A Thread that moves all the Arrows on the Map and removes them when they
+     * collide with anything
+     * Stops itself when no Arrow is left
+     */
+    public void move() {
+        t = new Thread("Arrow") {
+            @Override
+            public void run() {
+                boolean move = true;
+                try {
+                    while (move) {
+                        Thread.sleep(10);//Time between each move
+                        for (int i = 0; i < arrows.size() - 1; i++) {
+                            /**
+                             * -1, because through the Multi-Thread Sometimes,
+                             * the loop tries to access an Arrow which was
+                             * removed by an other thread
+                             */
+                            if (i >= arrows.size()) {
+                                System.out.println("TOO big!!!");
+                            } else if (!arrows.get(i).move() || playerAttack(arrows.get(i).getHitBox(), arrows.get(i).isFriendly(), arrows.get(i).getDamage())) {
+                                removeMover(arrows.get(i));
+                                if (arrows.size() <= 0) {
+                                    move = false;
+                                    break;
+                                }
+                            }
+                            checkForPaused();//To pause the loop if needed
+                        }
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        };
+        t.start();
+    }
+    /**
+     * Pauses the Arrow-Thread
+     */
+    private void checkForPaused() {
+        synchronized (this) {
+            while (pause) {
+                try {
+                    this.wait();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+    }
+    /**
+     * Pauses the Arrow-Thread
+     * @throws InterruptedException if the Thread was interrupted
+     */
+    public void pauseThread() throws InterruptedException {
+        pause = true;
+    }
+    /**
+     * Resumes the Arrow-Thread
+     */
+    public void resumeThread() {
+        synchronized (this) {
+            pause = false;
+            this.notify();
+        }
+    }
+    /**
+     * Pauses/Resumes all the Enemies and the Arrows 
+     * @param play True if all should be resumed, False to pause them all
+     */
+    public synchronized void play(boolean play) {
+        try {
+            if (play) {
+                for (Enemie enemie : enemies) {
+                    enemie.resumeThread();
+                }
+                resumeThread();
+            } else {
+                for (Enemie enemie : enemies) {
+                    enemie.pauseThread();
+                }
+                pauseThread();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    /**
+     * Called when the Player want to shoot
+     * Calls the spawnArrow() method and gives it the Location/Strength of the
+     * Arrow to take care of the Arrow
+     */
+    public void playerShoot() {
+        spawnArrow(true, player.getX() + player.getWidth() / 2, player.getY() + player.getWidth() / 2, player.lastDirection, player.getDamage());
+    }
+    /**
+     * Spawns an Arrow with the Information provided and adds it to the 
+     * Arrow-Thread
+     * @param friendly True if the Player shoots the Arrow
+     * @param x The X-Coordinate of the Arrow (in Pixel)
+     * @param y The Y-Coordinate of the Arrow (in Pixel)
+     * @param direction The Direction of the Arrow from Mover
+     * @param damage The Strength of the Arrow
+     */
+    @Override
+    public void spawnArrow(boolean friendly, int x, int y, int direction, int damage) {
+        try {
+            BufferedImage arrow = null;
+            arrow = ImageIO.read(this.getClass().
+                    getResource("/Pictures/Arrow" + direction + ".png"));
+            Arrow a = new Arrow(x, y, direction, damage, new ImageIcon(arrow), spots, player.getLayer());
+            a.setFriendly(friendly);
+            arrows.addFirst(a);
+            this.add(a);
+            a.setBounds(x, y, arrow.getWidth(), arrow.getHeight());
+            this.repaint();
+            if (arrows.size() > 1 && !t.isAlive() || arrows.size() >= 50) {
+                this.removeArrows(arrows);
+                arrows.addFirst(a); //Tries to avoid the crash of the
+                //Arrow Thread
+            }
+            if (arrows.size() == 1) {//If the Thread is empty it stops it self
+                move();//Restarts the Arrow Thread
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    /**
+     * Removes an Arrow or an Enemy form the Map
+     * @param m An Arrow or an Enemy to remove from the Map
+     */
     @Override
     public void removeMover(Mover m) {
         if (m instanceof Enemie) {
             this.remove(m);
             enemies.remove(m);
         }
+        if (m instanceof Arrow) {
+            this.remove(m);
+            arrows.remove(m);
+        }
         repaint();
-        System.gc();
     }
-
-    
-    
+    /**
+     * Removes the given Arrows from the Map
+     * @param m A LikedList containing all the Arrows to remove from the Map
+     */
+    public void removeArrows(LinkedList<Arrow> m) {
+        for (Arrow m1 : m) {
+            this.remove(m1);
+        }
+        arrows.clear();
+        repaint();
+    }
+    /**
+     * Event to Heal the Player
+     * @param amount The Amount to Heal the Player
+     */
+    @Override
+    public void heal(int amount) {
+        player.heal(amount);
+        System.out.println("Got Healed, Live left: " + player.getHealth());
+    }
+    /**
+     * Event to Teleport the Player to a new Point on the Map
+     * @param destination The Point of Destination for the Teleport
+     */
+    @Override
+    public void teleport(Point destination) {
+        player.setLocation(toPixel(destination.x), toPixel(destination.y));
+        player.updateHeight();
+    }
+    /**
+     * Adds a Listener to this Map to take care of the Events
+     * @param toAdd The Listener to add to this Map
+     */
+    public void addListener(MapChange toAdd) {
+        listeners.add(toAdd);
+    }
+    /**
+     * Event to Teleport the Player to a new Point on a new Map
+     * @param destination The Point of Destination on the new Map to Teleport
+     * @param mapName The Map-Name of the new Map
+     */
+    @Override
+    public void teleport(Point destination, String mapName) {
+        for (MapChange hl : listeners) {
+            hl.mapChange(destination, mapName);
+        }
+    }
+    /**
+     * Event to display a Text to the Player
+     * @param text The Text to display to the Player
+     */
+    @Override
+    public void text(String text) {
+        player.stopMoving();
+        JOptionPane.showMessageDialog(null, text, "Message", JOptionPane.INFORMATION_MESSAGE, null);
+    }
+    /**
+     * Converts the given Spot-Value to Pixel-Value
+     * @param spot The Spot-Value to convert to Pixel-Value
+     * @return An Integer with the Pixel-Value of the Spot-Value
+     */
+    public int toPixel(int spot) {
+        return spot * spotWidth;
+    }
+    /**
+     * Converts the given Spot-Value to Pixel-Value
+     * @param pixels The Pixel-Value to convert to Spot-Value
+     * @return An Integer with the Spot-Value of the Pixel-Value
+     */
+    public int toSpots(int pixels) {
+        return pixels / spotWidth;
+    }
+    /**
+     * Gets the inventory of the Player
+     * @return The Inventory of the Player
+     */
+    public Inventory getInventory() {
+        return player.getInventory();
+    }
+    /**
+     * Gets the Image of this Map
+     * @return The BufferedImage of the Map
+     */
+    public BufferedImage getImage() {
+        return img;
+    }
+    /**
+     * Destroys the Map
+     */
+    public void destroy() {
+        for (Spot[] spot1 : spots) {
+            for (Spot spot : spot1) {
+                spot.destroy();
+            }
+        }
+        player.setSpots(null);
+        if (listeners != null) {
+            listeners.clear();
+        }
+    }
+    /**
+     * Called when the Player moves to a new Spot
+     * Calls all the Events on the Spot and picks up all the Items on the Spot
+     */
+    @Override
+    public void playerMoved() {
+        boolean moved = updatePlayerPosition();//True, if the Player's spot changed
+        if (moved) {
+            while (spots[playerPosition.y][playerPosition.x].hasItem()) {
+                Items item = spots[playerPosition.y][playerPosition.x].pickUp();
+                player.addItem(item);
+                this.remove(item);
+                repaint();
+                System.out.println("Item picked UP!");
+            }
+            spots[playerPosition.y][playerPosition.x].callEvents();
+        }
+    }
+    /**
+     * Event to spawn an Enemy on the Map
+     * @param p The Point for the Enemy to spawn
+     * @param e The Enemy to spawn on the Map
+     */
+    @Override
+    public void spawnEnemie(Point p, Enemie e) {
+        addEnemy(e, p);
+    }
+    /**
+     * Event to spawn an Item on the Map
+     * @param p The Point for the Item to spawn
+     * @param item The Item to spawn on the Map
+     */
+    @Override
+    public void spawnItem(Point p, Items item) {
+        this.addItem(p.x, p.y, item);
+        this.repaint();
+    }
+    /**
+     * Makes the PLayer Equip a given Item
+     * @param item The Item to Equip
+     */
+    @Override
+    public void use(Items item) {
+        player.use(item);
+    }
+    /**
+     * Recreates all the Constrains of the Map
+     */
+    void reUpdate() {
+        build();
+        requestFocus();
+        this.play(true);
+        getplayer().getInventory().addEvent();
+        for (int i = 0; i < enemies.size(); i++) {
+            enemies.get(i).startMove();
+        }
+        move();
+    }
 }
